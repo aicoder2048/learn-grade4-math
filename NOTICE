@@ -1,0 +1,12 @@
+learn-grade4-math
+Copyright (c) 2026 aicoder2048
+
+The MIT license in LICENSE covers the course pages, demos, lecture scripts, code and
+documentation written for this repository. It does not cover the textbook
+《义务教育教科书 数学 四年级上册》 (People's Education Press, 人民教育出版社) or any
+content taken from it, which remains the property of its copyright holder and is
+included for personal study only:
+  - docs/人教版_数学_四年级上册_2026秋_2022课标修订版.pdf
+  - docs/articles/ (text extracted from the textbook, unit splits, page images)
+  - lessons/img/ (textbook page images and figures cropped from them)
+  - textbook text quoted inside the lesson pages and glossary
