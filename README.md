@@ -11,7 +11,13 @@
    cd learn-grade4-math
    ```
 3. **填 key**：`cp lessons/.env.sample lessons/.env`，把 `DEEPSEEK_API_KEY` 改成你的 key。`.env` 已被 git 忽略；key 只在本机的 `tools/serve.py` 里使用，不会进入浏览器页面。
-4. **启动**：见下一节。第一次让 AI 讲师开讲前，建议先运行 `just lecture-audio` 合成全部语音（11 课约 50 MB，需要联网，免费）。
+4. **合成讲师语音**（只用 AI 助教可以跳过）：语音文件不在仓库里，要在本机生成一次。用 edge-tts，免费，需要联网；11 课约 400 段、50 MB，几分钟就能完成。
+   ```bash
+   just lecture-audio                                   # 全部 11 课；只合成一课：just lecture-audio L01
+   # 没装 just：cd lessons/lecturer && uv run lecturer.py audio
+   ```
+   跳过这一步也能开讲，讲师会边讲边合成，但每句话开口前会多等一会儿。
+5. **启动**：见下一节。
 
 ## 启动
 
