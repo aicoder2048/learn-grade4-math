@@ -2,6 +2,17 @@
 
 人教版《数学》四年级上册（2022 课标修订版，2026 秋）做成的互动自学课件：4 步 11 课，每课有教材原页、可动手的演示、自测题，右栏 AI 助教，外加带读的 AI 讲师。
 
+## 快速开始
+
+1. **准备**：[uv](https://docs.astral.sh/uv/)、本机 Chrome（AI 讲师用）、[just](https://github.com/casey/just) ≥ 1.54（可选），以及你**自己的** [DeepSeek API key](https://platform.deepseek.com/api_keys)。
+2. **克隆**：
+   ```bash
+   git clone https://github.com/aicoder2048/learn-grade4-math.git
+   cd learn-grade4-math
+   ```
+3. **填 key**：`cp lessons/.env.sample lessons/.env`，把 `DEEPSEEK_API_KEY` 改成你的 key。`.env` 已被 git 忽略；key 只在本机的 `tools/serve.py` 里使用，不会进入浏览器页面。
+4. **启动**：见下一节。第一次让 AI 讲师开讲前，建议先运行 `just lecture-audio` 合成全部语音（11 课约 50 MB，需要联网，免费）。
+
 ## 启动
 
 ```bash
@@ -35,3 +46,14 @@ just course --lecture L01   # 课程 + AI 讲师从第 1 课开讲（不写课�
 | `lessons/` | 课程页 `L01–L11`、首页、术语表、学习笔记页 |
 | `lessons/AUTHORING.md` | 课程编写规范（含插图登记表、本课程的约定和坑） |
 | `lessons/lecturer/` | AI 讲师（Playwright + edge-tts）和讲稿 |
+
+## 常见问题
+
+- **右栏显示“未连接”**：页面是直接双击打开的。用 `just course` 启动，再打开 `http://127.0.0.1:8771/lessons/`。
+- **助教报“没有 key”或 401**：`lessons/.env` 不存在，或 key 填错了。
+- **助教报 402**：DeepSeek 账户余额不足，需要充值。
+- **端口被占用**：`just course --port 9000`。
+
+## 版权
+
+教材《义务教育教科书 数学 四年级上册》（人民教育出版社）的 PDF、页图、插图和文字版权归原出版社所有，本仓库收录它们只为个人学习，不用于商业用途。课程中的演示、讲解和讲稿是课程作者编写的，标为“补充”“推算”的内容不是教材原文。权利人如有异议，请提 issue，我们会尽快删除相关内容。
