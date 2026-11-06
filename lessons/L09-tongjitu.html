@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>条形统计图 · L09</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .bc-svg { width: 100%; display: block; }
+  .bc-svg text { font-size: 13px; }
+  .bc-svg .val { font-size: 12px; font-weight: 700; }
+  .bc-svg .ttl { font-size: 15px; font-weight: 700; }
+  .bc-svg rect.bar { cursor: pointer; }
+  .bc-svg rect.bar.sel { stroke: var(--ink); stroke-width: 3; }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">统计表和条形统计图</a></li>
+    <li><a href="#s2">一格代表几</a></li>
+    <li><a href="#s3">横着画，读出信息</a></li>
+    <li><a href="#s4">复式条形统计图</a></li>
+    <li><a href="#s5">生活中的条形统计图</a></li>
+    <li><a href="#s6">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L09 · 统计、方向与复习</div>
+  <h1>条形统计图</h1>
+  <p>A 市 8 月有几天晴、几天阴？用一根根直条画出来，多少一眼就能看清。这一课学画条形统计图、选“一格代表几”，再学把两组数据画在一幅图里比较。</p>
+  <div class="meta"><span>教材：第六单元 第 88–101 页</span><span>学习约 30 分钟</span><span>含 3 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出<a class="term" href="glossary.html#tongjibiao">统计表</a>和<a class="term" href="glossary.html#tiaoxing-tongjitu">条形统计图</a>各有什么特点。</li>
+    <li>根据数据的大小，选择合适的“<a class="term" href="glossary.html#yige-daibiao">一格代表几</a>”，画出条形统计图。</li>
+    <li>从条形统计图里读出最多、最少、相差多少，并提出建议。</li>
+    <li>读懂<a class="term" href="glossary.html#fushi-tiaoxing">复式条形统计图</a>，用<a class="term" href="glossary.html#tuli">图例</a>比较两组数据。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>统计表和条形统计图</h2>
+  <p>先说结论：同一组数据，可以用统计表表示，也可以用条形统计图表示。统计表能查到准确的数，条形统计图能一眼看出多少。</p>
+  <p>教材的例子是 A 市 8 月的天气。这个月每种天气各有多少天？小东用统计表表示：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>天气情况</th><th>晴</th><th>阴</th><th>多云</th><th>阵雨</th><th>雷阵雨</th></tr>
+    <tr><td>天数</td><td>9</td><td>6</td><td>9</td><td>5</td><td>2</td></tr>
+  </table></div>
+  <p>小红用一个个圆圈表示，一个圆圈代表 1 天。还可以用条形统计图来表示：</p>
+  <figure class="fig"><img src="img/t088-tiaoxing.png" alt="教材第 88 页：小红用圆圈表示天数，右边是 A 市 8 月天气的条形统计图"><figcaption><b>教材第 88 页</b>左边是小红的表示方法，右边是条形统计图。1 格代表 1 天。</figcaption></figure>
+  <p>教材请你想一想：小红的方法和条形统计图，哪种表示更清楚？条形统计图和统计表各有什么特点？</p>
+  <div class="vs">
+    <div><h4>统计表</h4><p>每一项的数量写得清清楚楚，查数方便。</p></div>
+    <div><h4>条形统计图</h4><p>直条越长，数量越多。哪项最多、哪项最少，一眼就能看出来。</p></div>
+  </div>
+  <div class="callout tip"><span class="ttl">成长小档案（教材第 101 页）</span>和统计表相比，条形统计图能更直观地表示信息。</div>
+  <p>画条形统计图时，要写清楚两条轴各表示什么。例如横着写“天气情况”，竖着写“天数”。</p>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>一格代表几</h2>
+  <p>先说结论：数据比较大时，1 格不一定代表 1。先看数据有多大，再定每格代表几。</p>
+  <p>教材第 90 页统计了四年级同学最喜欢的图书。历史类 12 人，文学类 28 人，艺术类 16 人，科学类 32 人。</p>
+  <figure class="fig"><img src="img/t090-gezi.png" alt="教材第 90 页：数据比较大，可以用 1 个格代表 2 个人"><figcaption><b>教材第 90 页</b>如果 1 个格代表 1 个人，要画很多个格，太麻烦了。可以用“1 个格代表 2 个人”来试一试。</figcaption></figure>
+
+  <div class="chart-card" id="demo-scale">
+    <div class="chart-head">
+      <div class="chart-title">换一换：每格代表几最合适</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">数据：
+        <select id="sc-data" aria-label="选择数据">
+          <option value="0">最喜欢的图书 · 四年级（第 90 页）</option>
+          <option value="1">最喜欢的图书 · 艺术类改成 17 人（第 90 页）</option>
+          <option value="2">最喜欢的图书 · 全校（第 90 页）</option>
+          <option value="3">四（2）班捐书（第 91 页）</option>
+          <option value="4">四（3）班捐书（第 91 页）</option>
+          <option value="5">动物的平均寿命，加一种 23 年的动物（第 94 页）</option>
+        </select>
+      </div>
+      <div class="btn-row">每格代表：
+        <button class="btn" type="button" data-per="1">1</button>
+        <button class="btn on" type="button" data-per="2">2</button>
+        <button class="btn" type="button" data-per="5">5</button>
+        <button class="btn" type="button" data-per="10">10</button>
+        <button class="btn" type="button" data-per="20">20</button>
+      </div>
+      <svg class="bc-svg" id="sc-svg" viewBox="0 0 640 320" role="img" aria-label="条形统计图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="sc-out"></div></div>
+    <div class="chart-foot">换不同的“每格代表”，看最高的直条要画几格，每个数能不能正好画在格线上。再换数据试试：全校的数据大，每格代表几合适？<br><span class="data-note">数据来自教材第 90、91、94 页。“格子太多”“直条太矮”的提醒是课程作者为了帮助比较设的简单标准，不是教材规定。</span></div>
+  </div>
+
+  <ul class="checklist">
+    <li>最喜欢艺术类图书的如果有 17 人，1 格代表 2 人时，可以用半格代表 1 人（教材第 90 页）。</li>
+    <li>四（3）班捐书 20、30、50、40、30 本，教材问：每格代表几本书合适？（教材第 91 页）</li>
+    <li>平均寿命 23 年，在“每格代表 5 年”和“每格代表 10 年”两幅图中，哪幅表示比较准确？（教材第 94 页）</li>
+  </ul>
+  <div class="callout note"><span class="ttl">补充：怎样选每格代表几</span>先看最大的数。最高的直条最好不要画太多格，也不要只有一两格。再看其他数能不能正好画在格线上，或正好是半格。每格代表的数越小，画得越准，但格子越多。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>横着画，读出信息</h2>
+  <p>先说结论：条形统计图的直条可以竖着画，也可以横着画。画好以后，要会从图里读出信息，再提出建议或预测。</p>
+  <p>教材第 92 页的“上学方式”和第 94 页的“动物平均寿命”，直条都是横着画的。第 93 页是某商场一星期电视机的销售量：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>时间</th><th>星期一</th><th>星期二</th><th>星期三</th><th>星期四</th><th>星期五</th><th>星期六</th><th>星期日</th></tr>
+    <tr><td>销售量 / 台</td><td>15</td><td>10</td><td>20</td><td>25</td><td>30</td><td>50</td><td>45</td></tr>
+  </table></div>
+
+  <div class="chart-card" id="demo-readbar">
+    <div class="chart-head">
+      <div class="chart-title">读图：点直条，比一比</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">数据：
+        <select id="rb-data" aria-label="选择数据">
+          <option value="0">电视机销售量（第 93 页）</option>
+          <option value="1">动物的平均寿命（第 94 页）</option>
+          <option value="2">A 市 8 月天气（第 88 页）</option>
+        </select>
+        方向：<button class="btn on" type="button" id="rb-v">竖着画</button><button class="btn" type="button" id="rb-h">横着画</button>
+      </div>
+      <svg class="bc-svg" id="rb-svg" viewBox="0 0 640 320" role="img" aria-label="条形统计图"></svg>
+      <div class="btn-row" style="justify-content:center"><button class="btn" type="button" id="rb-clear">取消选择</button></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rb-out"></div></div>
+    <div class="chart-foot">点一根直条，看它表示多少。再点另一根，看两项相差多少。切换“竖着画 / 横着画”，数据没变，只是方向变了。<br><span class="data-note">数据来自教材第 88、93、94 页。</span></div>
+  </div>
+
+  <div class="callout tip"><span class="ttl">读完图，还要想一想</span>教材常问：你还能发现什么？你能提出什么建议？例如第 93 页请你预测下一星期哪两天销售的电视机台数可能最多。</div>
+  <div class="callout note"><span class="ttl">补充：预测要讲理由</span>这一星期星期六卖 50 台、星期日卖 45 台，是最多的两天。周末人们有空逛商场，可能是一个原因。预测只是根据数据的推断，下一星期不一定完全一样。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>复式条形统计图</h2>
+  <p>先说结论：有时为了便于比较，往往把两幅统计图合成一幅。这样的统计图叫复式条形统计图，它用图例说明每种颜色表示什么。</p>
+  <figure class="fig"><img src="img/t096-fushi.png" alt="教材第 96 页：某地区城镇人口数和农村人口数两幅单式图，合成一幅复式条形统计图"><figcaption><b>教材第 96 页</b>城镇人口和农村人口两幅单式条形统计图，合成一幅复式条形统计图。</figcaption></figure>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>年份</th><th>1980</th><th>1990</th><th>2000</th><th>2010</th><th>2020</th></tr>
+    <tr><td>城镇人口 / 万人</td><td>21</td><td>27</td><td>35</td><td>46</td><td>59</td></tr>
+    <tr><td>农村人口 / 万人</td><td>58</td><td>54</td><td>49</td><td>43</td><td>34</td></tr>
+  </table></div>
+
+  <div class="chart-card" id="demo-double">
+    <div class="chart-head">
+      <div class="chart-title">单式变复式：打开图例，比较两组</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">数据：
+        <select id="db-data" aria-label="选择数据">
+          <option value="0">某地区城乡人口数（第 96 页）</option>
+          <option value="1">四年级学生喜欢的运动（第 97 页）</option>
+        </select>
+      </div>
+      <div class="btn-row">图例：<button class="btn on" type="button" id="db-s0">城镇</button><button class="btn on" type="button" id="db-s1">农村</button></div>
+      <svg class="bc-svg" id="db-svg" viewBox="0 0 640 320" role="img" aria-label="复式条形统计图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="db-out"></div></div>
+    <div class="chart-foot">先只打开一种颜色，看单式条形统计图；再把两种都打开，合成复式条形统计图。点一组直条，看这一组两个数相差多少。<br><span class="data-note">数据来自教材第 96、97 页。颜色照教材：城镇粉色、农村蓝色；男生蓝色、女生粉色。</span></div>
+  </div>
+
+  <p>教材请你比一比：复式条形统计图和单式条形统计图有什么区别？然后回答几个问题。哪一年城镇人口数最多？哪一年农村人口数最少？哪一年城乡人口数相差的数量最大、哪一年最小？你还能得到哪些信息？</p>
+  <div class="callout warn"><span class="ttl">画复式条形统计图别忘了</span>一定要画图例。没有图例，别人分不清哪种颜色是哪一组。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>生活中的条形统计图</h2>
+  <p>先说结论：报纸、网站上常常用复式条形统计图表示大数据。读图时，先看标题、图例和单位。</p>
+  <figure class="fig"><img src="img/t097-jinchukou.png" alt="教材第 97 页：我国 2020—2024 年货物进出口总额统计图"><figcaption><b>教材第 97 页</b>生活中的数学：我国 2020—2024 年货物进出口总额统计图，单位是亿元。</figcaption></figure>
+  <p>这幅图的样子和例 3 不一样：每一年的两种直条上下接在一起。蓝色是货物出口额，粉色是货物进口额。例如 2024 年，出口额是 254443 亿元，进口额是 183791 亿元。</p>
+  <p>练习十九里还有更多生活中的复式条形统计图：</p>
+  <ul class="checklist">
+    <li>A、B 两个社区某月垃圾分类情况（教材第 99 页），直条横着画。</li>
+    <li>四年级学生一分钟跳绳成绩（教材第 100 页）。</li>
+    <li>我国 2018—2023 年固定电话和移动电话用户数（教材第 100 页）。</li>
+    <li>我国 2025 年 9—12 月核能、风力、太阳能发电量（教材第 101 页），一幅图里有三种颜色。</li>
+  </ul>
+  <div class="callout tip"><span class="ttl">读图三步</span>先看标题：这幅图讲什么。再看图例和单位：每种颜色表示什么，数的单位是人、台还是亿元。最后比直条：谁多谁少，怎样变化。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">和统计表相比，条形统计图的长处是什么？</div>
+    <div class="opts"><button>能写出更多的数</button><button>能更直观地看出数量的多少</button><button>不用写单位</button><button>不用定每格代表几</button></div>
+    <div class="explain">教材第 101 页：和统计表相比，条形统计图能更直观地表示信息。统计表的长处是能查到准确的数。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">画条形统计图时，1 格代表 2 人。最喜欢艺术类图书的有 17 人，怎样画？</div>
+    <div class="opts"><button>画 17 格</button><button>画 9 格</button><button>画 8 格再加半格</button><button>画 7 格再加半格</button></div>
+    <div class="explain">8 格代表 16 人，还多 1 人。半格代表 1 人（教材第 90 页），所以画 8 格再加半格。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">全校学生最喜欢的图书：历史类 60 人、文学类 110 人、艺术类 90 人、科学类 180 人。每格代表几比较合适？</div>
+    <div class="opts"><button>10 人</button><button>1 人</button><button>2 人</button><button>100 人</button></div>
+    <div class="explain">每格代表 10 人时，最高的科学类画 18 格，其他数也正好落在格线上。每格代表 1 人或 2 人，格子太多；每格代表 100 人，直条太矮，很难比较。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">复式条形统计图和单式条形统计图最大的不同是什么？</div>
+    <div class="opts"><button>复式的直条更宽</button><button>复式的直条只能横着画</button><button>复式不用写标题</button><button>复式把两组数据画在一幅图里，用图例区分颜色</button></div>
+    <div class="explain">教材第 96 页：为了便于比较，把两幅统计图合成一幅，就是复式条形统计图。不同颜色表示不同的组，图例说明每种颜色表示什么。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>统计表</td><td>数写得准确，查数方便</td></tr>
+    <tr><td>条形统计图</td><td>直条越长数量越多，更直观；可以竖着画，也可以横着画</td></tr>
+    <tr><td>一格代表几</td><td>数据大时 1 格可以代表 2、5、10……；不够一格时可以用半格</td></tr>
+    <tr><td>复式条形统计图</td><td>两组数据合成一幅图，便于比较；一定要有图例</td></tr>
+    <tr><td>读图</td><td>先看标题、图例、单位，再比最多、最少、相差多少，最后提建议</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L08-moxing.html"><small>上一课 · L08</small>加法模型和乘法模型</a>
+    <a href="L10-xunbao.html"><small>下一课 · L10</small>寻找宝藏：方向与平面图</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L09-tongjitu.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）第六单元“条形统计图”第 88–101 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  /* ---- 共用：画条形统计图（竖着或横着；一组或两组） ---- */
+  // o = { cats, series:[{name,color,vals}], step, unit, catAxis, valAxis, horiz, sel:Set }
+  function chart(svg, o) {
+    const W = 640, H = 320, L = o.horiz ? 80 : 56, R = o.horiz ? 60 : 24, T = o.legend ? 54 : 34, B = 46;
+    const max = Math.max(1, ...o.series.flatMap((s) => s.vals));
+    const n = Math.max(1, Math.ceil(max / o.step));
+    const top = n * o.step;
+    const pw = W - L - R, ph = H - T - B;
+    const labEvery = Math.ceil(n / 20);
+    let h = "";
+    // 格线与刻度
+    for (let k = 0; k <= n; k++) {
+      const v = k * o.step;
+      if (o.horiz) {
+        const x = L + (pw * k) / n;
+        h += '<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (T + ph) + '" style="stroke:var(--line)"/>';
+        if (k % labEvery === 0) h += '<text x="' + x + '" y="' + (T + ph + 16) + '" text-anchor="middle" style="font-size:11px">' + v + "</text>";
+      } else {
+        const y = T + ph - (ph * k) / n;
+        h += '<line x1="' + L + '" y1="' + y + '" x2="' + (L + pw) + '" y2="' + y + '" style="stroke:var(--line)"/>';
+        if (k % labEvery === 0) h += '<text x="' + (L - 6) + '" y="' + (y + 4) + '" text-anchor="end" style="font-size:11px">' + v + "</text>";
+      }
+    }
+    h += '<line x1="' + L + '" y1="' + (T + ph) + '" x2="' + (L + pw) + '" y2="' + (T + ph) + '" style="stroke:var(--ink-2)" stroke-width="1.5"/>';
+    h += '<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (T + ph) + '" style="stroke:var(--ink-2)" stroke-width="1.5"/>';
+    const nc = o.cats.length, ns = o.series.length, band = (o.horiz ? ph : pw) / nc;
+    const bw = Math.min(o.horiz ? 22 : 40, (band * 0.7) / ns);
+    o.cats.forEach((c, i) => {
+      const mid = (o.horiz ? T : L) + band * (i + 0.5);
+      if (o.horiz) h += '<text x="' + (L - 6) + '" y="' + (T + ph - (mid - T) + 4) + '" text-anchor="end">' + c + "</text>";
+      else h += '<text x="' + mid + '" y="' + (T + ph + 18) + '" text-anchor="middle">' + c + "</text>";
+      o.series.forEach((s, j) => {
+        const v = s.vals[i], len = ((o.horiz ? pw : ph) * v) / top;
+        const off = mid - (bw * ns) / 2 + j * bw;
+        const cls = "bar" + (o.sel && o.sel.has(i) ? " sel" : "");
+        if (o.horiz) {
+          const y = T + ph - (off - T) - bw;
+          h += '<rect class="' + cls + '" data-c="' + i + '" x="' + L + '" y="' + y + '" width="' + len + '" height="' + bw + '" style="fill:' + s.color + '"/>';
+          h += '<text class="val" x="' + (L + len + 4) + '" y="' + (y + bw / 2 + 4) + '">' + v + "</text>";
+        } else {
+          const y = T + ph - len;
+          h += '<rect class="' + cls + '" data-c="' + i + '" x="' + off + '" y="' + y + '" width="' + bw + '" height="' + len + '" style="fill:' + s.color + '"/>';
+          h += '<text class="val" x="' + (off + bw / 2) + '" y="' + (y - 4) + '" text-anchor="middle">' + v + "</text>";
+        }
+      });
+    });
+    // 轴名
+    if (o.horiz) { h += '<text x="' + (L - 6) + '" y="' + (T - 12) + '" text-anchor="end">' + o.catAxis + "</text>"; h += '<text x="' + (W - 4) + '" y="' + (T + ph + 34) + '" text-anchor="end">' + o.valAxis + "</text>"; }
+    else { h += '<text x="' + (L - 6) + '" y="' + (T - 14) + '" text-anchor="middle">' + o.valAxis + "</text>"; h += '<text x="' + (W - 4) + '" y="' + (T + ph + 38) + '" text-anchor="end">' + o.catAxis + "</text>"; }
+    // 图例
+    if (o.legend) o.series.forEach((s, j) => {
+      const x = W - 200 + j * 90, y = 6;
+      h += '<rect x="' + x + '" y="' + y + '" width="14" height="12" style="fill:' + s.color + '"/><text x="' + (x + 20) + '" y="' + (y + 11) + '">' + s.name + "</text>";
+    });
+    svg.innerHTML = h;
+    return { n, top };
+  }
+  const BLUE = "#7fa6d9", PINK = "#ef9aa8", TEAL = CL.C.teal;
+
+  /* ---- 1. 每格代表几 ---- */
+  const SD = [
+    { cats: ["历史类", "文学类", "艺术类", "科学类"], vals: [12, 28, 16, 32], unit: "人", cat: "图书种类", val: "人数" },
+    { cats: ["历史类", "文学类", "艺术类", "科学类"], vals: [12, 28, 17, 32], unit: "人", cat: "图书种类", val: "人数" },
+    { cats: ["历史类", "文学类", "艺术类", "科学类"], vals: [60, 110, 90, 180], unit: "人", cat: "图书种类", val: "人数" },
+    { cats: ["一组", "二组", "三组", "四组", "五组"], vals: [40, 30, 25, 35, 45], unit: "本", cat: "小组", val: "数量/本" },
+    { cats: ["一组", "二组", "三组", "四组", "五组"], vals: [20, 30, 50, 40, 30], unit: "本", cat: "小组", val: "数量/本" },
+    { cats: ["狗", "长颈鹿", "大象", "河马", "某动物"], vals: [10, 25, 75, 40, 23], unit: "年", cat: "动物", val: "平均寿命/年" },
+  ];
+  let sd = 0, step = 2;
+  function drawScale() {
+    const d = SD[sd];
+    const r = chart(CL.$("#sc-svg"), { cats: d.cats, series: [{ name: "", color: BLUE, vals: d.vals }], step, catAxis: d.cat, valAxis: d.val });
+    CL.$$("#demo-scale [data-per]").forEach((b) => b.classList.toggle("on", +b.dataset.per === step));
+    const mx = Math.max(...d.vals), im = d.vals.indexOf(mx);
+    const cells = (v) => { const f = Math.floor(v / step), r = v % step; return !r ? f + " 格" : r * 2 === step ? f + " 格再加半格" : f + " 格多一点"; };
+    const lines = ["每格代表 " + step + " " + d.unit + "。最高的直条是" + d.cats[im] + "（" + mx + " " + d.unit + "），要画 " + cells(mx) + "。"];
+    const half = [], rough = [];
+    d.vals.forEach((v, i) => {
+      const rem = v % step;
+      if (!rem) return;
+      const full = Math.floor(v / step);
+      if (rem * 2 === step) half.push(d.cats[i] + " " + v + " " + d.unit + "：画 " + full + " 格再加半格");
+      else rough.push(d.cats[i] + " " + v + " " + d.unit + " 落在 " + full * step + " 和 " + (full + 1) * step + " 两条格线之间");
+    });
+    if (half.length) lines.push("用半格表示：" + half.join("；") + "。半格代表 " + step / 2 + " " + d.unit + "。");
+    if (rough.length) lines.push("不能正好画在格线上，也不是半格，只能估计着画：" + rough.join("；") + "。两条格线相差 " + step + " " + d.unit + "，相差越小，估计着画越准确。");
+    if (!half.length && !rough.length) lines.push("每个数都正好画在格线上。");
+    if (mx / step > 25) lines.push("提醒：最高的直条要画 " + Math.ceil(mx / step) + " 格，格子太多，画起来麻烦。");
+    else if (mx / step < 4) lines.push("提醒：最高的直条不到 4 格，直条都很矮，多少不容易比较。");
+    CL.$("#sc-out").textContent = lines.join("\n");
+  }
+  CL.$("#sc-data").addEventListener("change", (e) => { sd = +e.target.value; drawScale(); });
+  CL.$$("#demo-scale [data-per]").forEach((b) => b.addEventListener("click", () => { step = +b.dataset.per; drawScale(); }));
+  drawScale();
+
+  /* ---- 2. 读图 ---- */
+  const RD = [
+    { cats: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"], vals: [15, 10, 20, 25, 30, 50, 45], unit: "台", step: 5, cat: "时间", val: "销售量/台" },
+    { cats: ["狗", "长颈鹿", "大象", "河马"], vals: [10, 25, 75, 40], unit: "年", step: 5, cat: "动物", val: "平均寿命/年" },
+    { cats: ["晴", "阴", "多云", "阵雨", "雷阵雨"], vals: [9, 6, 9, 5, 2], unit: "天", step: 1, cat: "天气情况", val: "天数" },
+  ];
+  let rd = 0, horiz = false, sel = [];
+  function drawRead() {
+    const d = RD[rd];
+    chart(CL.$("#rb-svg"), { cats: d.cats, series: [{ name: "", color: TEAL, vals: d.vals }], step: d.step, catAxis: d.cat, valAxis: d.val, horiz, sel: new Set(sel) });
+    CL.$("#rb-v").classList.toggle("on", !horiz); CL.$("#rb-h").classList.toggle("on", horiz);
+    const mx = Math.max(...d.vals), mn = Math.min(...d.vals);
+    const who = (v) => d.cats.filter((c, i) => d.vals[i] === v).join("、");
+    let s = "最多：" + who(mx) + "，" + mx + " " + d.unit + "。最少：" + who(mn) + "，" + mn + " " + d.unit + "。\n";
+    if (!sel.length) s += "点一根直条，看它表示多少。";
+    else if (sel.length === 1) s += "你点的是" + d.cats[sel[0]] + "：" + d.vals[sel[0]] + " " + d.unit + "。再点一根，比一比。";
+    else {
+      const [a, b] = sel, va = d.vals[a], vb = d.vals[b];
+      s += d.cats[a] + " " + va + " " + d.unit + "，" + d.cats[b] + " " + vb + " " + d.unit + "。" +
+        (va === vb ? "两项一样多。" : (va > vb ? d.cats[a] + "比" + d.cats[b] : d.cats[b] + "比" + d.cats[a]) + "多 " + Math.abs(va - vb) + " " + d.unit + "：" + Math.max(va, vb) + " − " + Math.min(va, vb) + " = " + Math.abs(va - vb) + "（" + d.unit + "）。");
+    }
+    CL.$("#rb-out").textContent = s;
+  }
+  CL.$("#rb-svg").addEventListener("click", (e) => {
+    const r = e.target.closest("rect.bar"); if (!r) return;
+    const i = +r.dataset.c;
+    if (sel.includes(i)) sel = sel.filter((x) => x !== i); else { sel.push(i); if (sel.length > 2) sel.shift(); }
+    drawRead();
+  });
+  CL.$("#rb-data").addEventListener("change", (e) => { rd = +e.target.value; sel = []; drawRead(); });
+  CL.$("#rb-v").addEventListener("click", () => { horiz = false; drawRead(); });
+  CL.$("#rb-h").addEventListener("click", () => { horiz = true; drawRead(); });
+  CL.$("#rb-clear").addEventListener("click", () => { sel = []; drawRead(); });
+  drawRead();
+
+  /* ---- 3. 复式条形统计图 ---- */
+  const DD = [
+    { cats: ["1980", "1990", "2000", "2010", "2020"], s: [{ name: "城镇", color: PINK, vals: [21, 27, 35, 46, 59] }, { name: "农村", color: BLUE, vals: [58, 54, 49, 43, 34] }], unit: "万人", step: 10, cat: "年份", val: "人口/万人", item: "年" },
+    { cats: ["乒乓球", "足球", "跑步", "游泳", "跳绳"], s: [{ name: "男生", color: BLUE, vals: [17, 18, 8, 14, 7] }, { name: "女生", color: PINK, vals: [13, 4, 6, 13, 16] }], unit: "人", step: 5, cat: "项目", val: "人数", item: "" },
+  ];
+  let dd = 0, on = [true, true], pickC = null;
+  function drawDouble() {
+    const d = DD[dd];
+    [0, 1].forEach((j) => { const b = CL.$("#db-s" + j); b.textContent = d.s[j].name; b.classList.toggle("on", on[j]); });
+    const series = d.s.filter((x, j) => on[j]);
+    if (!series.length) { CL.$("#db-svg").innerHTML = ""; CL.$("#db-out").textContent = "两种颜色都关掉了。至少打开一种。"; return; }
+    chart(CL.$("#db-svg"), { cats: d.cats, series, step: d.step, catAxis: d.cat, valAxis: d.val, legend: true, sel: pickC == null ? null : new Set([pickC]) });
+    const nm = (i) => d.cats[i] + d.item;
+    const lines = [series.length === 1 ? "现在是单式条形统计图，只有" + series[0].name + "一组数据。" : "现在是复式条形统计图：两组数据画在一幅图里，用图例区分。"];
+    series.forEach((s) => {
+      const mx = Math.max(...s.vals), mn = Math.min(...s.vals);
+      lines.push(s.name + "：" + nm(s.vals.indexOf(mx)) + "最多（" + mx + " " + d.unit + "），" + nm(s.vals.indexOf(mn)) + "最少（" + mn + " " + d.unit + "）。");
+    });
+    if (series.length === 2) {
+      const diff = d.cats.map((c, i) => Math.abs(d.s[0].vals[i] - d.s[1].vals[i]));
+      const dmx = Math.max(...diff), dmn = Math.min(...diff);
+      lines.push("两组相差最多的是" + nm(diff.indexOf(dmx)) + "（相差 " + dmx + " " + d.unit + "），相差最少的是" + nm(diff.indexOf(dmn)) + "（相差 " + dmn + " " + d.unit + "）。");
+      if (dd === 1) { const tot = d.cats.map((c, i) => d.s[0].vals[i] + d.s[1].vals[i]); lines.push("男生、女生合起来：" + d.cats.map((c, i) => c + " " + tot[i]).join("、") + "（人）。"); }
+    }
+    if (pickC != null) lines.push("你点的是" + nm(pickC) + "：" + d.s.map((s) => s.name + " " + s.vals[pickC] + " " + d.unit).join("，") + "，相差 " + Math.abs(d.s[0].vals[pickC] - d.s[1].vals[pickC]) + " " + d.unit + "。");
+    else lines.push("点一组直条，看这一组的两个数。");
+    CL.$("#db-out").textContent = lines.join("\n");
+  }
+  [0, 1].forEach((j) => CL.$("#db-s" + j).addEventListener("click", () => { on[j] = !on[j]; drawDouble(); }));
+  CL.$("#db-data").addEventListener("change", (e) => { dd = +e.target.value; pickC = null; on = [true, true]; drawDouble(); });
+  CL.$("#db-svg").addEventListener("click", (e) => { const r = e.target.closest("rect.bar"); if (!r) return; const i = +r.dataset.c; pickC = pickC === i ? null : i; drawDouble(); });
+  drawDouble();
+});
+</script>
+</body>
+</html>

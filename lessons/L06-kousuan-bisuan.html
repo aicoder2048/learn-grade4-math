@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>口算乘法与笔算乘法 · L06</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .demo svg { width: 100%; display: block; margin: 0 auto; }
+  .blk-ten { fill: var(--tip-bg); stroke: var(--up); stroke-width: 1; }
+  .blk-one { fill: var(--rule-bg); stroke: var(--accent); stroke-width: 1; }
+  .box-a { fill: var(--note-bg); stroke: var(--brand-2); stroke-width: 1; }
+  .grp { fill: none; stroke: var(--down); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .dot { fill: var(--brand-2); }
+  .part1 { fill: var(--note-bg); stroke: var(--brand-2); }
+  .part2 { fill: var(--rule-bg); stroke: var(--accent); }
+  .part3 { fill: var(--tip-bg); stroke: var(--up); }
+  .part4 { fill: var(--warn-bg); stroke: var(--down); }
+  .cut { stroke: var(--down); stroke-width: 2; stroke-dasharray: 6 4; }
+  .demo text.cap { font-size: 13px; fill: var(--ink-2); }
+  .vt { border-collapse: collapse; margin: 6px auto; font-family: var(--mono); font-size: 24px; }
+  .vt td { width: 30px; height: 38px; text-align: center; color: var(--ink); padding: 0; }
+  .vt tr.line td { border-bottom: 2px solid var(--ink-2); }
+  .vt td.hl { background: var(--rule-bg); color: var(--accent); font-weight: 700; }
+  .vt td.ghost { color: var(--ink-3); opacity: .55; }
+  .vt td.dim { color: var(--ink-3); opacity: .35; }
+  .vt-wrap { display: flex; gap: 24px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .vt-note { font-size: 14px; color: var(--ink-2); max-width: 300px; line-height: 1.7; }
+  .num-in { font-family: var(--mono); font-size: 18px; width: 80px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .ctrl input[type=range] { vertical-align: middle; }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">口算：拆开算，再合起来</a></li>
+    <li><a href="#s2">口算：乘整十数</a></li>
+    <li><a href="#s3">笔算：12 × 13 的两种想法</a></li>
+    <li><a href="#s4">竖式怎样写</a></li>
+    <li><a href="#s5">练习：找错和解决问题</a></li>
+    <li><a href="#s6">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L06 · 乘法与数量关系</div>
+  <h1>口算乘法与笔算乘法</h1>
+  <p>3 筐草莓、13 套书、48 个班的酸奶，都要用乘法算。这一课先学口算，再学两位数乘两位数的竖式，并弄清竖式里每一行算的是什么。</p>
+  <div class="meta"><span>教材：第三单元 第 39–47 页</span><span>学习约 35 分钟</span><span>含 4 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>把两位数拆成整十数和一位数，<a class="term" href="glossary.html#kousuan">口算</a>两位数乘一位数。</li>
+    <li>口算一个数乘 10、乘整十数，例如 12 × 20。</li>
+    <li>说出 12 × 13 为什么等于 12 × 10 加 12 × 3。</li>
+    <li>按教材的三个步骤，用竖式计算两位数、三位数乘两位数。</li>
+    <li>说出竖式里每一次乘得的数表示什么，并能找出竖式里的错误。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>口算：拆开算，再合起来</h2>
+  <p>先说结论：口算 16 × 3，可以把 16 拆成 10 和 6。先算 10 × 3，再算 6 × 3，最后把两个积加起来。</p>
+  <p>教材的例 1：每筐有 16 盒草莓，3 筐有多少盒草莓？列式是 16 × 3。</p>
+  <figure class="fig"><img src="img/t039-chaifen.png" alt="教材第 39 页：16×3 拆成 10×3=30 和 6×3=18，30+18=48；小方块图把 3 个 16 合起来"><figcaption><b>教材第 39 页</b>把 16 拆成 10 和 6：10 × 3 = 30，6 × 3 = 18，30 + 18 = 48。</figcaption></figure>
+  <p>小方块图说明了道理。3 个 16 里，有 3 根“十”和 3 堆“6 个一”。3 根十是 30，3 堆 6 是 18，合起来是 48。</p>
+
+  <div class="chart-card" id="demo-split">
+    <div class="chart-head">
+      <div class="chart-title">小方块：拆开算，再合起来</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一道题：
+        <select id="sp-q" aria-label="选一道口算题">
+          <option value="16,3" selected>16 × 3</option><option value="11,5">11 × 5</option><option value="14,4">14 × 4</option>
+          <option value="15,6">15 × 6</option><option value="23,4">23 × 4</option><option value="27,3">27 × 3</option><option value="24,3">24 × 3</option>
+        </select>
+        <button class="btn" id="sp-sep" type="button">分开摆</button>
+        <button class="btn" id="sp-join" type="button">合起来</button>
+      </div>
+      <svg id="sp-svg" viewBox="0 0 640 230" role="img" aria-label="小方块图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="sp-out"></div></div>
+    <div class="chart-foot">先看“分开摆”：每一组是一个乘数。再点“合起来”：所有的十放在一起，所有的一放在一起。数一数有几个十、几个一。<br><span class="data-note">按教材第 39 页的小方块图画。题目来自例 1、“做一做”和练习七。</span></div>
+  </div>
+
+  <div class="callout note"><span class="ttl">补充：想一想 160 × 3</span>教材留了一个“想一想：160 × 3 =”。你可以这样想：160 是 16 个十。16 个十乘 3，是 48 个十，也就是 480。“做一做”里的 110 × 5、140 × 4 也可以这样算。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>口算：乘整十数</h2>
+  <p>先说结论：一个数乘 10，就是求 10 个这个数是多少。乘几十，可以先乘几，再乘 10。</p>
+  <figure class="fig"><img src="img/t040-zhengshi.png" alt="教材第 40 页：6×10 两种想法；12×20 先算 12×2=24，再算 24×10=240"><figcaption><b>教材第 40 页</b>例 2：6 × 10 和 12 × 20 怎样口算。</figcaption></figure>
+  <div class="grid-2">
+    <div class="kp"><div class="k">例 2（1）· 6 × 10</div><div class="v">10 个 6 是 60</div><p>一种想法：9 个 6 是 54，10 个 6 是 54 + 6 = 60。另一种想法：6 × 10 = 10 × 6 = 60。</p></div>
+    <div class="kp"><div class="k">例 2（2）· 12 × 20</div><div class="v">12 × 2 = 24，24 × 10 = 240</div><p>每盒 12 个苹果，20 盒。先算 2 盒有多少个，再算 10 个 2 盒有多少个。</p></div>
+  </div>
+  <p>教材让你算一算 5 × 10、9 × 10、18 × 10、40 × 10，看看发现了什么。</p>
+
+  <div class="chart-card" id="demo-tens">
+    <div class="chart-head">
+      <div class="chart-title">整十数的乘法：先乘几，再乘 10</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一道题：
+        <select id="tn-q" aria-label="选一道整十数乘法题">
+          <option value="6,10">6 × 10</option><option value="18,10">18 × 10</option><option value="40,10">40 × 10</option>
+          <option value="12,20" selected>12 × 20</option><option value="12,30">12 × 30</option><option value="31,30">31 × 30</option>
+          <option value="14,20">14 × 20</option><option value="30,20">30 × 20</option>
+        </select>
+      </div>
+      <svg id="tn-svg" viewBox="0 0 640 210" role="img" aria-label="把盒子 10 组 10 组地圈起来"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="tn-out"></div></div>
+    <div class="chart-foot">每个小盒子里的数，是第一个乘数。红色虚线圈出一组，一共 10 组。先算一组，再算 10 组。换几道题，看积的末尾有什么共同点。<br><span class="data-note">按教材第 40 页例 2 的想法画。题目来自例 2、“试一试”和“做一做”。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">你发现了吗</span>5 × 10 = 50，18 × 10 = 180，40 × 10 = 400。一个数乘 10，积就是在这个数的末尾添上一个 0。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>笔算：12 × 13 的两种想法</h2>
+  <p>先说结论：13 是由 1 个十和 3 个一组成的。所以 12 × 13 就是 12 × 10 加 12 × 3。竖式也是这样算的。</p>
+  <p>教材的笔算例 1：一套书有 12 册，学校买了 13 套。一共有多少册？</p>
+  <figure class="fig"><img src="img/t043-xiaoliang.png" alt="教材第 43 页：小亮用点子图，小红用 12 册的方块；12×10=120，12×3=36，120+36=156；竖式 12×13"><figcaption><b>教材第 43 页</b>小亮和小红的想法，以及 12 × 13 的竖式。</figcaption></figure>
+  <div class="grid-2">
+    <div class="kp"><div class="k">小亮这样想</div><div class="v">点子图切一刀</div><p>每行 12 个点，一共 13 行。沿虚线把 13 行分成 10 行和 3 行。</p></div>
+    <div class="kp"><div class="k">小红这样想</div><div class="v">先算 10 套，再算 3 套</div><p>10 套是 12 × 10 = 120 册，3 套是 12 × 3 = 36 册，合起来 120 + 36 = 156 册。</p></div>
+  </div>
+
+  <div class="chart-card" id="demo-area">
+    <div class="chart-head">
+      <div class="chart-title">点子图：把一个乘法切成几块</div>
+      <label class="ctrl">每行 <b id="ar-av">12</b> 个点 <input id="ar-a" type="range" min="11" max="25" value="12"></label>
+      <label class="ctrl">一共 <b id="ar-bv">13</b> 行 <input id="ar-b" type="range" min="11" max="25" value="13"></label>
+    </div>
+    <div class="demo">
+      <div class="btn-row"><label><input type="checkbox" id="ar-col"> 每行的点也切开（拆成几十和几）</label></div>
+      <svg id="ar-svg" viewBox="0 0 640 400" role="img" aria-label="点子图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="ar-out"></div></div>
+    <div class="chart-foot">点子的总数就是积。横着切一刀，把行数拆成几十和几，就得到竖式里的两次乘法。拖动滑块换几个数，看每一块对应竖式里的哪一步。<br><span class="data-note">按教材第 43 页小亮的点子图画。“每行也切开”是补充的看法，切成四块后加起来，积不变。</span></div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>竖式怎样写</h2>
+  <p>先说结论：用竖式算多位数乘两位数，分三步。先用个位上的数乘，再用十位上的数乘，最后把两次乘得的数加起来。最要紧的是“对齐”。</p>
+  <p>回到 12 × 13 的竖式。第一行 36 是 12 × 3 的积。第二行写 12，它是 12 × 10 的积，个位的 0 可以省略不写。所以第二行的 2 要和十位对齐。最后 36 + 120 = 156。</p>
+  <p>教材的例 2：某小学有 48 个班，平均每班有 37 人。每人发一盒酸奶，一共需要多少盒？列式是 37 × 48。48 = 40 + 8，先算 8 个班的人数，再算 40 个班的人数。</p>
+  <figure class="fig"><img src="img/t044-fazhe.png" alt="教材第 44 页：37×48 的竖式，先算 37×8=296；多位数乘两位数的三个步骤"><figcaption><b>教材第 44 页</b>例 2 和“多位数乘两位数怎样计算”。</figcaption></figure>
+  <div class="callout rule"><span class="ttl">多位数乘两位数怎样计算（教材第 44 页）</span>
+    <ol class="steps">
+      <li>先用两位数个位上的数去乘这个多位数，得数的末位与乘数的个位对齐。</li>
+      <li>再用两位数十位上的数去乘这个多位数，得数的末位与乘数的十位对齐。</li>
+      <li>然后把两次乘得的数加起来。</li>
+    </ol>
+  </div>
+
+  <div class="chart-card" id="demo-vert">
+    <div class="chart-head">
+      <div class="chart-title">竖式播放器：一步一步算</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label>第一个乘数（两位或三位）<input class="num-in" id="vt-a" inputmode="numeric" maxlength="3" value="37" aria-label="第一个乘数"></label>
+        <label>× 第二个乘数（两位）<input class="num-in" id="vt-b" inputmode="numeric" maxlength="2" value="48" aria-label="第二个乘数"></label>
+      </div>
+      <div class="btn-row">教材里的题：
+        <button class="btn" type="button" data-vt="12,13">12 × 13</button>
+        <button class="btn" type="button" data-vt="312,13">312 × 13</button>
+        <button class="btn" type="button" data-vt="37,48">37 × 48</button>
+        <button class="btn" type="button" data-vt="237,48">237 × 48</button>
+        <button class="btn" type="button" data-vt="650,12">650 × 12</button>
+        <button class="btn" type="button" data-vt="134,57">134 × 57</button>
+      </div>
+      <div class="vt-wrap"><div id="vt-box"></div><div class="vt-note" id="vt-note"></div></div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn" id="vt-prev" type="button">上一步</button>
+        <button class="btn primary" id="vt-next" type="button">下一步</button>
+        <button class="btn" id="vt-reset" type="button">重来</button>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="vt-out"></div></div>
+    <div class="chart-foot">输入两个乘数，或点教材里的题，再一步一步点“下一步”。黄色是这一步正在用的数和写下的数。灰色的 0 可以省略不写。<br><span class="data-note">竖式写法按教材第 43–44 页。进位的小数字没有画出来，请你自己在本子上写。</span></div>
+  </div>
+  <div class="callout warn"><span class="ttl">最容易错的地方</span>用十位上的数去乘时，得数的末位要和十位对齐，不能和个位对齐。因为十位上的 4 表示 4 个十，37 × 4 个十 = 148 个十，也就是 1480。</div>
+  <div class="callout tip"><span class="ttl">算得对吗？验算一下</span>教材在例 2 后面提醒你<a class="term" href="glossary.html#yansuan">验算</a>。可以交换两个乘数再算一遍，也可以用计算器验算（练习八第 5 题）。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>练习：找错和解决问题</h2>
+  <p>先说结论：看懂竖式里每一行表示什么，就能找出错误，也能解决生活中的问题。</p>
+  <figure class="fig"><img src="img/t045.png" alt="教材第 45 页练习八：找错题 22×43、331×13、234×12；650×12 箭头题"><figcaption><b>教材第 45 页</b>练习八。第 2 题找错，第 3 题说出箭头那一步算的是什么。</figcaption></figure>
+  <ul class="checklist">
+    <li><b>找错（练习八第 2 题）</b>：先看第二次乘得的数是不是和十位对齐。再看它是不是等于“多位数 × 十位上的数”。</li>
+    <li><b>每一行的意思（练习八第 3 题）</b>：绿道全长 650 m，李阿姨跑了 12 圈。竖式 650 × 12 里，第一行算的是 2 圈，箭头那一行算的是几圈？</li>
+    <li><b>生活中的乘法</b>：漏水的水龙头 1 分钟滴水 5 g，1 小时、1 天各滴多少克（练习七第 6 题）；每套明信片售价 16 元，卖出 156 套一共卖了多少钱（练习八第 8 题）。</li>
+  </ul>
+  <div class="callout tip"><span class="ttl">动手试</span>把 650 × 12 放进上面的<a href="#demo-vert">竖式播放器</a>，看第二步写下的数旁边的说明。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">口算 23 × 4，下面哪种拆法和教材例 1 的想法一样？</div>
+    <div class="opts"><button>23 × 4 = 23 + 23 + 23</button><button>20 × 4 = 80，3 × 4 = 12，80 + 12 = 92</button><button>23 × 4 = 2 × 4 + 3 × 4 = 20</button><button>23 × 4 = 20 + 3 × 4 = 32</button></div>
+    <div class="explain">把 23 拆成 20 和 3，分别乘 4，再把两个积加起来：80 + 12 = 92（教材第 39 页的方法）。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">每盒 12 个苹果，20 盒有多少个？教材是怎样口算的？</div>
+    <div class="opts"><button>12 + 20 = 32</button><button>先算 12 × 10 = 120，再加 20</button><button>先算 12 × 2 = 24，再算 24 × 10 = 240</button><button>先算 2 × 20 = 40，再加 10</button></div>
+    <div class="explain">先算 2 盒有多少个，再算 10 个 2 盒有多少个：12 × 2 = 24，24 × 10 = 240（教材第 40 页）。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">竖式 37 × 48 中，用十位上的 4 去乘，写下的 148 表示多少？</div>
+    <div class="opts"><button>148</button><button>37 × 4，也就是 148 个一</button><button>8 个班的人数</button><button>37 × 40，也就是 1480</button></div>
+    <div class="explain">十位上的 4 表示 4 个十。37 × 40 = 1480。写的时候末位的 0 省略，148 的末位和十位对齐。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">650 × 12 的竖式里，第二次乘得的数 650（末位和十位对齐）计算的是什么？</div>
+    <div class="opts"><button>跑 2 圈的长度</button><button>跑 1 圈的长度</button><button>跑 10 圈的长度</button><button>跑 12 圈的长度</button></div>
+    <div class="explain">第二次是用十位上的 1 去乘，1 表示 1 个十。650 × 10 = 6500，就是跑 10 圈的长度（教材第 45 页练习八第 3 题）。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">有个同学算 22 × 43，写成 66、88，相加得 154。错在哪里？</div>
+    <div class="opts"><button>88 应该和十位对齐，表示 880</button><button>66 算错了</button><button>应该先用十位上的数乘</button><button>没有错</button></div>
+    <div class="explain">22 × 4 个十 = 88 个十，88 的末位要和十位对齐。按教材的三步重新算一遍，再验算。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>口算两位数乘一位数</td><td>拆成几十和几，分别乘，再相加：16 × 3 = 30 + 18 = 48</td></tr>
+    <tr><td>乘 10、乘整十数</td><td>10 个 6 是 60；12 × 20：先 12 × 2 = 24，再 24 × 10 = 240</td></tr>
+    <tr><td>笔算的道理</td><td>12 × 13 = 12 × 10 + 12 × 3 = 120 + 36 = 156</td></tr>
+    <tr><td>笔算三步</td><td>个位乘，末位对齐个位；十位乘，末位对齐十位；两次乘得的数相加</td></tr>
+    <tr><td>验算</td><td>交换乘数再算，或用计算器验算</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L07-chengfa-guilv-gusuan.html"><small>下一课 · L07</small>乘数末尾有 0、积的变化规律与估算</a>
+    <a href="L08-moxing.html"><small>L08</small>加法模型和乘法模型</a>
+    <a href="L01-yi-yinei.html"><small>L01</small>亿以内数的认识（数位）</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L06-kousuan-bisuan.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册第三单元“多位数乘两位数”第 39–47 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  /* ---- 1. 小方块：拆开算 ---- */
+  let spJoined = false;
+  function drawSplit() {
+    const [a, b] = CL.$("#sp-q").value.split(",").map(Number);
+    const t = Math.floor(a / 10), o = a % 10;
+    CL.$("#sp-sep").classList.toggle("on", !spJoined); CL.$("#sp-join").classList.toggle("on", spJoined);
+    const c = 9; // 小方块边长
+    let h = "";
+    function rod(x, y) { let s = ""; for (let i = 0; i < 10; i++) s += '<rect class="blk-ten" x="' + x + '" y="' + (y + i * c) + '" width="' + c + '" height="' + c + '"/>'; return s; }
+    function ones(x, y, n) { let s = ""; for (let i = 0; i < n; i++) s += '<rect class="blk-one" x="' + (x + (i % 5) * c) + '" y="' + (y + 9 * c - Math.floor(i / 5) * c) + '" width="' + c + '" height="' + c + '"/>'; return s; }
+    const top = 40;
+    if (!spJoined) {
+      const gw = t * (c + 3) + 5 * c + 18;
+      const gap = 16, total = b * gw + (b - 1) * gap;
+      let x = Math.max(10, (640 - total) / 2);
+      for (let k = 0; k < b; k++) {
+        h += '<rect class="grp" x="' + (x - 6) + '" y="' + (top - 8) + '" width="' + (gw + 2) + '" height="' + (10 * c + 16) + '" rx="6"/>';
+        for (let i = 0; i < t; i++) h += rod(x + i * (c + 3), top);
+        h += ones(x + t * (c + 3) + 6, top, o);
+        h += '<text class="cap" x="' + (x + gw / 2 - 4) + '" y="' + (top + 10 * c + 26) + '" text-anchor="middle">' + a + "</text>";
+        x += gw + gap;
+      }
+      h += '<text class="cap" x="320" y="200" text-anchor="middle">' + b + " 个 " + a + "</text>";
+    } else {
+      const nT = t * b, nO = o * b;
+      const tW = nT * (c + 3), oCols = Math.ceil(nO / 10), oW = oCols * (c + 2);
+      // 十放在左半边，一放在右半边，标签各自居中，不会重叠
+      let x = 200 - tW / 2;
+      h += '<rect class="grp" x="' + (x - 6) + '" y="' + (top - 8) + '" width="' + (tW + 8) + '" height="' + (10 * c + 16) + '" rx="6"/>';
+      for (let i = 0; i < nT; i++) h += rod(x + i * (c + 3), top);
+      h += '<text class="cap" x="200" y="' + (top + 10 * c + 28) + '" text-anchor="middle">' + nT + " 个十 = " + nT * 10 + "</text>";
+      if (nO) {
+        x = 450 - oW / 2;
+        h += '<rect class="grp" x="' + (x - 6) + '" y="' + (top - 8) + '" width="' + (oW + 8) + '" height="' + (10 * c + 16) + '" rx="6"/>';
+        for (let i = 0; i < nO; i++) h += '<rect class="blk-one" x="' + (x + Math.floor(i / 10) * (c + 2)) + '" y="' + (top + 9 * c - (i % 10) * c) + '" width="' + c + '" height="' + c + '"/>';
+        h += '<text class="cap" x="450" y="' + (top + 10 * c + 28) + '" text-anchor="middle">' + nO + " 个一 = " + nO + "</text>";
+      }
+      h += '<text class="cap" x="320" y="200" text-anchor="middle">' + nT * 10 + (nO ? " + " + nO : "") + " = " + a * b + "</text>";
+    }
+    CL.$("#sp-svg").innerHTML = h;
+    const lines = [a + " × " + b + "：把 " + a + " 拆成 " + t * 10 + (o ? " 和 " + o : "") + "。"];
+    lines.push(t * 10 + " × " + b + " = " + t * 10 * b + "（" + t * b + " 个十）");
+    if (o) { lines.push(o + " × " + b + " = " + o * b + "（" + o * b + " 个一）"); lines.push(t * 10 * b + " + " + o * b + " = " + a * b + "。所以 " + a + " × " + b + " = " + a * b + "。"); }
+    else lines.push("所以 " + a + " × " + b + " = " + a * b + "。");
+    lines.push(spJoined ? "现在是“合起来”：十和十放在一起，一和一放在一起。" : "现在是“分开摆”：一共 " + b + " 组，每组 " + a + " 个。");
+    CL.$("#sp-out").textContent = lines.join("\n");
+  }
+  CL.$("#sp-q").addEventListener("change", drawSplit);
+  CL.$("#sp-sep").addEventListener("click", () => { spJoined = false; drawSplit(); });
+  CL.$("#sp-join").addEventListener("click", () => { spJoined = true; drawSplit(); });
+  drawSplit();
+
+  /* ---- 2. 整十数的乘法 ---- */
+  function drawTens() {
+    const [a, b] = CL.$("#tn-q").value.split(",").map(Number);
+    const k = b / 10;              // 每组几个盒子
+    const bw = 44, bh = 26, gx = 12;
+    const gw = bw + 8;
+    const left = (640 - (10 * gw + 9 * gx)) / 2;
+    let h = "";
+    for (let g = 0; g < 10; g++) {
+      const x = left + g * (gw + gx);
+      h += '<rect class="grp" x="' + x + '" y="12" width="' + gw + '" height="' + (k * (bh + 6) + 6) + '" rx="6"/>';
+      for (let i = 0; i < k; i++) {
+        const y = 18 + i * (bh + 6);
+        h += '<rect class="box-a" x="' + (x + 4) + '" y="' + y + '" width="' + bw + '" height="' + bh + '" rx="3"/>';
+        h += '<text class="cap" x="' + (x + 4 + bw / 2) + '" y="' + (y + 18) + '" text-anchor="middle">' + a + "</text>";
+      }
+    }
+    h += '<text class="cap" x="320" y="' + (k * (bh + 6) + 44) + '" text-anchor="middle">一共 ' + b + " 个 " + a + "，圈成 10 组，每组 " + k + " 个</text>";
+    CL.$("#tn-svg").setAttribute("viewBox", "0 0 640 " + (k * (bh + 6) + 60));
+    CL.$("#tn-svg").innerHTML = h;
+    let txt;
+    if (k === 1) txt = a + " × 10：求 10 个 " + a + " 是多少。\n10 个 " + a + " 是 " + a * 10 + "。所以 " + a + " × 10 = " + a * 10 + "。";
+    else txt = a + " × " + b + "：先算一组（" + k + " 个 " + a + "）：" + a + " × " + k + " = " + a * k + "。\n再算 10 组：" + a * k + " × 10 = " + a * b + "。所以 " + a + " × " + b + " = " + a * b + "。";
+    txt += "\n积 " + a * b + " 就是在 " + a * k + " 的末尾添上一个 0。";
+    CL.$("#tn-out").textContent = txt;
+  }
+  CL.$("#tn-q").addEventListener("change", drawTens);
+  drawTens();
+
+  /* ---- 3. 点子图 ---- */
+  function drawArea() {
+    const a = +CL.$("#ar-a").value, b = +CL.$("#ar-b").value, splitCol = CL.$("#ar-col").checked;
+    CL.$("#ar-av").textContent = a; CL.$("#ar-bv").textContent = b;
+    const s = 14, ox = 70, oy = 20;
+    const bT = Math.floor(b / 10) * 10, bO = b % 10, aT = Math.floor(a / 10) * 10, aO = a % 10;
+    let h = "";
+    const W = a * s, rT = bT * s, rO = bO * s, cT = aT * s;
+    // 背景色块
+    if (!splitCol) {
+      h += '<rect class="part1" x="' + (ox - 4) + '" y="' + (oy - 4) + '" width="' + (W + 2) + '" height="' + (rT) + '" rx="4"/>';
+      if (bO) h += '<rect class="part2" x="' + (ox - 4) + '" y="' + (oy - 4 + rT) + '" width="' + (W + 2) + '" height="' + rO + '" rx="4"/>';
+    } else {
+      h += '<rect class="part1" x="' + (ox - 4) + '" y="' + (oy - 4) + '" width="' + cT + '" height="' + rT + '" rx="4"/>';
+      if (aO) h += '<rect class="part3" x="' + (ox - 4 + cT) + '" y="' + (oy - 4) + '" width="' + (aO * s + 2) + '" height="' + rT + '" rx="4"/>';
+      if (bO) h += '<rect class="part2" x="' + (ox - 4) + '" y="' + (oy - 4 + rT) + '" width="' + cT + '" height="' + rO + '" rx="4"/>';
+      if (aO && bO) h += '<rect class="part4" x="' + (ox - 4 + cT) + '" y="' + (oy - 4 + rT) + '" width="' + (aO * s + 2) + '" height="' + rO + '" rx="4"/>';
+    }
+    for (let r = 0; r < b; r++) for (let c = 0; c < a; c++) h += '<circle class="dot" cx="' + (ox + c * s + 3) + '" cy="' + (oy + r * s + 3) + '" r="3.6"/>';
+    if (bO) h += '<line class="cut" x1="' + (ox - 12) + '" y1="' + (oy - 4 + rT) + '" x2="' + (ox + W + 6) + '" y2="' + (oy - 4 + rT) + '"/>';
+    if (splitCol && aO) h += '<line class="cut" x1="' + (ox - 4 + cT) + '" y1="' + (oy - 12) + '" x2="' + (ox - 4 + cT) + '" y2="' + (oy + b * s + 4) + '"/>';
+    h += '<text class="cap" x="' + (ox - 10) + '" y="' + (oy + rT / 2) + '" text-anchor="end">' + bT + " 行</text>";
+    if (bO) h += '<text class="cap" x="' + (ox - 10) + '" y="' + (oy + rT + rO / 2 + 2) + '" text-anchor="end">' + bO + " 行</text>";
+    const tx = ox + W + 16;
+    if (!splitCol) {
+      h += '<text class="cap" x="' + tx + '" y="' + (oy + rT / 2) + '">' + a + " × " + bT + " = " + a * bT + "</text>";
+      if (bO) h += '<text class="cap" x="' + tx + '" y="' + (oy + rT + rO / 2 + 2) + '">' + a + " × " + bO + " = " + a * bO + "</text>";
+    } else {
+      h += '<text class="cap" x="' + tx + '" y="' + (oy + rT / 2) + '">' + aT + " × " + bT + " = " + aT * bT + (aO ? "，" + aO + " × " + bT + " = " + aO * bT : "") + "</text>";
+      if (bO) h += '<text class="cap" x="' + tx + '" y="' + (oy + rT + rO / 2 + 2) + '">' + aT + " × " + bO + " = " + aT * bO + (aO ? "，" + aO + " × " + bO + " = " + aO * bO : "") + "</text>";
+    }
+    CL.$("#ar-svg").setAttribute("viewBox", "0 0 640 " + (oy + b * s + 20));
+    CL.$("#ar-svg").innerHTML = h;
+    let txt = "一共 " + b + " 行，每行 " + a + " 个点。把 " + b + " 行切成 " + bT + " 行" + (bO ? "和 " + bO + " 行" : "") + "。\n";
+    if (bO) {
+      txt += "上面一块：" + a + " × " + bT + " = " + a * bT + "；下面一块：" + a + " × " + bO + " = " + a * bO + "。\n";
+      txt += "合起来：" + a * bT + " + " + a * bO + " = " + a * b + "，所以 " + a + " × " + b + " = " + a * b + "。\n";
+      txt += "竖式里，第一次乘得的 " + a * bO + " 是下面一块（" + a + " × " + bO + "）；第二次乘得的数是上面一块（" + a + " × " + bT + " = " + a * bT + "），末尾的 0 省略，写成 " + a * bT / 10 + "。";
+    } else txt += "行数正好是整十数，只有一块：" + a + " × " + b + " = " + a * b + "。";
+    if (splitCol && aO && bO) txt += "\n切成四块：" + [aT * bT, aO * bT, aT * bO, aO * bO].join(" + ") + " = " + a * b + "，积不变。";
+    CL.$("#ar-out").textContent = txt;
+  }
+  ["#ar-a", "#ar-b"].forEach((id) => CL.$(id).addEventListener("input", drawArea));
+  CL.$("#ar-col").addEventListener("change", drawArea);
+  drawArea();
+
+  /* ---- 4. 竖式播放器 ---- */
+  let vtStep = 0;
+  // 生成竖式格子：返回 {rows:[{cells:[{ch,cls}], line}], W}
+  function vertical(a, b) {
+    const A = String(a), B = String(b), b1 = b % 10, b10 = Math.floor(b / 10);
+    const P1 = String(a * b1), P2 = String(a * b10), S = String(a * b);
+    const W = Math.max(A.length, B.length + 1, P1.length, P2.length + 1, S.length) + 1;
+    const blank = () => Array.from({ length: W }, () => ({ ch: "", cls: "" }));
+    function put(row, str, end, cls) { for (let i = 0; i < str.length; i++) row[end - (str.length - 1 - i)] = { ch: str[i], cls: cls || "" }; return row; }
+    const rA = put(blank(), A, W - 1, "a");
+    const rB = put(blank(), B, W - 1, "b"); rB[0] = { ch: "×", cls: "" };
+    rB[W - 1].cls = "b1"; rB[W - 2].cls = "b10";
+    const rP1 = put(blank(), P1, W - 1, "p1");
+    const rP2 = put(blank(), P2, W - 2, "p2"); rP2[W - 1] = { ch: "0", cls: "p2 ghost" };
+    const rS = put(blank(), S, W - 1, "s");
+    return { W, rows: [{ c: rA }, { c: rB, line: true }, { c: rP1 }, { c: rP2, line: true }, { c: rS }], P1, P2, S, b1, b10 };
+  }
+  function vtRead() {
+    const a = parseInt(CL.$("#vt-a").value.replace(/\D/g, ""), 10), b = parseInt(CL.$("#vt-b").value.replace(/\D/g, ""), 10);
+    if (!(a >= 10 && a <= 999)) return { err: "第一个乘数请写一个两位数或三位数。" };
+    if (!(b >= 10 && b <= 99)) return { err: "第二个乘数请写一个两位数。" };
+    if (b % 10 === 0) return { err: "第二个乘数末尾是 0，可以口算或用简便写法，见下一课 L07。请换一个个位不是 0 的两位数。" };
+    return { a, b };
+  }
+  function drawVert() {
+    const q = vtRead();
+    if (q.err) { CL.$("#vt-box").innerHTML = ""; CL.$("#vt-note").textContent = ""; CL.$("#vt-out").textContent = q.err; return; }
+    const { a, b } = q, v = vertical(a, b);
+    vtStep = Math.max(0, Math.min(3, vtStep));
+    const show = { p1: vtStep >= 1, p2: vtStep >= 2, s: vtStep >= 3 };
+    let h = '<table class="vt">';
+    for (const r of v.rows) {
+      h += "<tr" + (r.line ? ' class="line"' : "") + ">";
+      for (const cell of r.c) {
+        let ch = cell.ch, cls = cell.cls.split(" ").filter(Boolean);
+        const kind = cls[0];
+        if ((kind === "p1" && !show.p1) || (kind === "p2" && !show.p2) || (kind === "s" && !show.s)) ch = "";
+        const out = [];
+        if (cls.includes("ghost")) out.push("ghost");
+        if (vtStep === 1 && (kind === "p1" || kind === "b1" || kind === "a")) out.push("hl");
+        if (vtStep === 2 && (kind === "p2" || kind === "b10" || kind === "a")) out.push("hl");
+        if (vtStep === 3 && kind === "s") out.push("hl");
+        if (vtStep === 3 && (kind === "p1" || kind === "p2")) out.push("");
+        h += '<td class="' + out.join(" ") + '">' + ch + "</td>";
+      }
+      h += "</tr>";
+    }
+    CL.$("#vt-box").innerHTML = h + "</table>";
+    const notes = [
+      "第 0 步：把 " + a + " 写在上面，" + b + " 写在下面，相同数位对齐。",
+      "第 1 步：用个位上的 " + v.b1 + " 去乘 " + a + "。\n" + a + " × " + v.b1 + " = " + v.P1 + "，末位和个位对齐。\n这一步算的是 " + v.b1 + " 个 " + a + "。",
+      "第 2 步：用十位上的 " + v.b10 + " 去乘 " + a + "。\n" + v.b10 + " 表示 " + v.b10 + " 个十，" + a + " × " + v.b10 * 10 + " = " + v.P2 + "0。\n写成 " + v.P2 + "，末位和十位对齐，个位的 0 可以省略。\n这一步算的是 " + v.b10 * 10 + " 个 " + a + "。",
+      "第 3 步：把两次乘得的数加起来。\n" + v.P1 + " + " + v.P2 + "0 = " + v.S + "。\n" + a + " × " + b + " = " + v.S + "。",
+    ];
+    CL.$("#vt-note").textContent = notes[vtStep];
+    CL.$("#vt-out").textContent = a + " × " + b + "，第 " + vtStep + " 步（共 3 步）。\n" + notes[vtStep].replace(/\n/g, " ") +
+      (vtStep === 3 ? "\n" + b + " 个 " + a + " = " + v.b1 + " 个 " + a + " + " + v.b10 * 10 + " 个 " + a + "。验算：交换乘数，" + b + " × " + a + " 也等于 " + v.S + "。" : "");
+    CL.$("#vt-prev").disabled = vtStep === 0; CL.$("#vt-next").disabled = vtStep === 3;
+  }
+  CL.$("#vt-next").addEventListener("click", () => { vtStep++; drawVert(); });
+  CL.$("#vt-prev").addEventListener("click", () => { vtStep--; drawVert(); });
+  CL.$("#vt-reset").addEventListener("click", () => { vtStep = 0; drawVert(); });
+  ["#vt-a", "#vt-b"].forEach((id) => CL.$(id).addEventListener("input", () => { vtStep = 0; drawVert(); }));
+  CL.$$("#demo-vert [data-vt]").forEach((btn) => btn.addEventListener("click", () => {
+    const [a, b] = btn.dataset.vt.split(","); CL.$("#vt-a").value = a; CL.$("#vt-b").value = b; vtStep = 0; drawVert();
+  }));
+  drawVert();
+});
+</script>
+</body>
+</html>

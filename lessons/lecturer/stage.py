@@ -1,0 +1,134 @@
+"""讲台：用 Playwright 操作课程页面（高亮、演示、自测、播放音频）。"""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Callable
+
+from playwright.async_api import Browser, Page, Playwright
+
+OVERLAY = Path(__file__).with_name("overlay.js")
+LAUNCH_ARGS = ["--autoplay-policy=no-user-gesture-required", "--window-size=1500,960"]
+
+
+async def _launch(pw: Playwright, headless: bool) -> Browser:
+    try:  # 优先用本机 Chrome，免下载
+        return await pw.chromium.launch(channel="chrome", headless=headless, args=LAUNCH_ARGS)
+    except Exception:
+        return await pw.chromium.launch(headless=headless, args=LAUNCH_ARGS)
+
+
+class Stage:
+    def __init__(self, browser: Browser, page: Page, base: str) -> None:
+        self.browser, self.page, self.base = browser, page, base
+
+    @classmethod
+    async def open(cls, pw: Playwright, base: str, lesson: str,
+                   on_cmd: Callable[[str], None], headless: bool = False) -> "Stage":
+        browser = await _launch(pw, headless)
+        ctx = await browser.new_context(no_viewport=True)
+        await ctx.add_init_script(path=str(OVERLAY))
+        await ctx.expose_binding("__lecturerCmd", lambda _src, cmd: on_cmd(cmd))
+        page = await ctx.new_page()
+        await page.goto(base + lesson, wait_until="networkidle")
+        return cls(browser, page, base)
+
+    async def goto(self, lesson: str) -> None:
+        await self.page.goto(self.base + lesson, wait_until="networkidle")
+
+    async def close(self) -> None:
+        await self.browser.close()
+
+    async def wait_closed(self) -> None:
+        await self.page.wait_for_event("close", timeout=0)
+
+    # ---------- 讲台反馈 ----------
+    async def highlight(self, target: str, nth: int = 0) -> bool:
+        return await self.page.evaluate("([s, n]) => __lecturer.highlight(s, n)", [target, nth])
+
+    async def status(self, html: str, paused: bool, can_reexplain: bool) -> None:
+        await self.page.evaluate("([h, p, r]) => __lecturer.status(h, p, r)", [html, paused, can_reexplain])
+
+    # ---------- 音频 ----------
+    async def play(self, audio: Path) -> None:
+        """播放讲稿音频（经课程服务器的 /lessons/lecturer/audio/ 提供），播完才返回。"""
+        await self.page.evaluate("u => __lecturer.play(u)", f"{self.base}lecturer/audio/{audio.name}")
+
+    async def pause_audio(self) -> None:
+        await self.page.evaluate("__lecturer.pause()")
+
+    async def resume_audio(self) -> None:
+        await self.page.evaluate("__lecturer.resume()")
+
+    async def stop_audio(self) -> None:
+        await self.page.evaluate("__lecturer.stop()")
+
+    async def play_aside(self, audio: Path) -> None:
+        """另一路音频：朗读学生自己提问的回答，不影响讲师暂停中的那段。"""
+        await self.page.evaluate("u => __lecturer.playAside(u)", f"{self.base}lecturer/audio/{audio.name}")
+
+    async def stop_aside(self) -> None:
+        await self.page.evaluate("__lecturer.stopAside()")
+
+    # ---------- 演示 ----------
+    async def act(self, action: dict) -> None:
+        if "set" in action:
+            await self.page.eval_on_selector(
+                action["set"],
+                "(el, v) => { if (el.type === 'checkbox' || el.type === 'radio') el.checked = v === 'true';"
+                " else el.value = v;"
+                " el.dispatchEvent(new Event('input', {bubbles: true}));"
+                " el.dispatchEvent(new Event('change', {bubbles: true})); }",
+                str(action["value"]).lower() if isinstance(action["value"], bool) else str(action["value"]),
+            )
+        elif "click" in action:
+            await self.page.click(action["click"])
+        elif "wait" in action:
+            await self.page.wait_for_timeout(int(action["wait"]))
+
+    async def section_text(self, target: str, nth: int) -> str:
+        """目标所在小节的文字，给"换个讲法"做上下文。"""
+        return await self.page.evaluate(
+            "([s, n]) => { const el = document.querySelectorAll(s)[n];"
+            " return el ? (el.closest('section') || el).innerText : ''; }", [target, nth])
+
+    # ---------- 助教（右栏） ----------
+    async def ask_tutor(self, question: str) -> int:
+        """在右栏公开提问。返回提问前已有的助教回答条数，用来认出新回答。"""
+        if not await self.page.evaluate("document.body.classList.contains('tutor-open')"):
+            await self.page.click(".tutor-fab")
+        before = await self.page.locator(".tutor-panel .tp-msg.ai").count()
+        box = self.page.locator(".tutor-panel textarea")
+        await box.fill(question)
+        await box.press("Enter")
+        await box.evaluate("el => el.blur()")  # 交还焦点，让快捷键继续生效
+        return before
+
+    async def tutor_answer_count(self) -> int:
+        return await self.page.locator(".tutor-panel .tp-msg.ai").count()
+
+    async def tutor_answer(self, before: int) -> tuple[str, bool, str]:
+        """读新回答：（目前的正文，是否已答完，错误信息）。"""
+        return tuple(await self.page.evaluate(
+            """n => {
+              const msgs = document.querySelectorAll('.tutor-panel .tp-msg.ai');
+              const send = document.querySelector('.tutor-panel .tp-send');
+              const busy = send && send.textContent.trim() !== '发送';
+              const m = msgs[n];
+              if (!m) return ['', false, ''];
+              const c = m.cloneNode(true);
+              const err = c.querySelector('.tp-err');
+              c.querySelectorAll('.tp-dots, .tp-caret, .tp-err, .tp-errata, pre, table, svg, .md-mermaid, .md-tbl, .tp-tbl').forEach(x => x.remove());  // 图、表、代码不朗读
+              return [c.innerText, !busy, err ? err.innerText : ''];
+            }""", before))
+
+    # ---------- 自测 ----------
+    async def quiz_answered(self, target: str, nth: int) -> bool:
+        return await self.page.evaluate(
+            "([s, n]) => !!document.querySelectorAll(s)[n]?.classList.contains('done')", [target, nth])
+
+    async def reveal_quiz(self, target: str, nth: int) -> None:
+        """学生没作答时，讲师替他点出正确答案。"""
+        await self.page.evaluate(
+            "([s, n]) => { const q = document.querySelectorAll(s)[n];"
+            " q.querySelectorAll('.opts button')[+q.dataset.answer].click(); }", [target, nth])

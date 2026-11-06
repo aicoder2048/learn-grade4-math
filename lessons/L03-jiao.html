@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>角的度量 · L03</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .g-svg { width: 100%; max-width: 620px; display: block; margin: 4px auto; touch-action: none; }
+  .g-svg .ray { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+  .g-svg .ray2 { stroke: var(--down); stroke-width: 3; stroke-linecap: round; }
+  .g-svg .fan { fill: var(--accent); opacity: .22; }
+  .g-svg .arc { fill: none; stroke: var(--down); stroke-width: 2; }
+  .g-svg .vtx { fill: var(--ink); }
+  .g-svg .handle { fill: var(--down); stroke: var(--surface); stroke-width: 2; cursor: grab; }
+  .g-svg text { font-size: 14px; fill: var(--ink-2); }
+  .g-svg text.big { font-size: 20px; font-weight: 700; fill: var(--ink); }
+  .g-svg .guide { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+  .pr .body { fill: var(--note-bg); stroke: var(--brand-2); stroke-width: 1.5; opacity: .92; }
+  .pr .tk { stroke: var(--brand-2); stroke-width: 1; }
+  .pr .tk.m { stroke-width: 1.4; }
+  .pr .tk.l { stroke-width: 1.8; }
+  .pr text { font-size: 10.5px; fill: var(--brand-2); font-family: var(--mono); }
+  .pr text.in { fill: var(--ink-2); }
+  .pr .ring-hl { fill: none; stroke: var(--accent); stroke-width: 15; opacity: .35; }
+  .pr .ctr { fill: var(--down); }
+  .pr .zero { stroke: var(--brand-2); stroke-width: 1.5; }
+  .pr { transition: transform .6s ease; }
+  .ans-in { font-family: var(--mono); font-size: 17px; width: 70px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .demo input[type=range] { width: 240px; }
+  .rb-svg { width: 100%; max-width: 560px; display: block; margin: 4px auto; }
+  .rb-svg .gl { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+  .rb-svg .tbl-dot { fill: var(--warn-bg); stroke: var(--down); stroke-width: 1.5; }
+  .rb-svg .start { fill: var(--surface-2); stroke: var(--ink-3); }
+  .rb-svg .path { stroke: var(--brand-2); stroke-width: 3; fill: none; stroke-linejoin: round; }
+  .rb-svg .bot { fill: var(--accent); stroke: var(--ink); stroke-width: 1.5; }
+  .rb-svg text { font-size: 13px; fill: var(--ink); font-weight: 600; }
+  .rb-svg text.tno { font-size: 12px; }
+  .prog { display: flex; flex-wrap: wrap; gap: 6px; min-height: 34px; padding: 6px; border: 1px dashed var(--line); border-radius: 8px; margin: 6px 0; }
+  .prog .cmd { font-size: 13.5px; padding: 3px 8px; border-radius: 6px; background: var(--rule-bg); border: 1px solid var(--accent); color: var(--ink); }
+  .prog .cmd.run { background: var(--accent); color: var(--surface); }
+  .prog .empty { color: var(--ink-3); font-size: 13px; }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">从旋转看角</a></li>
+    <li><a href="#s2">度量角的单位：1°</a></li>
+    <li><a href="#s3">用量角器量角</a></li>
+    <li><a href="#s4">用量角器画角</a></li>
+    <li><a href="#s5">三角尺和角的发现</a></li>
+    <li><a href="#s6">指挥机器人送餐</a></li>
+    <li><a href="#s7">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L03 · 角与图形</div>
+  <h1>角的度量</h1>
+  <p>两个角哪个大？大多少？用眼睛看、用三角尺比，都说不准。这一课，我们从旋转重新认识角，再学会用 1° 作单位，用量角器量角、画角。</p>
+  <div class="meta"><span>教材：第二单元 第 28–38 页</span><span>学习约 35 分钟</span><span>含 4 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>从旋转的角度说出<a class="term" href="glossary.html#zhoujiao">周角</a>、<a class="term" href="glossary.html#pingjiao">平角</a>、<a class="term" href="glossary.html#zhijiao">直角</a>、<a class="term" href="glossary.html#ruijiao">锐角</a>、<a class="term" href="glossary.html#dunjiao">钝角</a>，并比较它们的大小。</li>
+    <li>说出 1 <a class="term" href="glossary.html#du">度</a>是怎样规定的，记住 1 周角 = 360°、1 平角 = 180°、1 直角 = 90°。</li>
+    <li>按两个步骤用<a class="term" href="glossary.html#liangjiaoqi">量角器</a><a class="term" href="glossary.html#liangjiao">量角</a>，知道该读内圈还是外圈。</li>
+    <li>按三个步骤用量角器<a class="term" href="glossary.html#huajiao">画角</a>。</li>
+    <li>用“直行”“左转”和<a class="term" href="glossary.html#xunhuan">循环命令</a>指挥机器人行走。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>从旋转看角</h2>
+  <p>先说结论：角可以看作一条射线绕着它的端点旋转形成的图形。转得越多，角越大。</p>
+  <blockquote class="src">通过前面的学习，我们知道从一个点引出两条射线得到的图形是角。从旋转的角度来看，角也可以看作由一条射线绕着它的端点，从一个位置旋转到另一个位置所形成的图形。<cite>教材第 28 页</cite></blockquote>
+  <figure class="fig"><img src="img/t028-xuanzhuan.png" alt="教材第 28 页：用扇子展示周角、平角、直角、锐角、钝角"><figcaption><b>教材第 28 页</b>像打开扇子一样，射线转 1 周、1/2 周、1/4 周，形成周角、平角、直角。</figcaption></figure>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>角</th><th>一条射线绕它的端点旋转……</th><th>度数（第 30 页）</th></tr>
+    <tr><td>锐角</td><td>不到 1/4 周</td><td>0° &lt; 锐角 &lt; 90°</td></tr>
+    <tr><td>直角</td><td>1/4 周</td><td>90°</td></tr>
+    <tr><td>钝角</td><td>超过 1/4 周，不到 1/2 周</td><td>90° &lt; 钝角 &lt; 180°</td></tr>
+    <tr><td>平角</td><td>1/2 周</td><td>180°</td></tr>
+    <tr><td>周角</td><td>1 周</td><td>360°</td></tr>
+  </table></div>
+
+  <div class="chart-card" id="demo-rot">
+    <div class="chart-head">
+      <div class="chart-title">转一转：射线转多少，是什么角</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label>转动 <b id="rot-v">60</b>° <input id="rot-deg" type="range" min="0" max="360" step="1" value="60" aria-label="旋转的度数"></label>
+      </div>
+      <div class="btn-row">试一试：
+        <button class="btn" type="button" data-deg="45">不到 1/4 周</button>
+        <button class="btn" type="button" data-deg="90">1/4 周</button>
+        <button class="btn" type="button" data-deg="135">超过 1/4 周</button>
+        <button class="btn" type="button" data-deg="180">1/2 周</button>
+        <button class="btn" type="button" data-deg="360">1 周</button>
+      </div>
+      <svg class="g-svg" id="rot-svg" viewBox="0 0 600 330" role="img" aria-label="一条射线绕端点旋转"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rot-out"></div></div>
+    <div class="chart-foot">拖动红色圆点，或拖动滑块，让射线绕端点旋转。看度数变大时，角的名字怎样变。重点看 90° 和 180° 这两个“分界线”。<br><span class="data-note">黑色射线不动，红色射线从和它重合的位置开始，逆时针旋转。</span></div>
+  </div>
+  <div class="callout rule"><span class="ttl">大小关系（教材第 29 页）</span>锐角 &lt; 直角 &lt; 钝角 &lt; 平角 &lt; 周角。1 周角 = 2 平角 = 4 直角。</div>
+  <div class="callout warn"><span class="ttl">平角不是一条直线</span>平角的两条边在一条直线上，但它是一条射线转了半周形成的角，有顶点，有两条边。教材第 38 页“成长小档案”里的同学说：平角很特别，平角的两条边在一条直线上。</div>
+  <div class="callout note"><span class="ttl">补充：转过 180° 以后呢</span>射线转过半周、还不到一周时，也形成一个角。本册教材没有给这种角起名字。教材第 36 页有同学说“我想探究比周角更大的角”，这些问题以后会学。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>度量角的单位：1°</h2>
+  <p>先说结论：要准确测量一个角的大小，就要用一个合适的角作单位来量。这个单位是 1 度，记作 1°。</p>
+  <p>教材第 29 页问：∠1 和 ∠2 哪个大些？大多少？用三角尺上的角来量，还是不能准确知道 ∠2 比 ∠1 大多少。三角尺上的角太大了，量不细。</p>
+  <figure class="fig"><img src="img/t029-sanjiaochi.png" alt="教材第 29 页：用三角尺上的角量 ∠1 和 ∠2，还是不能准确知道大多少"><figcaption><b>教材第 29 页</b>用三角尺上的角来量一量，还是说不准大多少。</figcaption></figure>
+  <blockquote class="src">人们将圆平均分成 360 份，将其中 1 份所对的角作为度量角的单位，它的大小就是 1 度，记作 1°。<cite>教材第 30 页</cite></blockquote>
+  <figure class="fig"><img src="img/t030-liangjiaoqi.png" alt="教材第 30 页：1 周角 = 360°，1 平角 = 1/2 周角 = 180°，1 直角 = 1/4 周角 = 90°；量角器的中心和 0° 刻度线"><figcaption><b>教材第 30 页</b>1 周角 = 360°，1 平角 = 1/2 周角 = 180°，1 直角 = 1/4 周角 = 90°。量角器是通过把半圆分成 180 等份制成的。</figcaption></figure>
+  <div class="callout tip"><span class="ttl">观察量角器，你还有什么发现</span>量角器上有一个“中心”，有一条“0° 刻度线”。刻度有内、外两圈，两圈的 0° 分别在左右两边。每圈都从 0 数到 180。</div>
+  <div class="callout note"><span class="ttl">练习五第 6 题：量长度、面积和角，道理一样</span>线段 AB 的长度有几个 1 cm，就是几厘米；长方形的面积有几个 1 cm²，就是几平方厘米；∠1 有几个 1°，就是几度。测量长度、面积、角，都是看被测量的图形包含了多少个相应的度量单位。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>用量角器量角</h2>
+  <p>先说结论：量角分两步。先对好“两个重合”，再读另一条边所对的刻度。</p>
+  <figure class="fig"><img src="img/t031-liangjiao.png" alt="教材第 31 页：用量角器量 ∠1 和量角的步骤"><figcaption><b>教材第 31 页</b>怎样用量角器量出 ∠1 的度数。</figcaption></figure>
+  <div class="callout rule"><span class="ttl">量角的步骤（教材第 31 页）</span>
+    <ol class="steps">
+      <li>把量角器的中心与角的顶点重合，0° 刻度线与角的一条边重合。</li>
+      <li>角的另一条边所对的量角器上的刻度，就是这个角的度数。</li>
+    </ol>
+  </div>
+
+  <div class="chart-card" id="demo-prot">
+    <div class="chart-head">
+      <div class="chart-title">虚拟量角器：先对齐，再读对的那一圈</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <button class="btn" id="pr-center" type="button">① 中心对顶点</button>
+        <button class="btn" id="pr-zero" type="button">② 0° 刻度线对一条边</button>
+        <button class="btn" id="pr-ring" type="button">提示：读哪一圈</button>
+      </div>
+      <svg class="g-svg" id="pr-svg" viewBox="0 0 600 320" role="img" aria-label="用量角器量角"></svg>
+      <div class="btn-row" style="justify-content:center">这个角是 <input class="ans-in" id="pr-ans" inputmode="numeric" aria-label="你读出的度数"> °
+        <button class="btn primary" id="pr-check" type="button">检查</button>
+        <button class="btn" id="pr-show" type="button">看答案</button>
+        <button class="btn" id="pr-next" type="button">下一题</button>
+        <select id="pr-q" aria-label="选题"></select>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="pr-out"></div></div>
+    <div class="chart-foot">先点 ① 和 ②，把量角器放好。再看红色的边对着哪个刻度，填进去检查。有的题角的一条边朝右，有的朝左，读的圈不一样。<br><span class="data-note">题目的度数取自教材第 32 页“画出下面的角”和练习六的度数。量角器按常见样式画：内圈的 0° 在右边，外圈的 0° 在左边。</span></div>
+  </div>
+  <div class="callout warn"><span class="ttl">最常见的错误：读错圈</span>一个 60° 的角，读错圈会读成 120°。先看哪一圈的 0° 和角的一条边重合，就沿着这一圈往上数。读完再想一想：这个角是锐角还是钝角？锐角不会超过 90°。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>用量角器画角</h2>
+  <p>先说结论：画角分三步：画射线、点点、连射线。</p>
+  <figure class="fig"><img src="img/t032-huajiao.png" alt="教材第 32 页：画一个 60° 的角的三个步骤"><figcaption><b>教材第 32 页</b>画一个 60° 的角。</figcaption></figure>
+  <div class="callout rule"><span class="ttl">画角的步骤（教材第 32 页）</span>
+    <ol class="steps">
+      <li>画一条射线，使量角器的中心和射线的端点重合，0° 刻度线和射线重合。</li>
+      <li>在量角器 60° 刻度线的地方画一个点。</li>
+      <li>以画出的射线的端点为端点，通过刚画的点，再画一条射线。</li>
+    </ol>
+  </div>
+
+  <div class="chart-card" id="demo-draw">
+    <div class="chart-head">
+      <div class="chart-title">一步一步画角</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label>画 <select id="dr-deg" aria-label="要画的度数"><option>60</option><option>75</option><option>105</option><option>20</option><option>30</option><option>85</option><option>90</option><option>120</option><option>135</option><option>50</option></select> °</label>
+        <label>开口 <select id="dr-dir" aria-label="开口方向"><option value="r">向右（射线朝右画）</option><option value="l">向左（射线朝左画）</option></select></label>
+        <button class="btn primary" id="dr-step" type="button">下一步</button>
+        <button class="btn" id="dr-reset" type="button">重来</button>
+      </div>
+      <svg class="g-svg" id="dr-svg" viewBox="0 0 600 320" role="img" aria-label="画角"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="dr-out"></div></div>
+    <div class="chart-foot">选好度数，点“下一步”看三个步骤。再把“开口”改成向左，看看射线朝左画时，要在哪一圈找刻度。<br><span class="data-note">教材第 32 页问：你能画一个开口向左的 60° 的角吗？“开口向左”在这里指第一条射线从端点朝左画。</span></div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>三角尺和角的发现</h2>
+  <p>先说结论：一副三角尺上的角是 30°、60°、90° 和 45°、45°、90°。把它们拼起来，可以得到别的度数的角。</p>
+  <p>练习五第 4 题让你先量一量三角尺上每个角的度数，再拼一拼。第（3）问：你还能用一副三角尺拼出哪些度数的角？</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>拼法</th><th>算式</th><th>拼成的角</th></tr>
+    <tr><td>45° 的角和 30° 的角拼在一起</td><td>45° + 30°</td><td>75°</td></tr>
+    <tr><td>45° 的角和 60° 的角拼在一起</td><td>45° + 60°</td><td>105°</td></tr>
+    <tr><td>90° 的角和 30° 的角拼在一起</td><td>90° + 30°</td><td>120°</td></tr>
+    <tr><td>90° 的角和 45° 的角拼在一起</td><td>90° + 45°</td><td>135°</td></tr>
+    <tr><td>90° 的角和 60° 的角拼在一起</td><td>90° + 60°</td><td>150°</td></tr>
+  </table></div>
+  <div class="callout note"><span class="ttl">补充：还能“叠”出角</span>把 45° 的角和 30° 的角叠在一起，露出的部分是 45° − 30° = 15°。上表只列出一部分拼法，是课程作者举的例子。</div>
+  <h3>判断一下（练习六第 3 题）</h3>
+  <ul class="checklist">
+    <li>把一个平角分成两个角，如果其中一个角是锐角，那么另一个角一定是钝角。</li>
+    <li>1 周角 = 2 直角。</li>
+    <li>两个锐角合起来的角一定大于直角。</li>
+    <li>一个锐角和一个直角合起来的角一定是一个钝角。</li>
+  </ul>
+  <p>用上面的“转一转”演示试一试，再判断对错。自测题里有其中两题。</p>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>指挥机器人送餐</h2>
+  <p>先说结论：机器人听“命令”行走。“直行几格”控制距离，“左转 90°”“左转 180°”控制方向。重复的一组命令，可以用“循环”。</p>
+  <figure class="fig"><img src="img/t035-jiqiren.png" alt="教材第 35 页：信息技术应用，指挥机器人送餐，任务 1、2、3"><figcaption><b>教材第 35 页</b>信息技术应用：指挥机器人送餐。</figcaption></figure>
+  <p>机器人的初始位置在取餐口，朝向①号桌。教材给出任务 1 的命令：</p>
+  <ol class="steps"><li>直行 3 格：到达①号桌。</li><li>左转 180°：朝向取餐口。</li><li>直行 3 格：到达取餐口。</li><li>左转 180°：朝向①号桌。</li></ol>
+  <p>前两条命令重复了一次，所以可以写成“直行 3 格 → 左转 180°，循环 2 次”。</p>
+
+  <div class="chart-card" id="demo-robot">
+    <div class="chart-head">
+      <div class="chart-title">编程送餐：用命令指挥机器人</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">任务：
+        <select id="rb-task" aria-label="选择任务">
+          <option value="1">任务 1：①号桌，再回取餐口</option>
+          <option value="2">任务 2：①→④→⑤，再回取餐口</option>
+          <option value="3">任务 3：①→②→③→④→⑤，再回取餐口</option>
+        </select>
+      </div>
+      <div class="btn-row">添加命令：
+        <label>直行 <select id="rb-n" aria-label="直行格数"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select> 格</label>
+        <button class="btn" id="rb-go" type="button">+ 直行</button>
+        <button class="btn" id="rb-l90" type="button">+ 左转 90°</button>
+        <button class="btn" id="rb-l180" type="button">+ 左转 180°</button>
+        <button class="btn" id="rb-undo" type="button">删掉最后一条</button>
+        <button class="btn" id="rb-clear" type="button">清空</button>
+      </div>
+      <div class="prog" id="rb-prog"></div>
+      <div class="btn-row">整段命令循环 <select id="rb-rep" aria-label="循环次数"><option>1</option><option>2</option><option>3</option><option>4</option></select> 次
+        <button class="btn primary" id="rb-run" type="button">运行</button>
+        <button class="btn" id="rb-demo" type="button">看教材的写法</button>
+      </div>
+      <svg class="rb-svg" id="rb-svg" viewBox="0 0 560 300" role="img" aria-label="餐桌分布示意图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rb-out"></div></div>
+    <div class="chart-foot">选一个任务，用按钮拼出命令，再点“运行”。机器人每次直行停下的地方，就是它送到的餐桌。最后要回到取餐口，并且朝向①号桌。<br><span class="data-note">餐桌位置按教材第 35 页示意图：①、②号桌在取餐口的正前方 3 格、6 格；⑤、④、③号桌在示意图上方 3 格的一排。机器人朝①号桌时，那一排在它的左边。任务 3 的参考写法是课程作者给的，答案不止一种。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">和角有什么关系</span>“左转 90°”就是转 1/4 周，“左转 180°”就是转 1/2 周。连续左转 4 次 90°，机器人转了 1 周，360°，又朝向原来的方向。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>自测与速记</h2>
+  <div class="quiz" data-answer="2">
+    <div class="q">一条射线绕它的端点旋转超过 1/4 周、不到 1/2 周，形成什么角？</div>
+    <div class="opts"><button>锐角</button><button>直角</button><button>钝角</button><button>平角</button></div>
+    <div class="explain">教材第 28 页：旋转超过 1/4 周，不到 1/2 周，形成钝角。90° &lt; 钝角 &lt; 180°。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">1 周角等于几个直角？</div>
+    <div class="opts"><button>2 个</button><button>4 个</button><button>3 个</button><button>360 个</button></div>
+    <div class="explain">1 周角 = 360°，1 直角 = 90°。1 周角 = 2 平角 = 4 直角（教材第 29–30 页）。所以“1 周角 = 2 直角”是错的。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">量角时，第一步要做什么？</div>
+    <div class="opts"><button>量角器的中心与角的顶点重合，0° 刻度线与角的一条边重合</button><button>先看角的另一条边对着哪个刻度</button><button>把量角器的 90° 对准角的一条边</button><button>先画一条射线</button></div>
+    <div class="explain">教材第 31 页量角的步骤：（1）中心与顶点重合，0° 刻度线与一条边重合；（2）读另一条边所对的刻度。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">小明量一个锐角，读出 140°。最可能错在哪里？</div>
+    <div class="opts"><button>中心没有对顶点</button><button>角画得太小</button><button>量角器坏了</button><button>读错了圈，应该是 40°</button></div>
+    <div class="explain">锐角小于 90°，所以 140° 一定错了。140° 和 40° 合起来是 180°，说明他读了另一圈刻度。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">“两个锐角合起来的角一定大于直角。”这句话对吗？（练习六第 3 题）</div>
+    <div class="opts"><button>对，两个角合起来一定很大</button><button>对，因为锐角接近 90°</button><button>不对，比如 30° 和 40° 合起来是 70°</button><button>不对，两个锐角不能合起来</button></div>
+    <div class="explain">举一个反例就够了：30° + 40° = 70°，还是锐角。所以这句话不对。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>从旋转看角</td><td>射线绕端点转 1/4 周是直角，1/2 周是平角，1 周是周角</td></tr>
+    <tr><td>角的大小</td><td>0° &lt; 锐角 &lt; 90° = 直角 &lt; 钝角 &lt; 180° = 平角 &lt; 360° = 周角</td></tr>
+    <tr><td>1°</td><td>把圆平均分成 360 份，1 份所对的角是 1°</td></tr>
+    <tr><td>量角</td><td>中心对顶点，0° 刻度线对一条边；读另一条边所对的刻度</td></tr>
+    <tr><td>画角</td><td>画射线 → 在度数处点点 → 从端点过点画射线</td></tr>
+    <tr><td>读哪一圈</td><td>和边重合的是哪一圈的 0°，就读哪一圈</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L02-yi-yishang.html"><small>上一课 · L02</small>亿以上数、比大小与近似数</a>
+    <a href="L04-pingxing-chuizhi.html"><small>下一课 · L04</small>平行与垂直</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L03-jiao.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册第二单元“角的度量”第 28–38 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  const rad = (d) => (d * Math.PI) / 180;
+  const pt = (cx, cy, r, d) => [cx + r * Math.cos(rad(d)), cy - r * Math.sin(rad(d))];
+  function arcPath(cx, cy, r, d0, d1) {   // 逆时针从 d0 到 d1（屏幕上 y 向下）
+    const a = pt(cx, cy, r, d0), b = pt(cx, cy, r, d1), large = Math.abs(d1 - d0) > 180 ? 1 : 0;
+    return "M" + a[0] + " " + a[1] + " A" + r + " " + r + " 0 " + large + " 0 " + b[0] + " " + b[1];
+  }
+  function fanPath(cx, cy, r, d0, d1) {
+    if (d1 - d0 >= 359.99) return "M" + (cx + r) + " " + cy + " A" + r + " " + r + " 0 1 0 " + (cx - r) + " " + cy + " A" + r + " " + r + " 0 1 0 " + (cx + r) + " " + cy + "Z";
+    if (d1 - d0 <= 0) return "";
+    return "M" + cx + " " + cy + " L" + pt(cx, cy, r, d0).join(" ") + " " + arcPath(cx, cy, r, d0, d1).replace(/^M[^A]*/, "") + " Z";
+  }
+
+  /* ---- 1. 转一转 ---- */
+  const RX = 300, RY = 180, RL = 145;
+  const rotSvg = CL.$("#rot-svg");
+  function kind(d) {
+    if (d === 0) return ["两条射线重合，还没有转", ""];
+    if (d < 90) return ["锐角", "不到 1/4 周"];
+    if (d === 90) return ["直角", "正好 1/4 周"];
+    if (d < 180) return ["钝角", "超过 1/4 周，不到 1/2 周"];
+    if (d === 180) return ["平角", "正好 1/2 周"];
+    if (d < 360) return ["比平角大、比周角小的角（本册没有给它起名字）", "超过 1/2 周，不到 1 周"];
+    return ["周角", "正好 1 周"];
+  }
+  function drawRot() {
+    const d = +CL.$("#rot-deg").value; CL.$("#rot-v").textContent = d;
+    const e = pt(RX, RY, RL, d), h = pt(RX, RY, RL - 10, d);
+    let s = '<line class="guide" x1="' + (RX - RL) + '" y1="' + RY + '" x2="' + (RX - 4) + '" y2="' + RY + '"/>';
+    s += '<line class="guide" x1="' + RX + '" y1="' + (RY - RL + 40) + '" x2="' + RX + '" y2="' + (RY + RL - 60) + '"/>';
+    s += '<path class="fan" d="' + fanPath(RX, RY, 90, 0, d) + '"/>';
+    if (d > 0 && d < 360) s += '<path class="arc" d="' + arcPath(RX, RY, 40, 0, d) + '"/>';
+    if (d === 360) s += '<circle class="arc" cx="' + RX + '" cy="' + RY + '" r="40"/>';
+    s += '<line class="ray" x1="' + RX + '" y1="' + RY + '" x2="' + (RX + RL) + '" y2="' + RY + '"/>';
+    s += '<line class="ray2" x1="' + RX + '" y1="' + RY + '" x2="' + e[0] + '" y2="' + e[1] + '"/>';
+    s += '<circle class="vtx" cx="' + RX + '" cy="' + RY + '" r="5"/><circle class="handle" id="rot-h" cx="' + h[0] + '" cy="' + h[1] + '" r="12"/>';
+    s += '<text x="' + (RX + 6) + '" y="' + (RY + 22) + '">端点</text>';
+    s += '<text class="big" x="20" y="34">' + d + "° · " + kind(d)[0].replace(/（.*/, "") + "</text>";
+    rotSvg.innerHTML = s;
+    const k = kind(d);
+    CL.$("#rot-out").textContent = d === 0 ? "射线还没有转。拖动红点试试。"
+      : "射线绕端点旋转了 " + d + "°，" + k[1] + "，形成" + k[0] + "。\n" +
+        (d < 90 ? "再转 " + (90 - d) + "° 就是直角。" : d < 180 && d > 90 ? "比直角大 " + (d - 90) + "°，比平角小 " + (180 - d) + "°。" : d === 90 ? "1 直角 = 90° = 1/4 周角。" : d === 180 ? "1 平角 = 180° = 2 个直角。" : d === 360 ? "1 周角 = 360° = 2 个平角 = 4 个直角。" : "比平角大 " + (d - 180) + "°。");
+  }
+  function angleFromEvent(ev) {
+    const r = rotSvg.getBoundingClientRect(), sx = 600 / r.width, sy = 330 / r.height;
+    const x = (ev.clientX - r.left) * sx - RX, y = RY - (ev.clientY - r.top) * sy;
+    let a = Math.round((Math.atan2(y, x) * 180) / Math.PI); if (a < 0) a += 360;
+    const prev = +CL.$("#rot-deg").value;
+    if (prev > 300 && a < 60) a = 360;      // 转满一周时停在 360
+    return a;
+  }
+  let dragging = false;
+  rotSvg.addEventListener("pointerdown", (ev) => { dragging = true; rotSvg.setPointerCapture(ev.pointerId); CL.$("#rot-deg").value = angleFromEvent(ev); drawRot(); });
+  rotSvg.addEventListener("pointermove", (ev) => { if (!dragging) return; CL.$("#rot-deg").value = angleFromEvent(ev); drawRot(); });
+  rotSvg.addEventListener("pointerup", () => { dragging = false; });
+  CL.$("#rot-deg").addEventListener("input", drawRot);
+  CL.$$("#demo-rot [data-deg]").forEach((b) => b.addEventListener("click", () => { CL.$("#rot-deg").value = b.dataset.deg; drawRot(); }));
+  drawRot();
+
+  /* ---- 量角器图形（量角、画角共用） ---- */
+  const PX = 300, PY = 270, R1 = 225, R2 = 180;
+  function protractor(opts) {
+    let s = '<g class="pr" style="transform-origin:' + PX + "px " + PY + "px;transform:" + (opts.transform || "none") + '">';
+    s += '<path class="body" d="M' + (PX - R1 - 8) + " " + PY + " A" + (R1 + 8) + " " + (R1 + 8) + " 0 0 1 " + (PX + R1 + 8) + " " + PY + ' Z"/>';
+    if (opts.ring === "in") s += '<path class="ring-hl" d="' + arcPath(PX, PY, R2 - 7, 0, 180) + '"/>';
+    if (opts.ring === "out") s += '<path class="ring-hl" d="' + arcPath(PX, PY, R1 - 19, 0, 180) + '"/>';
+    for (let a = 0; a <= 180; a++) {
+      const len = a % 10 === 0 ? 16 : a % 5 === 0 ? 10 : 6, c = a % 10 === 0 ? "tk l" : a % 5 === 0 ? "tk m" : "tk";
+      const p1 = pt(PX, PY, R1 + 8, a), p2 = pt(PX, PY, R1 + 8 - len, a);
+      s += '<line class="' + c + '" x1="' + p1[0].toFixed(1) + '" y1="' + p1[1].toFixed(1) + '" x2="' + p2[0].toFixed(1) + '" y2="' + p2[1].toFixed(1) + '"/>';
+      if (a % 10 === 0) {
+        const po = pt(PX, PY, R1 - 18, a), pi = pt(PX, PY, R2 - 6, a);
+        s += '<text x="' + po[0].toFixed(1) + '" y="' + (po[1] + 4).toFixed(1) + '" text-anchor="middle">' + (180 - a) + "</text>";
+        s += '<text class="in" x="' + pi[0].toFixed(1) + '" y="' + (pi[1] + 4).toFixed(1) + '" text-anchor="middle">' + a + "</text>";
+        const q1 = pt(PX, PY, R2 - 20, a), q2 = pt(PX, PY, 40, a);
+        if (a % 30 === 0) s += '<line class="tk" style="opacity:.35" x1="' + q1[0].toFixed(1) + '" y1="' + q1[1].toFixed(1) + '" x2="' + q2[0].toFixed(1) + '" y2="' + q2[1].toFixed(1) + '"/>';
+      }
+    }
+    s += '<line class="zero" x1="' + (PX - R1 - 8) + '" y1="' + PY + '" x2="' + (PX + R1 + 8) + '" y2="' + PY + '"/>';
+    s += '<path class="body" style="opacity:.6" d="M' + (PX - 34) + " " + PY + " A34 34 0 0 1 " + (PX + 34) + " " + PY + '"/>';
+    s += '<circle class="ctr" cx="' + PX + '" cy="' + PY + '" r="3.5"/>';
+    return s + "</g>";
+  }
+
+  /* ---- 2. 虚拟量角器 ---- */
+  const PQ = [[60, "r"], [120, "l"], [35, "r"], [135, "r"], [75, "l"], [20, "l"], [150, "r"], [85, "r"], [45, "l"], [105, "l"]];
+  let pqi = 0, aligned = { c: false, z: false }, ringHint = false;
+  CL.$("#pr-q").innerHTML = PQ.map((q, i) => "<option value=\"" + i + "\">第 " + (i + 1) + " 题</option>").join("");
+  function drawProt() {
+    const [a, dir] = PQ[pqi];
+    const e1 = dir === "r" ? 0 : 180, e2 = dir === "r" ? a : 180 - a;
+    const tf = (aligned.c ? "" : "translate(46px,-34px) ") + (aligned.z ? "" : "rotate(-14deg)");
+    let s = protractor({ transform: tf.trim() || "none", ring: ringHint && aligned.c && aligned.z ? (dir === "r" ? "in" : "out") : "" });
+    const p1 = pt(PX, PY, 270, e1), p2 = pt(PX, PY, 270, e2);
+    s += '<line class="ray" x1="' + PX + '" y1="' + PY + '" x2="' + p1[0] + '" y2="' + p1[1] + '"/>';
+    s += '<line class="ray2" x1="' + PX + '" y1="' + PY + '" x2="' + p2[0] + '" y2="' + p2[1] + '"/>';
+    s += '<path class="arc" d="' + arcPath(PX, PY, 26, Math.min(e1, e2), Math.max(e1, e2)) + '"/>';
+    s += '<circle class="vtx" cx="' + PX + '" cy="' + PY + '" r="4.5"/>';
+    s += '<text class="big" x="16" y="30">第 ' + (pqi + 1) + " 题</text>";
+    CL.$("#pr-svg").innerHTML = s;
+    CL.$("#pr-center").classList.toggle("on", aligned.c);
+    CL.$("#pr-zero").classList.toggle("on", aligned.z);
+    CL.$("#pr-q").value = String(pqi);
+  }
+  function prStatus(msg) {
+    const st = !aligned.c ? "量角器的中心还没有对准顶点。" : !aligned.z ? "中心对好了。0° 刻度线还没有和角的一条边重合。" : "量角器放好了：中心对顶点，0° 刻度线和黑色的边重合。";
+    CL.$("#pr-out").textContent = (msg ? msg + "\n" : "") + st;
+  }
+  CL.$("#pr-center").addEventListener("click", () => { aligned.c = true; drawProt(); prStatus(""); });
+  CL.$("#pr-zero").addEventListener("click", () => { aligned.z = true; drawProt(); prStatus(""); });
+  CL.$("#pr-ring").addEventListener("click", () => {
+    if (!aligned.c || !aligned.z) { prStatus("先把量角器放好（点 ① 和 ②），再看读哪一圈。"); return; }
+    ringHint = true; drawProt();
+    const dir = PQ[pqi][1];
+    prStatus("黑色的边朝" + (dir === "r" ? "右" : "左") + "，和它重合的是" + (dir === "r" ? "内圈" : "外圈") + "的 0°。沿着" + (dir === "r" ? "内圈" : "外圈") + "从 0 往上数，读红色的边对着的数。");
+  });
+  CL.$("#pr-check").addEventListener("click", () => {
+    const [a, dir] = PQ[pqi], v = +CL.$("#pr-ans").value.replace(/\D/g, "");
+    if (!CL.$("#pr-ans").value.trim()) { prStatus("先填一个度数。"); return; }
+    if (!aligned.c || !aligned.z) { prStatus("先把量角器放好（点 ① 和 ②），再读数。量角器没放好，读出的数不可信。"); return; }
+    if (v === a) {
+      prStatus("对了，这个角是 " + a + "°，是" + (a < 90 ? "锐角" : a === 90 ? "直角" : "钝角") + "。");
+    } else if (v === 180 - a) prStatus("你读了另一圈的刻度。" + v + "° + " + a + "° = 180°。看和黑色的边重合的是哪一圈的 0°，就读哪一圈。再想想：这个角是锐角还是钝角？");
+    else prStatus("还不对。看红色的边对着哪条刻度线，大刻度之间每一小格是 1°。");
+  });
+  CL.$("#pr-show").addEventListener("click", () => {
+    const [a, dir] = PQ[pqi]; aligned = { c: true, z: true }; ringHint = true; drawProt();
+    CL.$("#pr-ans").value = a;
+    prStatus("答案：" + a + "°。黑色的边朝" + (dir === "r" ? "右，读内圈" : "左，读外圈") + "。另一圈上对着的是 " + (180 - a) + "，那是读错圈的结果。");
+  });
+  function prGo(i) { pqi = i; aligned = { c: false, z: false }; ringHint = false; CL.$("#pr-ans").value = ""; drawProt(); prStatus(""); }
+  CL.$("#pr-next").addEventListener("click", () => prGo((pqi + 1) % PQ.length));
+  CL.$("#pr-q").addEventListener("change", () => prGo(+CL.$("#pr-q").value));
+  CL.$("#pr-ans").addEventListener("keydown", (ev) => { if (ev.key === "Enter") CL.$("#pr-check").click(); });
+  drawProt(); prStatus("");
+
+  /* ---- 3. 画角 ---- */
+  let drStep = 0;
+  const DR_TXT = [
+    "准备：要画一个 {a}° 的角，开口向{d}。点“下一步”开始。",
+    "第 1 步：画一条射线（黑色），朝{d}画。使量角器的中心和射线的端点重合，0° 刻度线和射线重合。",
+    "第 2 步：射线朝{d}，和它重合的是{ring}的 0°。沿{ring}数到 {a}，在这条刻度线的地方画一个点（红点）。",
+    "第 3 步：以射线的端点为端点，通过刚画的点，再画一条射线。拿走量角器，一个 {a}° 的角就画好了。它是{kind}。",
+  ];
+  function drawDraw() {
+    const a = +CL.$("#dr-deg").value, dir = CL.$("#dr-dir").value;
+    const e1 = dir === "r" ? 0 : 180, e2 = dir === "r" ? a : 180 - a;
+    let s = "";
+    if (drStep >= 1 && drStep <= 2) s += protractor({ ring: dir === "r" ? "in" : "out" });
+    const p1 = pt(PX, PY, 270, e1);
+    if (drStep >= 1) s += '<line class="ray" x1="' + PX + '" y1="' + PY + '" x2="' + p1[0] + '" y2="' + p1[1] + '"/><circle class="vtx" cx="' + PX + '" cy="' + PY + '" r="4.5"/>';
+    const dot = pt(PX, PY, R1 + 14, e2);
+    if (drStep >= 2) s += '<circle cx="' + dot[0] + '" cy="' + dot[1] + '" r="6" style="fill:var(--down)"/>';
+    if (drStep >= 3) {
+      const p2 = pt(PX, PY, 270, e2);
+      s += '<line class="ray2" x1="' + PX + '" y1="' + PY + '" x2="' + p2[0] + '" y2="' + p2[1] + '"/>';
+      s += '<path class="arc" d="' + arcPath(PX, PY, 34, Math.min(e1, e2), Math.max(e1, e2)) + '"/>';
+      const lp = pt(PX, PY, 60, (e1 + e2) / 2);
+      s += '<text class="big" x="' + lp[0] + '" y="' + (lp[1] + 6) + '" text-anchor="middle">' + a + "°</text>";
+    }
+    if (drStep === 0) s += '<text class="big" x="300" y="160" text-anchor="middle">点“下一步”开始画 ' + a + "° 的角</text>";
+    CL.$("#dr-svg").innerHTML = s;
+    const kindTxt = a < 90 ? "锐角" : a === 90 ? "直角" : "钝角";
+    CL.$("#dr-out").textContent = DR_TXT[drStep].replace(/\{a\}/g, a).replace(/\{d\}/g, dir === "r" ? "右" : "左").replace(/\{ring\}/g, dir === "r" ? "内圈" : "外圈").replace(/\{kind\}/g, kindTxt);
+    CL.$("#dr-step").disabled = drStep >= 3;
+  }
+  CL.$("#dr-step").addEventListener("click", () => { if (drStep < 3) { drStep++; drawDraw(); } });
+  CL.$("#dr-reset").addEventListener("click", () => { drStep = 0; drawDraw(); });
+  ["#dr-deg", "#dr-dir"].forEach((id) => CL.$(id).addEventListener("change", () => { drStep = 0; drawDraw(); }));
+  drawDraw();
+
+  /* ---- 4. 机器人送餐 ---- */
+  // 坐标：取餐口 (0,0)，x 向前（朝①号桌），y 向左
+  const TABLES = { "①": [3, 0], "②": [6, 0], "③": [6, 3], "④": [3, 3], "⑤": [0, 3] };
+  const ROUTE = { 1: ["①"], 2: ["①", "④", "⑤"], 3: ["①", "②", "③", "④", "⑤"] };
+  const BOOK = { 1: [[["go", 3], ["l", 180]], 2], 2: [[["go", 3], ["l", 90]], 4], 3: [[["go", 3], ["go", 3], ["l", 90], ["go", 3], ["l", 90], ["go", 3], ["go", 3], ["l", 90], ["go", 3], ["l", 90]], 1] };
+  let prog = [], timer = null, runIdx = -1;
+  const DIRS = [[1, 0], [0, 1], [-1, 0], [0, -1]];   // 0 = 朝①号桌；左转 90° 方向号 + 1
+  const GX = (x) => 70 + x * 70, GY = (y) => 250 - y * 60;
+  function cmdText(c) { return c[0] === "go" ? "直行 " + c[1] + " 格" : "左转 " + c[1] + "°"; }
+  function drawProg() {
+    CL.$("#rb-prog").innerHTML = prog.length ? prog.map((c, i) => '<span class="cmd' + (i === runIdx ? " run" : "") + '">' + cmdText(c) + "</span>").join("") : '<span class="empty">还没有命令。用上面的按钮添加。</span>';
+  }
+  function drawMap(path, pos, dir) {
+    let s = "";
+    for (let x = 0; x <= 6; x++) s += '<line class="gl" x1="' + GX(x) + '" y1="' + GY(0) + '" x2="' + GX(x) + '" y2="' + GY(3) + '"/>';
+    for (let y = 0; y <= 3; y++) s += '<line class="gl" x1="' + GX(0) + '" y1="' + GY(y) + '" x2="' + GX(6) + '" y2="' + GY(y) + '"/>';
+    s += '<rect class="start" x="' + (GX(0) - 30) + '" y="' + (GY(0) + 14) + '" width="60" height="22" rx="4"/><text x="' + GX(0) + '" y="' + (GY(0) + 30) + '" text-anchor="middle">取餐口</text>';
+    if (path && path.length > 1) s += '<polyline class="path" points="' + path.map((p) => GX(p[0]) + "," + GY(p[1])).join(" ") + '"/>';
+    for (const k in TABLES) { const [x, y] = TABLES[k]; s += '<circle class="tbl-dot" cx="' + GX(x) + '" cy="' + GY(y) + '" r="15"/><text class="tno" x="' + GX(x) + '" y="' + (GY(y) + 6) + '" text-anchor="middle">' + ("①②③④⑤".indexOf(k) + 1) + "号</text>"; }
+    const [px, py] = pos, d = DIRS[dir], cx = GX(px), cy = GY(py);
+    const tip = [cx + d[0] * 18, cy - d[1] * 18], l = [cx - d[1] * 10 - d[0] * 8, cy - d[0] * 10 + d[1] * 8], r = [cx + d[1] * 10 - d[0] * 8, cy + d[0] * 10 + d[1] * 8];
+    s += '<polygon class="bot" points="' + tip.join(",") + " " + l.join(",") + " " + r.join(",") + '"/>';
+    CL.$("#rb-svg").innerHTML = s;
+  }
+  function simulate(steps) {   // 返回每条命令执行后的状态
+    let x = 0, y = 0, dir = 0; const states = [], path = [[0, 0]], stops = [];
+    for (const c of steps) {
+      if (c[0] === "go") {
+        const nx = x + DIRS[dir][0] * c[1], ny = y + DIRS[dir][1] * c[1];
+        if (nx < 0 || nx > 6 || ny < 0 || ny > 3) { states.push({ x, y, dir, path: path.slice(), out: true }); return { states, stops, out: true, x, y, dir }; }
+        x = nx; y = ny; path.push([x, y]);
+        const hit = Object.keys(TABLES).find((k) => TABLES[k][0] === x && TABLES[k][1] === y);
+        stops.push(hit || (x === 0 && y === 0 ? "取餐口" : "空地"));
+      } else dir = (dir + c[1] / 90) % 4;
+      states.push({ x, y, dir, path: path.slice() });
+    }
+    return { states, stops, out: false, x, y, dir };
+  }
+  function judge(res) {
+    const task = +CL.$("#rb-task").value, route = ROUTE[task];
+    const served = res.stops.filter((s) => TABLES[s]);
+    const ok = !res.out && served.join() === route.join() && res.x === 0 && res.y === 0 && res.dir === 0;
+    let msg = res.out ? "机器人走出了餐厅的格子，停下了。检查直行的格数。" : "机器人依次停在：" + (res.stops.length ? res.stops.join(" → ") : "（没有直行）") + "。";
+    if (!res.out) {
+      if (ok) msg += "\n任务 " + task + " 完成：按 " + route.join("→") + " 送餐，回到取餐口，朝向①号桌。";
+      else {
+        const why = [];
+        if (served.join() !== route.join()) why.push("要依次送到 " + route.join("→") + "，实际送到 " + (served.join("→") || "没有餐桌"));
+        if (!(res.x === 0 && res.y === 0)) why.push("最后没有回到取餐口");
+        else if (res.dir !== 0) why.push("回到了取餐口，但没有朝向①号桌（还要再转 " + ((4 - res.dir) % 4) * 90 + "°）");
+        msg += "\n还没完成：" + why.join("；") + "。";
+      }
+    }
+    return msg;
+  }
+  function run() {
+    if (timer) { clearInterval(timer); timer = null; }
+    if (!prog.length) { CL.$("#rb-out").textContent = "先添加命令，再运行。"; return; }
+    const rep = +CL.$("#rb-rep").value, steps = [];
+    for (let k = 0; k < rep; k++) steps.push(...prog);
+    const res = simulate(steps);
+    let i = 0;
+    timer = setInterval(() => {
+      if (i >= res.states.length) {
+        clearInterval(timer); timer = null; runIdx = -1; drawProg();
+        CL.$("#rb-out").textContent = "运行了 " + steps.length + " 条命令（" + prog.length + " 条 × 循环 " + rep + " 次）。\n" + judge(res);
+        return;
+      }
+      const st = res.states[i]; runIdx = i % prog.length; drawProg(); drawMap(st.path, [st.x, st.y], st.dir);
+      CL.$("#rb-out").textContent = "正在运行第 " + (i + 1) + " 条：" + cmdText(steps[i]) + (st.out ? "（走出格子了）" : "");
+      i++;
+    }, 450);
+  }
+  function resetMap(msg) { if (timer) { clearInterval(timer); timer = null; } runIdx = -1; drawProg(); drawMap(null, [0, 0], 0); CL.$("#rb-out").textContent = msg; }
+  const add = (c) => { prog.push(c); resetMap("已添加：" + cmdText(c) + "。共 " + prog.length + " 条命令。"); };
+  CL.$("#rb-go").addEventListener("click", () => add(["go", +CL.$("#rb-n").value]));
+  CL.$("#rb-l90").addEventListener("click", () => add(["l", 90]));
+  CL.$("#rb-l180").addEventListener("click", () => add(["l", 180]));
+  CL.$("#rb-undo").addEventListener("click", () => { prog.pop(); resetMap("删掉了最后一条。共 " + prog.length + " 条命令。"); });
+  CL.$("#rb-clear").addEventListener("click", () => { prog = []; CL.$("#rb-rep").value = "1"; resetMap("命令清空了。"); });
+  CL.$("#rb-run").addEventListener("click", run);
+  CL.$("#rb-task").addEventListener("change", () => { prog = []; CL.$("#rb-rep").value = "1"; resetMap("换了任务：" + CL.$("#rb-task").selectedOptions[0].textContent + "。用按钮拼出命令。"); });
+  CL.$("#rb-demo").addEventListener("click", () => {
+    const t = +CL.$("#rb-task").value, [body, rep] = BOOK[t];
+    prog = body.map((c) => c.slice()); CL.$("#rb-rep").value = String(rep);
+    resetMap((t === 3 ? "任务 3 的一种参考写法（课程作者给出）：" : "教材第 35 页的写法：") + prog.map(cmdText).join(" → ") + (rep > 1 ? "，循环 " + rep + " 次" : "") + "。点“运行”看看。");
+  });
+  resetMap("机器人在取餐口，朝向①号桌。选一个任务，用按钮拼出命令。");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>亿以内数的认识 · L01</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .ab-svg { width: 100%; max-width: 640px; display: block; margin: 0 auto; }
+  .ab-svg .rod { stroke: var(--ink-3); stroke-width: 3; }
+  .ab-svg .bead { fill: var(--accent); stroke: var(--ink-2); stroke-width: 1; }
+  .ab-svg .base { fill: var(--surface-2); stroke: var(--line); }
+  .ab-svg .lbl { font-size: 13px; fill: var(--ink-2); }
+  .ab-svg .dig { font-size: 18px; font-weight: 700; fill: var(--ink); font-family: var(--mono); }
+  .ab-svg .flash .rod { stroke: var(--down); stroke-width: 5; }
+  .ab-svg .sel .base { fill: var(--rule-bg); stroke: var(--accent); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .pv { border-collapse: collapse; margin: 8px auto; font-size: 14px; }
+  .pv th, .pv td { border: 1px solid var(--line); padding: 4px 6px; text-align: center; min-width: 38px; }
+  .pv th.grp { background: var(--surface-2); color: var(--ink-2); font-weight: 600; }
+  .pv th.pl { font-weight: 400; color: var(--ink-3); font-size: 12px; line-height: 1.25; writing-mode: horizontal-tb; }
+  .pv td.d { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--ink); height: 40px; }
+  .pv td.z-read { background: var(--tip-bg); color: var(--up); }
+  .pv td.z-skip { color: var(--ink-3); background: var(--surface-2); }
+  .pv td.lvl-yi { border-top: 3px solid var(--down); }
+  .pv td.lvl-wan { border-top: 3px solid var(--brand-2); }
+  .pv td.lvl-ge { border-top: 3px solid var(--accent); }
+  .pv input { width: 34px; height: 36px; text-align: center; font-family: var(--mono); font-size: 20px; font-weight: 700; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .pv input.bad { border-color: var(--down); background: var(--warn-bg); }
+  .pv input.ok { border-color: var(--up); background: var(--tip-bg); }
+  .big-read { font-size: 22px; font-weight: 700; text-align: center; margin: 6px 0 2px; color: var(--brand-2); font-family: var(--serif); }
+  .num-in { font-family: var(--mono); font-size: 18px; width: 150px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .key { display: inline-flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); justify-content: center; width: 100%; }
+  .key i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; border: 1px solid var(--line); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">生活中的大数</a></li>
+    <li><a href="#s2">计数单位：一万一万地数</a></li>
+    <li><a href="#s3">数位、数级和数位顺序表</a></li>
+    <li><a href="#s4">读数：先分级，再读</a></li>
+    <li><a href="#s5">写数：没有的数位写 0</a></li>
+    <li><a href="#s6">数的组成</a></li>
+    <li><a href="#s7">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L01 · 大数的世界</div>
+  <h1>亿以内数的认识</h1>
+  <p>北京有 21893095 人。这个数你会读吗？每个数字表示多少？这一课，我们从计数器开始，学会读、写一亿以内的大数。</p>
+  <div class="meta"><span>教材：第一单元 第 1–9 页</span><span>学习约 30 分钟</span><span>含 3 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出万以上的<a class="term" href="glossary.html#jishu-danwei">计数单位</a>，知道相邻两个计数单位之间的进率是 10。</li>
+    <li>说出亿以内的<a class="term" href="glossary.html#shuwei">数位</a>和<a class="term" href="glossary.html#shuji">数级</a>，说出每个数字表示多少。</li>
+    <li>用“先分级”的方法读出亿以内的数，知道哪些 0 要读、哪些 0 不读。</li>
+    <li>用“先分级”的方法写出亿以内的数，知道没有的数位要写 0。</li>
+    <li>说出一个大数由几个万和几个一组成。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>生活中的大数</h2>
+  <p>先说结论：在生活和生产中，我们常常用到比万大的数。教材用 2020 年第七次全国人口普查的数据开头。</p>
+  <figure class="fig"><img src="img/t001.png" alt="教材第 1 页：六个地区的人口数，北京 21893095 人，广东 126012510 人等"><figcaption><b>教材第 1 页</b>第七次全国人口普查部分地区的数据。</figcaption></figure>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>地区</th><th>人口 / 人</th><th>地区</th><th>人口 / 人</th></tr>
+    <tr><td>北京</td><td>21893095</td><td>广东</td><td>126012510</td></tr>
+    <tr><td>山东</td><td>101527453</td><td>河南</td><td>99365519</td></tr>
+    <tr><td>江苏</td><td>84748016</td><td>四川</td><td>83674866</td></tr>
+  </table></div>
+  <p>这些数都比一万大得多。要读懂它们，我们先要知道：比万大的计数单位有哪些。</p>
+  <div class="callout tip"><span class="ttl">想一想</span>表里有几个数比一亿还大？广东和山东的人口数都是 9 位数。9 位数的读法，下一课 <a href="L02-yi-yishang.html">L02</a> 再学。这一课先学一亿以内的数。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>计数单位：一万一万地数</h2>
+  <p>先说结论：10 个一万是十万，10 个十万是一百万。每相邻两个计数单位之间的进率都是 10。</p>
+  <figure class="fig"><img src="img/t002-jishuqi.png" alt="教材第 2 页：计数器上一万一万地数，10 个一万是十万"><figcaption><b>教材第 2 页</b>在计数器上一万一万地数，10 个一万是十万。</figcaption></figure>
+  <p>教材让我们在计数器上接着数下去：</p>
+  <ul class="checklist">
+    <li>一万一万地数，10 个一万是十万。</li>
+    <li>10 个十万是一百万。</li>
+    <li>10 个一百万是一千万。</li>
+    <li>10 个一千万是一亿。</li>
+  </ul>
+  <blockquote class="src">个（一）、十、百、千、万、十万、百万、千万、亿都是计数单位。<cite>教材第 2 页</cite></blockquote>
+  <p>下面用计数器动手数一数。你会看到：一个数位上的珠子满了十颗，就换成左边一位上的一颗珠子。</p>
+
+  <div class="chart-card" id="demo-abacus">
+    <div class="chart-head">
+      <div class="chart-title">计数器：满十进一</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">每次拨：
+        <select id="ab-unit" aria-label="每次拨的计数单位">
+          <option value="0">一</option><option value="1">十</option><option value="2">百</option><option value="3">千</option>
+          <option value="4" selected>一万</option><option value="5">十万</option><option value="6">一百万</option><option value="7">一千万</option>
+        </select>
+        <button class="btn primary" id="ab-plus" type="button">拨上一颗</button>
+        <button class="btn" id="ab-minus" type="button">拨下一颗</button>
+        <button class="btn" id="ab-reset" type="button">清零</button>
+      </div>
+      <div class="btn-row">教材“做一做”：
+        <button class="btn" type="button" data-preset="960000,4">从九十六万起，一万一万地数</button>
+        <button class="btn" type="button" data-preset="700000,5">从七十万起，十万十万地数</button>
+        <button class="btn" type="button" data-preset="6000000,6">从六百万起，一百万一百万地数</button>
+        <button class="btn" type="button" data-preset="80000000,7">从八千万起，一千万一千万地数</button>
+      </div>
+      <svg class="ab-svg" id="ab-svg" viewBox="0 0 620 250" role="img" aria-label="九档计数器"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="ab-out"></div></div>
+    <div class="chart-foot">选好“每次拨”的单位，点“拨上一颗”。看一个数位上满了十颗时会发生什么。再试试教材“做一做”的四个数法，数到终点时读出计数器上的数。<br><span class="data-note">这是教材计数器的模拟。为了看清楚，满十颗时直接换成左边一位的一颗；真的计数器要你自己拨。</span></div>
+  </div>
+
+  <div class="callout rule"><span class="ttl">本节要点</span>每相邻两个计数单位之间的进率都是 10。所以“满十进一”：10 个小单位合成 1 个大一级的单位。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>数位、数级和数位顺序表</h2>
+  <p>先说结论：计数单位排成一排，它们所占的位置叫作数位。从右边起，每四个数位是一级。</p>
+  <blockquote class="src">在用数字表示数的时候，这些计数单位要按照一定的顺序排列起来，它们所占的位置叫作数位。<cite>教材第 2 页</cite></blockquote>
+  <figure class="fig"><img src="img/t002-shuweibiao.png" alt="教材第 2 页：数位顺序表，21893095 中的 8 在十万位上，表示 8 个十万"><figcaption><b>教材第 2 页</b>数位顺序表。21893095 中的 8 在十万位上，表示 8 个十万。</figcaption></figure>
+  <div class="grid-3">
+    <div class="kp"><div class="k">个级</div><div class="v">个 十 百 千</div><p>个位、十位、百位、千位。表示多少个一。</p></div>
+    <div class="kp"><div class="k">万级</div><div class="v">万 十万 百万 千万</div><p>万位、十万位、百万位、千万位。表示多少个万。</p></div>
+    <div class="kp"><div class="k">亿级</div><div class="v">亿 ……</div><p>从亿位开始。亿级的其他数位，下一课再学。</p></div>
+  </div>
+  <p>21893095 每一位上的数字表示多少？从左往右看：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>数字</th><th>2</th><th>1</th><th>8</th><th>9</th><th>3</th><th>0</th><th>9</th><th>5</th></tr>
+    <tr><td>数位</td><td>千万位</td><td>百万位</td><td>十万位</td><td>万位</td><td>千位</td><td>百位</td><td>十位</td><td>个位</td></tr>
+    <tr><td>表示</td><td>2 个千万</td><td>1 个百万</td><td>8 个十万</td><td>9 个万</td><td>3 个千</td><td>0 个百</td><td>9 个十</td><td>5 个一</td></tr>
+  </table></div>
+  <div class="callout warn"><span class="ttl">常见误解：计数单位和数位不一样</span>“万”是计数单位，“万位”是数位。说“9 在万位上，表示 9 个万”，前半句说数位，后半句说计数单位。</div>
+  <div class="callout tip"><span class="ttl">数位顺序表怎么记</span>按照我国的计数习惯，从右边起，每四个数位是一级。个级、万级里的数位名称排法一样：个、十、百、千；万、十万、百万、千万。</div>
+  <h3>自然数</h3>
+  <p>有了数位，用 0～9 这十个数字就能表示更多、更大的数。</p>
+  <blockquote class="src">表示物体个数的 1，2，3，4，5，6，7，8，9，10，11，…都是自然数。一个物体也没有，用 0 表示，0 也是自然数。所有的自然数都是整数。<cite>教材第 3 页</cite></blockquote>
+  <p>最小的<a class="term" href="glossary.html#ziranshu">自然数</a>是 0。没有最大的自然数，自然数的个数是无限的。</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>读数：先分级，再读</h2>
+  <p>先说结论：读大数时先分级。万级按个级的读法读，后面加一个“万”字。读数时要特别注意 0。</p>
+  <p>教材先比较了 24960000 的两种读法。一种是“二千万四百万九十万六万”，另一种是“二千四百九十六万”。第二种更简便。万级的 2496 和个级的 2496 读法一样，只是后面多一个“万”字。</p>
+  <div class="callout rule"><span class="ttl">含有两级的数怎么读（教材第 4 页）</span>
+    <ol class="steps">
+      <li>先读万级，再读个级。</li>
+      <li>万级的数，要按照个级的数的读法来读，再在后面加上一个“万”字。</li>
+      <li>每级末尾不管有几个 0，都不读，其他数位上有一个 0 或连续几个 0，都只读一个零。</li>
+    </ol>
+  </div>
+  <figure class="fig"><img src="img/t005-sanwei.png" alt="教材第 5 页：先分级，比较容易读，例如 3|2680"><figcaption><b>教材第 5 页</b>先分级，比较容易读。</figcaption></figure>
+
+  <div class="chart-card" id="demo-read">
+    <div class="chart-head">
+      <div class="chart-title">读数小助手：分级，再看每个 0</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row"><label>输入一个数（最多 9 位）：<input class="num-in" id="rd-num" inputmode="numeric" maxlength="9" value="10030040" aria-label="要读的数"></label></div>
+      <div class="btn-row">教材里的数：
+        <button class="btn" type="button" data-num="24960000">24960000</button>
+        <button class="btn" type="button" data-num="6407000">6407000</button>
+        <button class="btn" type="button" data-num="10030040">10030040</button>
+        <button class="btn" type="button" data-num="40500000">40500000</button>
+        <button class="btn" type="button" data-num="1200605">1200605</button>
+        <button class="btn" type="button" data-num="30600900">30600900</button>
+        <button class="btn" type="button" data-num="100000000">100000000</button>
+      </div>
+      <div id="rd-table"></div>
+      <div class="key"><span><i style="background:var(--tip-bg)"></i>这个 0（或这串 0）读一个“零”</span><span><i style="background:var(--surface-2)"></i>级末尾的 0，不读</span></div>
+      <div class="big-read" id="rd-big"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rd-out"></div></div>
+    <div class="chart-foot">换几个数试试，看读法怎样变。重点看两种 0：级末尾的 0 不读；夹在中间的 0，不管连着几个，都只读一个零。<br><span class="data-note">读法按教材第 4 页和第 11 页的规则由程序生成。</span></div>
+  </div>
+
+  <div class="callout warn"><span class="ttl">容易读错的地方</span>6407000 读作“六百四十万七千”。万级末尾的 0 不读，所以中间不读“零”。10030040 读作“一千零三万零四十”。万级中间的两个 0 读一个零，个级开头的两个 0 也读一个零。</div>
+  <div class="callout note"><span class="ttl">你知道吗？三位一分节（教材第 5 页）</span>生活中有时会看到三位一分节的大数。例如，地球和月球之间的平均距离约是 384 400 km。这和一些国家以三位分级读数的方法有关。我国的习惯是四位一级。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>写数：没有的数位写 0</h2>
+  <p>先说结论：写数也要先分级。先写万级，再写个级。哪个数位上一个也没有，就在那个数位上写 0。</p>
+  <p>教材的例子是北京大钟寺的永乐大钟。钟内外共铸了二十三万零一百八十四个字。先看这个数有几级：有“万”字，所以有两级。万级是二十三，写 23；个级是零一百八十四，千位上一个也没有，写 0。所以写作 230184。</p>
+  <div class="callout rule"><span class="ttl">含有两级的数怎么写（教材第 6 页）</span>
+    <ol class="steps">
+      <li>先写万级，再写个级。</li>
+      <li>哪个数位上一个也没有，就在那个数位上写 0。</li>
+    </ol>
+  </div>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>读法</th><th>万级</th><th>个级</th><th>写作</th></tr>
+    <tr><td>二十三万零一百八十四</td><td>23</td><td>0184</td><td>230184</td></tr>
+    <tr><td>十万二千三百四十五</td><td>10</td><td>2345</td><td>102345</td></tr>
+    <tr><td>三百零二万六千</td><td>302</td><td>6000</td><td>3026000</td></tr>
+  </table></div>
+
+  <div class="chart-card" id="demo-write">
+    <div class="chart-head">
+      <div class="chart-title">写数挑战：把数字填进数位顺序表</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row" style="justify-content:center"><label>选题：<select id="wr-q" aria-label="选择写数题"></select></label></div>
+      <div class="big-read" id="wr-prompt"></div>
+      <div id="wr-table"></div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn primary" id="wr-check" type="button">检查</button>
+        <button class="btn" id="wr-show" type="button">看答案</button>
+        <button class="btn" id="wr-next" type="button">下一题</button>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="wr-out"></div></div>
+    <div class="chart-foot">选一道题，读题，在格子里填数字，再点“检查”。高位没有数字的格子可以空着；中间没有的数位要写 0。检查后会显示“你写的数读作什么”，和题目对一对。<br><span class="data-note">题目来自教材第 6–8 页的“做一做”和练习一。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">写完怎样检查</span>把你写的数按分级的方法读一遍。读出来和题目一样，就写对了。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>数的组成</h2>
+  <p>先说结论：一个两级的数，可以看成“几个万”和“几个一”合起来。也可以拆成每个数位上的数相加。</p>
+  <div class="grid-2">
+    <div class="kp"><div class="k">按级拆（练习一第 2 题）</div><div class="v">4 7578</div><p>表示 4 个万，7578 个一。28 0064 表示 28 个万，64 个一。</p></div>
+    <div class="kp"><div class="k">按数位拆（练习一第 8 题）</div><div class="v">440000 = 400000 + 40000</div><p>这个数由四十万和四万组成。</p></div>
+  </div>
+  <p>反过来，知道组成也能写出这个数。练习一第 5 题：由四百万、八十万、五万和三千组成的数是 4853000。4000000 + 600000 + 70000 + 8000 + 2 = 4678002。</p>
+  <div class="callout tip"><span class="ttl">动手试</span>回到上面的<a href="#demo-read">读数小助手</a>。输入任意一个数，读数结果下方会写出“几个万和几个一”，以及按数位拆开的加法算式。</div>
+  <h3>1 亿有多大</h3>
+  <p>教材第 7 页的“你知道吗”给了两个感受 1 亿的例子：</p>
+  <ul class="checklist">
+    <li>据统计，2024 年我国约有 1 亿名在校小学生，他们大约可以坐满 1250 个国家体育场。</li>
+    <li>每秒画 1 个点，一刻不停地画。画 1 亿个点，要画 3 年 2 个多月。</li>
+  </ul>
+  <div class="callout note"><span class="ttl">补充：3 年 2 个多月是怎么来的</span>1 天有 24 × 60 × 60 = 86400 秒。1 年按 365 天算，约 3154 万秒。1 亿秒里有 3 个这样的“一年”，还多出约 540 万秒，大约是 2 个多月。乘法的算法要到第三单元才学，这里先感受一下。综合与实践“1 亿有多大”会继续探究，见 <a href="L02-yi-yishang.html">L02</a>。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>自测与速记</h2>
+  <div class="quiz" data-answer="2">
+    <div class="q">10 个十万是多少？</div>
+    <div class="opts"><button>一万</button><button>十万</button><button>一百万</button><button>一千万</button></div>
+    <div class="explain">相邻两个计数单位之间的进率是 10。10 个十万是一百万（教材第 2 页）。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">21893095 中的“8”在什么位上？表示多少？</div>
+    <div class="opts"><button>万位，表示 8 个万</button><button>十万位，表示 8 个十万</button><button>百万位，表示 8 个百万</button><button>十万位，表示 8 个万</button></div>
+    <div class="explain">从右边数起，第 6 位是十万位。8 在十万位上，表示 8 个十万。注意“十万位”是数位，“十万”是计数单位。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">6407000 的正确读法是哪一个？</div>
+    <div class="opts"><button>六百四十万零七千</button><button>六百零四万七千</button><button>六千四百零七千</button><button>六百四十万七千</button></div>
+    <div class="explain">先分级：640 | 7000。万级读“六百四十万”，末尾的 0 不读；个级读“七千”。所以读作六百四十万七千（教材第 4 页）。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">“四万零九十”写作什么？</div>
+    <div class="opts"><button>40090</button><button>4090</button><button>400090</button><button>40900</button></div>
+    <div class="explain">万级是 4；个级是“零九十”：千位、百位一个也没有，写 0，十位写 9，个位写 0。合起来是 4 0090，也就是 40090。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">下面哪一个说法是对的？</div>
+    <div class="opts"><button>最小的自然数是 1</button><button>最大的自然数是 99999999</button><button>0 也是自然数</button><button>自然数的个数是有限的</button></div>
+    <div class="explain">教材第 3 页：0 也是自然数。最小的自然数是 0，没有最大的自然数，自然数的个数是无限的。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>计数单位</td><td>个、十、百、千、万、十万、百万、千万、亿；相邻进率是 10</td></tr>
+    <tr><td>数位与数级</td><td>从右边起，每四个数位是一级：个级、万级、亿级</td></tr>
+    <tr><td>读数</td><td>先分级；万级按个级读，加“万”；级末尾的 0 不读，中间的 0 只读一个零</td></tr>
+    <tr><td>写数</td><td>先分级，先写万级再写个级；没有的数位写 0</td></tr>
+    <tr><td>数的组成</td><td>4 7578 = 4 个万 + 7578 个一；440000 = 400000 + 40000</td></tr>
+    <tr><td>自然数</td><td>0，1，2，3，… 都是自然数；最小是 0，没有最大的</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L02-yi-yishang.html"><small>下一课 · L02</small>亿以上数、比大小与近似数</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L01-yi-yinei.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）第一单元“万以上数的认识”第 1–9 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  const NAMES = ["个", "十", "百", "千", "万", "十万", "百万", "千万", "亿"];
+  const UNIT_WORD = ["一", "十", "一百", "一千", "一万", "十万", "一百万", "一千万", "一亿"];
+  const MAX = 999999999;
+
+  /* ---- 1. 计数器 ---- */
+  let value = 0, unit = 4, clicks = 0, lastMsg = "", flash = [];
+  const svg = CL.$("#ab-svg");
+  function digitsOf(v) { const s = String(v).padStart(9, "0"); return s.split("").reverse().map(Number); } // [个, 十, …, 亿]
+  function drawAbacus() {
+    const d = digitsOf(value);
+    let h = "";
+    for (let k = 0; k < 9; k++) {
+      const p = 8 - k;              // 从左往右：亿 … 个
+      const x = 42 + k * 67;
+      const cls = (flash.includes(p) ? "flash " : "") + (p === unit ? "sel" : "");
+      h += '<g class="' + cls + '"><line class="rod" x1="' + x + '" y1="20" x2="' + x + '" y2="182"/>';
+      for (let b = 0; b < d[p]; b++) h += '<ellipse class="bead" cx="' + x + '" cy="' + (172 - b * 14) + '" rx="22" ry="7"/>';
+      h += '<rect class="base" x="' + (x - 31) + '" y="186" width="62" height="30" rx="4"/>';
+      h += '<text class="lbl" x="' + x + '" y="206" text-anchor="middle">' + NAMES[p] + '</text>';
+      h += '<text class="dig" x="' + x + '" y="240" text-anchor="middle">' + d[p] + "</text></g>";
+    }
+    svg.innerHTML = h;
+    CL.$("#ab-unit").value = String(unit);
+    const read = value ? CL.readNum(value) : "零";
+    CL.$("#ab-out").textContent =
+      "计数器上的数：" + value + "，读作" + read + "。\n" +
+      "每次拨一颗" + UNIT_WORD[unit] + "，已经拨了 " + clicks + " 次。" + (lastMsg ? "\n" + lastMsg : "");
+  }
+  function add(sign) {
+    const step = Math.pow(10, unit);
+    const before = digitsOf(value);
+    const nv = value + sign * step;
+    if (nv < 0) { lastMsg = "计数器上不够拨下一颗" + UNIT_WORD[unit] + "。"; flash = []; return drawAbacus(); }
+    if (nv > MAX) { lastMsg = "这个计数器最高只到亿位，不能再拨了。"; flash = []; return drawAbacus(); }
+    value = nv; clicks++;
+    const after = digitsOf(value);
+    flash = []; const carries = [];
+    if (sign > 0) for (let p = unit; p < 8; p++) { if (before[p] === 9 && after[p] === 0) { carries.push(p); flash.push(p, p + 1); } else break; }
+    lastMsg = carries.length
+      ? "满十进一：" + carries.map((p) => "10 个" + UNIT_WORD[p] + "是" + UNIT_WORD[p + 1]).join("；") + "。"
+      : (sign > 0 ? "" : "拨下一颗" + UNIT_WORD[unit] + "。");
+    drawAbacus();
+  }
+  CL.$("#ab-plus").addEventListener("click", () => add(1));
+  CL.$("#ab-minus").addEventListener("click", () => add(-1));
+  CL.$("#ab-reset").addEventListener("click", () => { value = 0; clicks = 0; lastMsg = ""; flash = []; drawAbacus(); });
+  CL.$("#ab-unit").addEventListener("change", (e) => { unit = +e.target.value; lastMsg = ""; flash = []; drawAbacus(); });
+  CL.$$("#demo-abacus [data-preset]").forEach((b) => b.addEventListener("click", () => {
+    const [v, u] = b.dataset.preset.split(",").map(Number);
+    value = v; unit = u; clicks = 0; flash = [];
+    lastMsg = "从 " + v + "（" + CL.readNum(v) + "）开始，" + UNIT_WORD[u] + UNIT_WORD[u] + "地数。";
+    drawAbacus();
+  }));
+  drawAbacus();
+
+  /* ---- 2. 读数小助手 ---- */
+  const LV = ["ge", "ge", "ge", "ge", "wan", "wan", "wan", "wan", "yi"];
+  // 给每个数位上的 0 分类：read = 这一串 0 读一个“零”；skip = 级末尾的 0，不读
+  function classify(s) {
+    const n = s.length, cls = new Array(n).fill("");
+    let started = false, run = [];
+    for (let i = 0; i < n; i++) {
+      const p = n - 1 - i;            // 数位编号（个位 = 0）
+      if (s[i] === "0") { if (started) run.push(i); }
+      else { if (run.length) run.forEach((j) => (cls[j] = "z-read")); run = []; started = true; }
+      if (p % 4 === 0) { run.forEach((j) => (cls[j] = "z-skip")); run = []; }   // 一级结束：末尾的 0 不读
+    }
+    return cls;
+  }
+  function pvTable(s, cellFn) {
+    const n = 9, pad = s ? s.padStart(n, " ") : " ".repeat(n);
+    let h = '<div class="tbl-wrap" style="overflow-x:auto"><table class="pv"><tr><th class="grp">亿级</th><th class="grp" colspan="4">万级</th><th class="grp" colspan="4">个级</th></tr><tr>';
+    for (let k = 0; k < n; k++) h += '<th class="pl">' + NAMES[8 - k] + "<br>位</th>";
+    h += "</tr><tr>";
+    for (let k = 0; k < n; k++) h += cellFn(k, 8 - k, pad[k]);
+    return h + "</tr></table></div>";
+  }
+  function drawRead() {
+    const inp = CL.$("#rd-num");
+    const s = inp.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "").slice(0, 9);
+    if (!s) { CL.$("#rd-table").innerHTML = pvTable("", (k, p) => '<td class="d lvl-' + LV[p] + '"></td>'); CL.$("#rd-big").textContent = ""; CL.$("#rd-out").textContent = "请输入一个数。"; return; }
+    const cls = classify(s), off = 9 - s.length;
+    CL.$("#rd-table").innerHTML = pvTable(s, (k, p, ch) => {
+      const i = k - off; const c = i >= 0 ? cls[i] : "";
+      return '<td class="d lvl-' + LV[p] + " " + c + '">' + (ch === " " ? "" : ch) + "</td>";
+    });
+    const read = CL.readNum(s);
+    CL.$("#rd-big").textContent = s + " 读作：" + read;
+    // 分级说明
+    const g = CL.groupNum(s).split(" ");
+    const names = ["个级", "万级", "亿级"];
+    const steps = g.map((x, j) => names[g.length - 1 - j] + " " + x).join(" | ");
+    const nRead = cls.filter((c) => c === "z-read").length, nSkip = cls.filter((c) => c === "z-skip").length;
+    let zeroNote = "";
+    if (nRead || nSkip) {
+      const runs = (read.match(/零/g) || []).length;
+      zeroNote = "\n0 的情况：" + (nSkip ? nSkip + " 个 0 在级末尾，不读；" : "") + (nRead ? nRead + " 个 0 在中间，读了 " + runs + " 个“零”。" : "中间没有要读的 0。");
+    }
+    // 组成：几个万、几个一；按数位拆
+    let comp = "";
+    if (s.length > 4 && s.length <= 8) {
+      const w = +s.slice(0, -4), one = +s.slice(-4);
+      comp = "\n组成：" + w + " 个万" + (one ? "和 " + one + " 个一" : "") + "。";
+    } else if (s.length === 9) comp = "\n这个数有亿级，亿级的读法 L02 详细学。";
+    const parts = []; for (let i = 0; i < s.length; i++) if (s[i] !== "0") parts.push(s[i] + "0".repeat(s.length - 1 - i));
+    if (parts.length > 1) comp += "\n按数位拆：" + s + " = " + parts.join(" + ");
+    CL.$("#rd-out").textContent = "先分级：" + steps + "\n读作：" + read + zeroNote + comp;
+  }
+  CL.$("#rd-num").addEventListener("input", drawRead);
+  CL.$$("#demo-read [data-num]").forEach((b) => b.addEventListener("click", () => { CL.$("#rd-num").value = b.dataset.num; drawRead(); }));
+  drawRead();
+
+  /* ---- 3. 写数挑战 ---- */
+  const Q = ["三百二十六万七千五百", "四万零九十", "九千零二十万零三百", "一百万", "四千八百三十二万", "七百零三万五千", "六万零一百二十三", "三千七百万零四十", "二千零四十万零七百", "六千零九万零五百"];
+  const ANS = ["3267500", "40090", "90200300", "1000000", "48320000", "7035000", "60123", "37000040", "20400700", "60090500"];
+  ANS.forEach((a, i) => { if (CL.readNum(a) !== Q[i]) console.error("写数题答案不一致", a, Q[i]); });
+  let qi = 0, score = 0, tried = 0, answered = new Set();
+  CL.$("#wr-q").innerHTML = Q.map((q, i) => '<option value="' + i + '">第 ' + (i + 1) + " 题</option>").join("");
+  CL.$("#wr-q").addEventListener("change", (e) => { qi = +e.target.value; drawWrite(false); });
+  function drawWrite(keep) {
+    CL.$("#wr-prompt").textContent = "第 " + (qi + 1) + " 题：" + Q[qi];
+    CL.$("#wr-q").value = String(qi);
+    if (!keep) {
+      CL.$("#wr-table").innerHTML = pvTable("", (k, p) => '<td class="lvl-' + LV[p] + '"><input data-p="' + p + '" maxlength="1" inputmode="numeric" aria-label="' + NAMES[p] + '位"></td>');
+      CL.$("#wr-out").textContent = "在格子里填数字，再点“检查”。已答对 " + score + " 题。";
+    }
+  }
+  function readBoxes() {
+    const boxes = CL.$$("#wr-table input");
+    const raw = boxes.map((b) => b.value.replace(/\D/g, "").slice(0, 1));
+    return { boxes, raw };
+  }
+  CL.$("#wr-table").addEventListener("input", (e) => {
+    const t = e.target; if (t.tagName !== "INPUT") return;
+    t.value = t.value.replace(/\D/g, "").slice(0, 1); t.classList.remove("bad", "ok");
+    if (t.value) { const nx = t.closest("td").nextElementSibling; if (nx) nx.querySelector("input").focus(); }
+  });
+  CL.$("#wr-check").addEventListener("click", () => {
+    const { boxes, raw } = readBoxes();
+    const first = raw.findIndex((x) => x !== "");
+    if (first < 0) { CL.$("#wr-out").textContent = "格子还是空的。先读题，想一想这个数有几级。"; return; }
+    const gap = raw.slice(first).some((x) => x === "");
+    const want = ANS[qi].padStart(9, " ");
+    let wrong = 0;
+    boxes.forEach((b, k) => {
+      const w = want[k] === " " ? "" : want[k];
+      const ok = (raw[k] || "") === w;
+      b.classList.toggle("ok", ok && raw[k] !== ""); b.classList.toggle("bad", !ok);
+      if (!ok) wrong++;
+    });
+    tried++;
+    const mine = raw.slice(first).join("");
+    const mineRead = CL.readNum(mine);
+    if (!wrong) {
+      if (!answered.has(qi)) { score++; answered.add(qi); }
+      CL.$("#wr-out").textContent = "写对了：" + Q[qi] + " 写作 " + ANS[qi] + "。\n已答对 " + score + " 题。";
+    } else {
+      CL.$("#wr-out").textContent = gap
+        ? "还不对，有 " + wrong + " 个格子要改（红框）。\n提示：中间有空格子。哪个数位上一个也没有，就在那个数位上写 0。"
+        : "还不对，有 " + wrong + " 个格子要改（红框）。\n你写的数是 " + mine + "，读作“" + mineRead + "”，题目是“" + Q[qi] + "”。\n提示：先看这个数有几级，再看万级和个级各写几。";
+    }
+  });
+  CL.$("#wr-show").addEventListener("click", () => {
+    const { boxes } = readBoxes(); const want = ANS[qi].padStart(9, " ");
+    boxes.forEach((b, k) => { b.value = want[k] === " " ? "" : want[k]; b.classList.remove("bad"); b.classList.add("ok"); });
+    CL.$("#wr-out").textContent = "答案：" + Q[qi] + " 写作 " + ANS[qi] + "。先分级：" + CL.groupNum(ANS[qi]) + "。\n已答对 " + score + " 题。";
+  });
+  CL.$("#wr-next").addEventListener("click", () => { qi = (qi + 1) % Q.length; drawWrite(false); });
+  drawWrite(false);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四年级数学上册 · 互动课</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 80px; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 20px; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; background: var(--hero-accent); color: #1a1a1a; font-weight: 700; padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 14px rgba(0,0,0,.18); transition: transform .15s; }
+  :root[data-theme="ink"] .cta { color: #f8efdc; }
+  .cta:hover { text-decoration: none; transform: translateY(-2px); }
+  .hero-prog { font-size: 13px; color: var(--hero-sub); display: flex; align-items: center; gap: 10px; }
+  .hero-prog .bar { width: 160px; height: 6px; border-radius: 6px; background: var(--hero-line); overflow: hidden; }
+  .hero-prog .bar i { display: block; height: 100%; background: var(--hero-accent); }
+  .sec-h { font-family: var(--head-font); color: var(--brand); font-size: 24px; margin: 44px 0 6px; }
+  .sec-sub { color: var(--ink-3); font-size: 14.5px; margin: 0 0 14px; }
+  .path { display: grid; grid-template-columns: repeat(var(--n-steps, 4), minmax(0, 1fr)); gap: 22px; margin: 16px 0 8px; }
+  .stage { position: relative; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 14px; box-shadow: var(--shadow); color: var(--ink); cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+  .stage:hover { text-decoration: none; transform: translateY(-3px); box-shadow: var(--shadow-lift); border-color: var(--brand-2); }
+  .stage:not(:last-child)::after { content: "→"; position: absolute; right: -19px; top: 50%; transform: translateY(-50%); color: var(--ink-3); font-size: 18px; }
+  .stage .n { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--brand); color: var(--surface); font-family: var(--mono); font-weight: 700; }
+  .stage b { display: block; color: var(--brand); font-size: 18px; margin: 10px 0 4px; font-family: var(--head-font); }
+  .stage p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.65; flex: 1; }
+  .stage .go { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 13px; color: var(--brand-2); display: flex; justify-content: space-between; }
+  .stage .go em { font-style: normal; color: var(--ink-3); }
+  @media (max-width: 900px) { .path { grid-template-columns: 1fr 1fr; } .stage::after { display: none; } }
+  @media (max-width: 520px) { .path { grid-template-columns: 1fr; } }
+  .step-sec { margin-top: 40px; scroll-margin-top: 70px; }
+  .step-head { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: var(--radius); background: var(--surface-2); border: 1px solid var(--line); }
+  .step-head .n { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--brand); color: var(--surface); font-family: var(--mono); font-size: 20px; font-weight: 700; }
+  .step-head h2 { margin: 0; font-family: var(--head-font); color: var(--brand); font-size: 21px; }
+  .step-head p { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .lrows { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 10px; }
+  .lrow { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; box-shadow: var(--shadow); color: var(--ink); cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s; }
+  .lrow:hover { text-decoration: none; transform: translateX(3px); box-shadow: var(--shadow-lift); border-color: var(--brand-2); }
+  .lrow .no { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--accent); text-align: center; }
+  .lrow h3 { margin: 0; font-size: 17.5px; color: var(--brand); font-family: var(--head-font); }
+  .lrow h3 .id { font-family: var(--mono); font-size: 12px; color: var(--ink-3); font-weight: 400; margin-left: 8px; }
+  .lrow p { margin: 3px 0 0; font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
+  .lrow .src { font-size: 12px; color: var(--ink-3); }
+  .lrow .pill2 { white-space: nowrap; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; background: var(--brand); color: var(--surface); }
+  .lrow .pill2.done { background: transparent; color: var(--up); border: 1px solid var(--up); }
+  @media (max-width: 600px) { .lrow { grid-template-columns: 36px minmax(0, 1fr); } .lrow .pill2 { grid-column: 2; justify-self: start; } .lrow .no { font-size: 18px; } }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">互动课程 · 4 步 11 课</div>
+    <h1>四年级数学上册 · 互动课</h1>
+    <p>跟着人教版《数学》四年级上册，一课一课学。每课都有教材原页、能动手操作的演示（拨计数器、量角、竖式、画统计图……）和自测题。右边的 AI 助教读过整本教材，有不懂的随时问它。还有 AI 讲师，会带着你一页一页地讲。</p>
+    <div class="hero-actions"><a class="cta" id="cta" href="L01-yi-yinei.html">从第 1 课开始 →</a><span class="hero-prog" id="hero-prog"></span></div>
+  </div>
+
+  <h2 class="sec-h">学习路线</h2>
+  <p class="sec-sub" id="path-sub">按顺序学。点一个步骤，跳到这一步的课程。</p>
+  <div class="path" id="path"></div>
+  <div id="groups"></div>
+
+  <h2 class="sec-h">原文与一手资料</h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>资料</th><th>说明</th></tr>
+    <tr><td><a href="../docs/articles/textbook.md">教材文字存档</a></td><td>《义务教育教科书 数学 四年级上册》，人民教育出版社 课程教材研究所 编著，2022 课标修订版（2026 秋）。由 PDF 逐页抽取文字，每页附原页图。</td></tr>
+    <tr><td><a href="../docs/人教版_数学_四年级上册_2026秋_2022课标修订版.pdf">教材 PDF</a></td><td>本地 PDF，共 127 页。课程里的“教材第 N 页”指书上印的页码。版权归人民教育出版社，仅供个人学习使用。</td></tr>
+  </table></div>
+
+  <h2 class="sec-h">怎样用这些课程</h2>
+  <ol class="steps">
+    <li><b>先读“学完本课，你能够”</b>：知道这一课要带走什么。</li>
+    <li><b>对照教材原页</b>：课程嵌入了教材的页面和插图。点图片可以放大。</li>
+    <li><b>动手玩演示</b>：拨一拨、拖一拖、填一填，看数和图形怎样变化。</li>
+    <li><b>做自测题</b>：每课最后有 3–5 道题。答错会显示解释。</li>
+    <li><b>问 AI 助教</b>：右侧的 AI 助教读过整本教材和本课全部内容。可以选中一段话问它，或点图片、演示右上角的“问 AI”。</li>
+  </ol>
+  <div class="callout note"><span class="ttl">启用 AI 助教</span>在终端运行 <code>cd lessons &amp;&amp; uv run --no-project python tools/serve.py</code>，然后打开 <a href="http://127.0.0.1:8771/lessons/">http://127.0.0.1:8771/lessons/</a>。模型是 DeepSeek（默认 <code>deepseek-flash</code>），走 DeepSeek 官方 API，<b>按量计费</b>。API key 放在 <code>lessons/.env</code>，只在本机服务里用，不进页面。直接双击打开 HTML 也能学，只是没有 AI 助教。</div>
+  <p class="disclaimer">课程内容以教材为准；“补充”标注的部分是课程作者的解释，不是教材原文。课程编写规范见 <code>lessons/AUTHORING.md</code>。</p>
+</div>
+
+<script>
+const DESC = {
+  "L01-yi-yinei.html": "计数单位、数位和数级；用“先分级”的方法读、写亿以内的数。",
+  "L02-yi-yishang.html": "亿以上的数和十进制计数法；比大小、改写成“万”“亿”作单位、四舍五入求近似数；1 亿有多大。",
+  "L03-jiao.html": "从旋转看角；周角、平角、直角、锐角、钝角；用量角器量角、画角。",
+  "L04-pingxing-chuizhi.html": "平行线和垂线；画平行线、画垂线；点到直线的距离。",
+  "L05-sibianxing.html": "平行四边形和梯形的特点；对边、对角；直角梯形和等腰梯形。",
+  "L06-kousuan-bisuan.html": "口算整十数乘法；两位数乘两位数、三位数乘两位数的竖式和算理。",
+  "L07-chengfa-guilv-gusuan.html": "乘数末尾有 0 的乘法；积的变化规律；用计算器探索规律；用估算解决问题。",
+  "L08-moxing.html": "加法模型“总量 = 分量 + 分量”；乘法模型“总价 = 单价 × 数量”“路程 = 速度 × 时间”。",
+  "L09-tongjitu.html": "单式和复式条形统计图：一格代表几、怎样画、怎样读出信息。",
+  "L10-xunbao.html": "综合与实践：八个方向、看平面图、画藏宝图、写寻宝指令。",
+  "L11-fuxi.html": "整册复习：数与运算、图形、统计与方向；鸡兔同笼等数学文化。",
+};
+CL.onReady(function () {
+  const v = CL.visited(), N = CL.LESSONS.length, done = CL.LESSONS.filter((l) => v.includes(l.file)).length;
+  const nextL = CL.LESSONS.find((l) => !v.includes(l.file));
+  const cta = document.getElementById("cta");
+  if (done && nextL) { cta.href = nextL.file; cta.textContent = "继续学习：第 " + String(nextL.no).padStart(2, "0") + " 课 →"; }
+  else if (done === N) { cta.href = CL.LESSONS[0].file; cta.textContent = "全部学完 · 从头复习 →"; }
+  document.getElementById("hero-prog").innerHTML = '<span class="bar"><i style="width:' + Math.round((100 * done) / N) + '%"></i></span>已学 ' + done + " / " + N + " 课";
+  if (done) { const rb = CL.resetButton(() => location.reload()); rb.style.color = "inherit"; document.getElementById("hero-prog").appendChild(rb); }
+  let p = "", h = "";
+  for (const st of CL.STEPS) {
+    const ls = CL.LESSONS.filter((l) => l.step === st.n), d = ls.filter((l) => v.includes(l.file)).length;
+    p += '<a class="stage" href="#step-' + st.n + '"><span class="n">' + st.n + "</span><b>" + st.name + "</b><p>" + st.desc +
+      '</p><span class="go"><span>查看 ' + ls.length + " 课 ↓</span><em>" + (d ? "已学 " + d : "") + "</em></span></a>";
+    h += '<section class="step-sec" id="step-' + st.n + '"><div class="step-head"><span class="n">' + st.n + "</span><div><h2>第 " + st.n + " 步 · " + st.name + "</h2><p>" + st.desc + '</p></div></div><ol class="lrows">';
+    for (const l of ls) {
+      const seen = v.includes(l.file);
+      h += '<li><a class="lrow" href="' + l.file + '"><span class="no">' + String(l.no).padStart(2, "0") + "</span><span><h3>" + l.title + '<span class="id">' + l.id + "</span></h3><p>" + (DESC[l.file] || "") +
+        '</p><span class="src">原文出处：' + l.src + '</span></span><span class="pill2' + (seen ? " done" : "") + '">' + (seen ? "✓ 已学 · 复习" : "开始学习 →") + "</span></a></li>";
+    }
+    h += "</ol></section>";
+  }
+  const path = document.getElementById("path");
+  path.style.setProperty("--n-steps", CL.STEPS.length);  // 列数跟着步骤数走（3–5 步）
+  path.innerHTML = p;
+  document.getElementById("path-sub").textContent = "按 1 → " + CL.STEPS.length + " 的顺序学。点一个步骤，跳到这一步的课程。";
+  document.getElementById("groups").innerHTML = h;
+});
+</script>
+</body>
+</html>

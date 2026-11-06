@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>乘数末尾有 0、积的变化规律与估算 · L07</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .demo svg { width: 100%; display: block; margin: 0 auto; }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .vt { border-collapse: collapse; margin: 6px auto; font-family: var(--mono); font-size: 22px; }
+  .vt td { width: 28px; height: 34px; text-align: center; color: var(--ink); padding: 0; }
+  .vt tr.line td { border-bottom: 2px solid var(--ink-2); }
+  .vt td.z { color: var(--accent); font-weight: 700; }
+  .vt td.zero-row { color: var(--down); }
+  .vt-pair { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; }
+  .vt-pair > div { text-align: center; }
+  .vt-pair h5 { margin: 4px 0; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+  .gz .cell { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.5; }
+  .gz .cell.hl { fill: var(--rule-bg); }
+  .gz .diag { stroke: var(--ink-3); stroke-width: 1; }
+  .gz .band { fill: var(--warn-bg); opacity: .9; }
+  .gz text { font-family: var(--mono); }
+  .gz .fac { font-size: 22px; font-weight: 700; fill: var(--brand-2); }
+  .gz .dg { font-size: 20px; fill: var(--ink); }
+  .gz .res { font-size: 22px; font-weight: 700; fill: var(--down); }
+  .rt { border-collapse: collapse; margin: 6px auto; font-size: 16px; }
+  .rt th, .rt td { border: 1px solid var(--line); padding: 5px 10px; text-align: center; }
+  .rt th { background: var(--surface-2); color: var(--ink-2); font-weight: 600; font-size: 13px; }
+  .rt td.chg { color: var(--accent); font-weight: 700; }
+  .rt td.bar { text-align: left; min-width: 180px; }
+  .rt td.bar i { display: inline-block; height: 12px; background: var(--brand-2); border-radius: 3px; vertical-align: middle; }
+  .pt { font-family: var(--mono); font-size: 17px; line-height: 1.8; text-align: center; color: var(--ink); }
+  .pt b { color: var(--accent); }
+  .est-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 8px 0; }
+  .est-grid .kp { margin: 0; }
+  .verdict { font-size: 18px; font-weight: 700; text-align: center; margin: 8px 0; color: var(--brand-2); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">乘数中间或末尾有 0</a></li>
+    <li><a href="#s2">你知道吗：格子乘法</a></li>
+    <li><a href="#s3">积的变化规律</a></li>
+    <li><a href="#s4">用计算器探索规律</a></li>
+    <li><a href="#s5">用估算解决问题</a></li>
+    <li><a href="#s6">整理和复习</a></li>
+    <li><a href="#s7">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L07 · 乘法与数量关系</div>
+  <h1>乘数末尾有 0、积的变化规律与估算</h1>
+  <p>160 × 60 怎样算得又快又对？一个乘数变大 10 倍，积会怎样？带 2600 元能买 18 套服装吗？这一课学乘法里的简便写法、规律和估算。</p>
+  <div class="meta"><span>教材：第三单元 第 48–57 页</span><span>学习约 35 分钟</span><span>含 5 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>计算乘数中间有 0 的乘法；用简便写法计算乘数末尾有 0 的乘法。</li>
+    <li>说出格子乘法的算法，并说出它和竖式的相同点。</li>
+    <li>说出<a class="term" href="glossary.html#ji-bianhua-guilv">积的变化规律</a>，并用它直接写出得数。</li>
+    <li>用计算器算几道题，找出规律，再用规律写出后面的得数。</li>
+    <li>根据要解决的问题，决定把数往大估还是往小估，用<a class="term" href="glossary.html#gusuan">估算</a>解决问题。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>乘数中间或末尾有 0</h2>
+  <p>先说结论：乘数中间有 0，照常用竖式算。乘数末尾有 0，可以先把 0 前面的数相乘。两个乘数末尾一共有几个 0，就在积的末尾添上几个 0。</p>
+  <p>教材的例 3 是 106 × 63。106 的十位上是 0，竖式照常算：先用 3 去乘，得 318；再用 6 去乘。</p>
+  <figure class="fig"><img src="img/t048-zhongjian0.png" alt="教材第 48 页：106×63 的竖式，先算 106×3=318；你能快速算出 106×60 吗；先口算 16×6，积的末尾……"><figcaption><b>教材第 48 页</b>例 3：106 × 63，以及“你能快速算出 106 × 60 的结果吗？”</figcaption></figure>
+  <p>教材接着问：你能快速算出 106 × 60 的结果吗？试一试 160 × 60。小朋友提示：“先口算 16 × 6，积的末尾……”</p>
+
+  <div class="chart-card" id="demo-zero">
+    <div class="chart-head">
+      <div class="chart-title">乘数末尾有 0：普通写法和简便写法</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一道题：
+        <select id="zr-q" aria-label="选一道题">
+          <option value="106,63">106 × 63（中间有 0）</option>
+          <option value="106,60">106 × 60</option>
+          <option value="160,60" selected>160 × 60</option>
+          <option value="206,53">206 × 53</option>
+          <option value="704,90">704 × 90</option>
+          <option value="580,12">580 × 12</option>
+          <option value="472,30">472 × 30</option>
+          <option value="108,27">108 × 27</option>
+          <option value="305,60">305 × 60</option>
+          <option value="180,70">180 × 70</option>
+          <option value="480,23">480 × 23</option>
+        </select>
+      </div>
+      <div class="vt-pair" id="zr-box"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="zr-out"></div></div>
+    <div class="chart-foot">选一道末尾有 0 的题，比一比左右两种写法。左边每一步都写出来；右边先不管末尾的 0，算完再把 0 添在积的末尾（黄色的 0）。红色的一行全是 0，简便写法就省掉了它。<br><span class="data-note">题目来自教材第 48 页例 3、“试一试”和“做一做”。左右对比是课程补充的演示，教材只要求会算。</span></div>
+  </div>
+  <div class="callout warn"><span class="ttl">两种 0 不一样</span>乘数中间的 0 不能丢，它要占住数位，106 不能看成 16。乘数末尾的 0 可以先不管，但算完一定要添回去。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>你知道吗：格子乘法</h2>
+  <p>先说结论：15 世纪，意大利的一本算术书介绍了“格子乘法”。它把每两个数位相乘的积写进格子，最后沿斜线相加。教材的例子是 46 × 75 = 3450。</p>
+  <figure class="fig"><img src="img/t048-gezi.png" alt="教材第 48 页：格子乘法 46×75，先写 42、30，再填完格子，沿斜线相加得 3450"><figcaption><b>教材第 48 页</b><a class="term" href="glossary.html#gezi-chengfa">格子乘法</a>的算法。</figcaption></figure>
+  <ol class="steps">
+    <li>把两个乘数分别写在格子的上边和右边。</li>
+    <li>分别计算 6 × 7 = 42，6 × 5 = 30，把 42、30 写在对应的格子里。</li>
+    <li>以此类推，继续乘下去，把格子填完。</li>
+    <li>把格子内同一斜线上的数相加。个位为 0，十位为 2 + 3 + 0 = 5。百位为 4 + 8 + 2 = 14，向千位进 1。千位为 2 + 1 = 3。</li>
+  </ol>
+
+  <div class="chart-card" id="demo-grid">
+    <div class="chart-head">
+      <div class="chart-title">格子乘法：一格一格填，一条一条斜线加</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一道题：
+        <select id="gz-q" aria-label="选一道题">
+          <option value="46,75" selected>46 × 75（教材例子）</option><option value="37,48">37 × 48</option>
+          <option value="12,13">12 × 13</option><option value="23,34">23 × 34</option><option value="78,82">78 × 82</option>
+        </select>
+        <button class="btn" id="gz-prev" type="button">上一步</button>
+        <button class="btn primary" id="gz-next" type="button">下一步</button>
+        <button class="btn" id="gz-all" type="button">一下填完</button>
+        <button class="btn" id="gz-reset" type="button">重来</button>
+      </div>
+      <svg class="gz" id="gz-svg" viewBox="0 0 420 330" role="img" aria-label="格子乘法"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="gz-out"></div></div>
+    <div class="chart-foot">点“下一步”，先填 4 个格子，再一条一条地加斜线。浅红色的斜条是正在加的那一条。最后和竖式的结果对一对。<br><span class="data-note">按教材第 48 页“你知道吗”的方法画。除 46 × 75 以外的题是课程补充的练习。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：格子乘法的道理</span>教材问：“你能说说格子乘法的道理吗？”一种想法：同一条斜线上的数，都在同一个数位上。最右下的斜线是个位，往左上一条是十位，再往上是百位、千位。所以斜线相加，就是把相同数位上的数加起来。这和竖式“相同数位对齐再相加”是一个道理。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>积的变化规律</h2>
+  <p>先说结论：一个乘数不变，另一个乘数乘几或除以几（0 除外），积也乘几或除以几。</p>
+  <figure class="fig"><img src="img/t049-guilv.png" alt="教材第 49 页：6×2=12，6×20=120，6×200=1200；20×4=80，10×4=40，5×4=20；积的变化规律"><figcaption><b>教材第 49 页</b>例 4：观察两组题，发现积的变化规律。</figcaption></figure>
+  <div class="grid-2">
+    <div class="kp"><div class="k">第（1）组</div><div class="v">6 × 2 = 12<br>6 × 20 = 120<br>6 × 200 = 1200</div><p>一个乘数不变，另一个乘数不断变大，积也不断变大。</p></div>
+    <div class="kp"><div class="k">第（2）组</div><div class="v">20 × 4 = 80<br>10 × 4 = 40<br>5 × 4 = 20</div><p>一个乘数不变，另一个乘数不断变小，积也不断变小。</p></div>
+  </div>
+  <div class="callout rule"><span class="ttl">积的变化规律（教材第 49 页）</span>一个乘数不变，另一个乘数乘几或除以几（0 除外），积也乘几或除以几。</div>
+
+  <div class="chart-card" id="demo-rule">
+    <div class="chart-head">
+      <div class="chart-title">积的变化规律：变一个乘数，看积怎样变</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">从这道题开始：
+        <select id="rl-base" aria-label="起始算式">
+          <option value="6,2" selected>6 × 2</option><option value="20,4">20 × 4</option><option value="12,3">12 × 3</option>
+          <option value="48,5">48 × 5</option><option value="4,15">4 × 15</option><option value="15,14">15 × 14</option><option value="32,15">32 × 15</option>
+        </select>
+      </div>
+      <div class="btn-row">变哪个乘数：
+        <button class="btn on" type="button" data-side="0">第一个乘数</button>
+        <button class="btn" type="button" data-side="1">第二个乘数</button>
+      </div>
+      <div class="btn-row">怎样变：
+        <button class="btn" type="button" data-op="*2">乘 2</button><button class="btn" type="button" data-op="*3">乘 3</button>
+        <button class="btn" type="button" data-op="*10">乘 10</button><button class="btn" type="button" data-op="/2">除以 2</button>
+        <button class="btn" type="button" data-op="/10">除以 10</button>
+        <button class="btn" id="rl-reset" type="button">重来</button>
+      </div>
+      <div id="rl-table"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rl-out"></div></div>
+    <div class="chart-foot">选好起始算式，再选变哪个乘数、怎样变。每变一次，表里多一行。黄色的数是变了的数，蓝条表示积的大小。<br><span class="data-note">起始算式来自教材第 49 页例 4、“做一做”和练习九。只做能整除的除法；除不尽的情况以后再学。</span></div>
+  </div>
+  <p>“做一做”第 2 题：一块长方形绿地，面积是 200 m²，宽是 8 m。长不变，宽增加到 24 m。想一想：宽乘了几？面积也会乘几？</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>用计算器探索规律</h2>
+  <p>先说结论：先用计算器算几道题，找出规律；再用规律直接写出后面的得数；最后用计算器检验。</p>
+  <figure class="fig"><img src="img/t050-jisuanqi.png" alt="教材第 50 页：11×11=121，111×111=12321……乘积左右对称；列竖式可以说明这个规律"><figcaption><b>教材第 50 页</b>例 5：11 × 11、111 × 111……你发现了什么规律？</figcaption></figure>
+  <p>例 5 里，小朋友说出了发现。一个说：“乘积左右对称，中间的数字是乘数的位数……”另一个问：“为什么会有这样的规律？”机器人提示：“列竖式可以说明这个规律……”</p>
+  <p>教材画出了 11 × 11 和 111 × 111 的竖式。每一行都是一串 1，一行比一行往左错一位。同一列上有几个 1，积的那一位就是几。</p>
+
+  <div class="chart-card" id="demo-pattern">
+    <div class="chart-head">
+      <div class="chart-title">计算器找规律</div>
+      <label class="ctrl">算到第 <b id="pt-nv">3</b> 个 <input id="pt-n" type="range" min="1" max="9" value="3"></label>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一组题：
+        <button class="btn on" type="button" data-pt="one">11 × 11 一组</button>
+        <button class="btn" type="button" data-pt="nine">9 × 9 一组</button>
+        <button class="btn" type="button" data-pt="six">6 × 7 一组</button>
+        <button class="btn" type="button" data-pt="three">3 × 4 一组</button>
+        <button class="btn" id="pt-show" type="button">说出规律</button>
+      </div>
+      <div class="pt" id="pt-list"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="pt-out"></div></div>
+    <div class="chart-foot">先算前三个，自己猜下一个的积，再把滑块往右拖一格检验。猜对了再点“说出规律”。<br><span class="data-note">四组题来自教材第 50 页例 5、“做一做”和练习九第 10 题。积由程序精确计算，相当于计算器。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：规律也有尽头</span>11 × 11 这一组，教材算到 9 个 1。再往后，10 个 1 乘 10 个 1，中间的数位要进位，积就不再是“1234…”的样子了。所以用规律写出得数以后，要用计算器检验。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>用估算解决问题</h2>
+  <p>先说结论：有的问题用估算就能解决。要根据解决的问题，确定把数往大估，还是往小估。</p>
+  <p>教材的例 6：张老师要为舞蹈队选购 18 套相同的服装，她带了 2600 元。三款服装每套分别是 108 元、130 元、208 元。可以买哪几款？</p>
+  <figure class="fig"><img src="img/t053-gusuan.png" alt="教材第 53 页：例 6 精确计算和估算两种方法；108×18 估大成 110×20=2200；130×18 估大成 130×20=2600；208×18 估小成 200×18=3600"><figcaption><b>教材第 53 页</b>例 6：一个小朋友分别精确计算，另一个小朋友用估算。</figcaption></figure>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>款式</th><th>精确计算</th><th>估算</th><th>结论</th></tr>
+    <tr><td>第一款 108 元</td><td>108 × 18 = 1944，2600 &gt; 1944</td><td>估大：110 × 20 = 2200</td><td>可以买</td></tr>
+    <tr><td>第二款 130 元</td><td>130 × 18 = 2340，2600 &gt; 2340</td><td>估大：130 × 20 = 2600</td><td>可以买</td></tr>
+    <tr><td>第三款 208 元</td><td>208 × 18 = 3744，2600 &lt; 3744</td><td>估小：200 × 18 = 3600</td><td>不能买</td></tr>
+  </table></div>
+  <p>为什么第一款要往大估？往大估以后是 2200 元，真实的总价比 2200 元还少，所以钱一定够。第三款往小估，已经要 3600 元，真实的总价更多，所以钱一定不够。</p>
+
+  <div class="chart-card" id="demo-est">
+    <div class="chart-head">
+      <div class="chart-title">估算：往大估还是往小估？</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一个问题：
+        <select id="es-q" aria-label="选一个问题">
+          <option value="0" selected>例 6 · 第一款服装</option><option value="1">例 6 · 第二款服装</option><option value="2">例 6 · 第三款服装</option>
+          <option value="3">做一做 · 19 辆车够吗</option><option value="4">练习十 · 门票钱够吗</option><option value="5">练习十一 · 排球钱够吗</option>
+        </select>
+      </div>
+      <div class="est-grid">
+        <div class="kp"><div class="k" id="es-la">第一个乘数</div><div class="btn-row" id="es-a"></div></div>
+        <div class="kp"><div class="k" id="es-lb">第二个乘数</div><div class="btn-row" id="es-b"></div></div>
+      </div>
+      <div class="verdict" id="es-verdict"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="es-out"></div></div>
+    <div class="chart-foot">先读问题，再给每个乘数选“不变 / 往大估 / 往小估”。看估出的数能不能直接回答问题。如果“不能判断”，换一种估法，或者精确计算。<br><span class="data-note">问题来自教材第 53–56 页。往大估、往小估都估成整十数，这是课程的简化；教材的估法见上表。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">怎样决定往哪边估</span>问“钱够不够”：往大估以后还够，就一定够。问“坐得下吗”：往小估以后还坐得下，就一定坐得下。估出的数不能回答问题时，就精确计算。</div>
+  <div class="callout warn"><span class="ttl">读题要仔细</span>“做一做”里有一句提示：限乘人数里包括司机。所以每辆车能坐的师生，比限乘人数少 1 人。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>整理和复习</h2>
+  <p>先说结论：本单元学了三件事：口算乘法、笔算乘法、用估算解决问题。它们背后是同一个想法：把乘数拆开，分别相乘，再把积相加。</p>
+  <figure class="fig"><img src="img/t055-jiegou.png" alt="教材第 55 页：小明整理的知识结构图：口算乘法 24×3，笔算乘法 15×12，用估算解决问题"><figcaption><b>教材第 55 页</b>小明整理的“知识结构图”。</figcaption></figure>
+  <ul class="checklist">
+    <li><b>口算乘法</b>：24 × 3，把 24 拆成 20 和 4，20 × 3 = 60，4 × 3 = 12，60 + 12 = 72。</li>
+    <li><b>笔算乘法</b>：15 × 12，12 = 10 + 2。15 × 12 计算的是 10 个 15 与 2 个 15 的和。</li>
+    <li><b>用估算解决问题</b>：要结合实际问题来确定把数往大估还是往小估。</li>
+  </ul>
+  <blockquote class="src">我发现不管几位数乘几位数，都是用其中一个乘数的每一位数和另一个乘数分别相乘，再把积相加。<cite>教材第 55 页</cite></blockquote>
+  <p>口算和笔算的方法，可以复习上一课 <a href="L06-kousuan-bisuan.html">L06</a>。</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">用简便方法算 160 × 60，正确的想法是哪一个？</div>
+    <div class="opts"><button>先算 16 × 6 = 96，积就是 96</button><button>先算 16 × 6 = 96，两个乘数末尾一共有 2 个 0，积是 9600</button><button>先算 16 × 60 = 960，积是 960</button><button>先算 160 × 6 = 960，积是 960</button></div>
+    <div class="explain">160 和 60 末尾一共有 2 个 0。先口算 16 × 6 = 96，再在积的末尾添上 2 个 0，得 9600（教材第 48 页“试一试”）。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">已知 32 × 15 = 480，那么 32 × 30 等于多少？</div>
+    <div class="opts"><button>495</button><button>510</button><button>960</button><button>4800</button></div>
+    <div class="explain">32 不变，15 乘 2 得 30，积也乘 2：480 × 2 = 960。这是积的变化规律（教材第 49 页；练习十一第 3 题）。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">格子乘法 46 × 75 中，百位上的数是怎样得到的？</div>
+    <div class="opts"><button>4 + 8 + 2 = 14，写 4，向千位进 1</button><button>4 × 8 × 2 = 64</button><button>2 + 3 + 0 = 5</button><button>2 + 1 = 3</button></div>
+    <div class="explain">教材第 48 页：百位为 4 + 8 + 2 = 14，向千位进 1；千位为 2 + 1 = 3。结果是 3450。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">带 2600 元买 18 套 108 元的服装。为什么把 108 × 18 估成 110 × 20 就能判断钱够？</div>
+    <div class="opts"><button>因为 110 × 20 比较好算</button><button>因为估小以后还够</button><button>因为 110 × 20 正好等于 2600</button><button>因为往大估以后是 2200 元，真实的总价更少，所以一定够</button></div>
+    <div class="explain">两个乘数都往大估，估出的总价比真实总价多。估大后的 2200 元都不超过 2600 元，真实的总价就更不会超过（教材第 53 页）。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">111 × 111 = 12321。不计算，1111 × 1111 等于多少？</div>
+    <div class="opts"><button>123321</button><button>1234321</button><button>12344321</button><button>1111111</button></div>
+    <div class="explain">乘积左右对称，中间的数字是乘数的位数。1111 是四位数，中间是 4：1234321（教材第 50 页例 5）。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>乘数中间有 0</td><td>照常用竖式算，0 要占住数位</td></tr>
+    <tr><td>乘数末尾有 0</td><td>先算 0 前面的数，再在积的末尾添上两个乘数末尾 0 的总个数</td></tr>
+    <tr><td>格子乘法</td><td>每格写两个数位的积，同一斜线上的数相加；46 × 75 = 3450</td></tr>
+    <tr><td>积的变化规律</td><td>一个乘数不变，另一个乘数乘几或除以几（0 除外），积也乘几或除以几</td></tr>
+    <tr><td>计算器找规律</td><td>先算几道，找规律，用规律写得数，再检验</td></tr>
+    <tr><td>估算</td><td>根据问题定往大估还是往小估；估出的数不能判断时就精确计算</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L06-kousuan-bisuan.html"><small>上一课 · L06</small>口算乘法与笔算乘法</a>
+    <a href="L08-moxing.html"><small>下一课 · L08</small>加法模型和乘法模型</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L07-chengfa-guilv-gusuan.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册第三单元“多位数乘两位数”第 48–57 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  /* ---- 竖式格子（a0 × b0，可在右侧挂 za、zb 个末尾 0） ---- */
+  function vertical(a0, b0, za, zb, zeroRowFull) {
+    const A = String(a0), B = String(b0), two = b0 >= 10;
+    const b1 = b0 % 10, b10 = Math.floor(b0 / 10);
+    let P1 = String(a0 * b1), P2 = String(a0 * b10), S = String(a0 * b0);
+    if (two && b1 === 0 && zeroRowFull) P1 = "0".repeat(A.length);
+    const Z = za + zb;
+    const C = Math.max(A.length, B.length + 1, two ? P1.length : 0, two ? P2.length + 1 : 0, S.length) + 1;
+    const W = C + Z;
+    const blank = () => Array.from({ length: W }, () => ({ ch: "", cls: "" }));
+    const put = (row, str, end, cls) => { for (let i = 0; i < str.length; i++) row[end - (str.length - 1 - i)] = { ch: str[i], cls: cls || "" }; return row; };
+    const zeros = (row, n) => { for (let i = 0; i < n; i++) row[C + i] = { ch: "0", cls: "z" }; return row; };
+    const rows = [];
+    rows.push({ c: zeros(put(blank(), A, C - 1), za) });
+    const rB = zeros(put(blank(), B, C - 1), zb); rB[0] = { ch: "×", cls: "" };
+    rows.push({ c: rB, line: true });
+    if (two) {
+      rows.push({ c: put(blank(), P1, C - 1, b1 === 0 ? "zero-row" : "") });
+      rows.push({ c: put(blank(), P2, C - 2), line: true });
+    }
+    rows.push({ c: zeros(put(blank(), S, C - 1), Z) });
+    let h = '<table class="vt">';
+    for (const r of rows) { h += "<tr" + (r.line ? ' class="line"' : "") + ">"; for (const cell of r.c) h += '<td class="' + cell.cls + '">' + cell.ch + "</td>"; h += "</tr>"; }
+    return h + "</table>";
+  }
+  function strip0(n) { let z = 0; while (n % 10 === 0 && n > 0) { n /= 10; z++; } return [n, z]; }
+
+  /* ---- 1. 末尾有 0 ---- */
+  function drawZero() {
+    const [a, b] = CL.$("#zr-q").value.split(",").map(Number);
+    const [a0, za] = strip0(a), [b0, zb] = strip0(b);
+    const Z = za + zb;
+    let h = "";
+    if (!Z) {
+      h = '<div><h5>竖式（中间的 0 照常算）</h5>' + vertical(a, b, 0, 0, true) + "</div>";
+      const b1 = b % 10, b10 = Math.floor(b / 10);
+      CL.$("#zr-out").textContent = a + " × " + b + "：乘数末尾没有 0，照常用竖式算。\n" +
+        "先用 " + b1 + " 去乘：" + a + " × " + b1 + " = " + a * b1 + "；再用十位上的 " + b10 + " 去乘：" + a + " × " + b10 + " = " + a * b10 + "，末位和十位对齐。\n" +
+        "相加：" + a * b1 + " + " + a * b10 * 10 + " = " + a * b + "。\n" +
+        (String(a).slice(1, -1).includes("0") ? a + " 中间的 0 要占住数位。用它去乘时，0 乘任何数都得 0，再加上进上来的数。" : "");
+    } else {
+      h = '<div><h5>普通写法</h5>' + vertical(a, b, 0, 0, true) + "</div>" +
+          '<div><h5>简便写法</h5>' + vertical(a0, b0, za, zb, false) + "</div>";
+      CL.$("#zr-out").textContent = a + " × " + b + "：两个乘数末尾一共有 " + Z + " 个 0。\n" +
+        "先算 0 前面的数：" + a0 + " × " + b0 + " = " + a0 * b0 + "。\n" +
+        "再在积的末尾添上 " + Z + " 个 0：" + a * b + "。所以 " + a + " × " + b + " = " + a * b + "。" +
+        (b % 10 === 0 ? "\n普通写法里，用个位上的 0 去乘，得到一整行 0（红色），简便写法省掉了这一行。" : "");
+    }
+    CL.$("#zr-box").innerHTML = h;
+    CL.$("#zr-out").textContent = CL.$("#zr-out").textContent.replace(/\n$/, "");
+  }
+  CL.$("#zr-q").addEventListener("change", drawZero);
+  drawZero();
+
+  /* ---- 2. 格子乘法 ---- */
+  // 格子：上边是第一个乘数（左→右 c=0,1），右边是第二个乘数（上→下 r=0,1）
+  // 填格顺序按教材：先用第一个乘数的个位（右列）乘，再用十位（左列）乘
+  let gzStep = 0;
+  const X0 = 110, Y0 = 50, CS = 100;
+  function gzData() {
+    const [a, b] = CL.$("#gz-q").value.split(",").map(Number);
+    const A = [Math.floor(a / 10), a % 10], B = [Math.floor(b / 10), b % 10];
+    const order = [[0, 1], [1, 1], [0, 0], [1, 0]];          // [r, c]
+    const cells = order.map(([r, c]) => { const v = A[c] * B[r]; return { r, c, v, t: Math.floor(v / 10), o: v % 10, d: (1 - c) + (1 - r) }; });
+    const sums = [0, 0, 0, 0], parts = [[], [], [], []];
+    for (const k of cells) { sums[k.d] += k.o; parts[k.d].push(k.o); sums[k.d + 1] += k.t; parts[k.d + 1].push(k.t); }
+    const dig = [], carryIn = [0, 0, 0, 0]; let carry = 0;
+    for (let d = 0; d < 4; d++) { carryIn[d] = carry; const s = sums[d] + carry; dig[d] = s % 10; carry = Math.floor(s / 10); }
+    return { a, b, A, B, cells, sums, parts, dig, carryIn, last: carry };
+  }
+  function drawGrid() {
+    const g = gzData();
+    gzStep = Math.max(0, Math.min(8, gzStep));
+    const filled = Math.min(gzStep, 4), dDone = Math.max(0, gzStep - 4); // 已加完的斜线条数
+    let h = "";
+    // 正在加的斜线带
+    if (gzStep > 4) {
+      const d = gzStep - 5;
+      // 斜线 d 上的点：x + y 落在一条带上。用多边形近似：在格子坐标里 (1-c)+(1-r) 的下三角 + (1-c)+(1-r) = d-1 的上三角
+      const pts = [];
+      for (const k of g.cells) {
+        const x = X0 + k.c * CS, y = Y0 + k.r * CS;
+        if (k.d === d) pts.push('<polygon class="band" points="' + (x + CS) + "," + y + " " + (x + CS) + "," + (y + CS) + " " + x + "," + (y + CS) + '"/>');
+        if (k.d + 1 === d) pts.push('<polygon class="band" points="' + x + "," + y + " " + (x + CS) + "," + y + " " + x + "," + (y + CS) + '"/>');
+      }
+      h += pts.join("");
+    }
+    for (let i = 0; i < 4; i++) {
+      const k = g.cells[i], x = X0 + k.c * CS, y = Y0 + k.r * CS;
+      h += '<rect class="cell' + (i === filled - 1 && gzStep <= 4 ? " hl" : "") + '" x="' + x + '" y="' + y + '" width="' + CS + '" height="' + CS + '" style="fill-opacity:' + (gzStep > 4 ? 0 : 1) + '"/>';
+    }
+    for (let i = 0; i < 4; i++) {
+      const k = g.cells[i], x = X0 + k.c * CS, y = Y0 + k.r * CS;
+      h += '<rect x="' + x + '" y="' + y + '" width="' + CS + '" height="' + CS + '" fill="none" style="stroke:var(--ink-2);stroke-width:1.5"/>';
+      h += '<line class="diag" x1="' + (x + CS) + '" y1="' + y + '" x2="' + x + '" y2="' + (y + CS) + '"/>';
+      if (i < filled) {
+        h += '<text class="dg" x="' + (x + 30) + '" y="' + (y + 42) + '" text-anchor="middle">' + k.t + "</text>";
+        h += '<text class="dg" x="' + (x + 70) + '" y="' + (y + 80) + '" text-anchor="middle">' + k.o + "</text>";
+      }
+    }
+    // 乘数
+    h += '<text class="fac" x="' + (X0 + CS / 2) + '" y="' + (Y0 - 14) + '" text-anchor="middle">' + g.A[0] + "</text>";
+    h += '<text class="fac" x="' + (X0 + CS * 1.5) + '" y="' + (Y0 - 14) + '" text-anchor="middle">' + g.A[1] + "</text>";
+    h += '<text class="fac" x="' + (X0 + 2 * CS + 22) + '" y="' + (Y0 + CS / 2 + 8) + '" text-anchor="middle">' + g.B[0] + "</text>";
+    h += '<text class="fac" x="' + (X0 + 2 * CS + 22) + '" y="' + (Y0 + CS * 1.5 + 8) + '" text-anchor="middle">' + g.B[1] + "</text>";
+    // 斜线的和：d0 右列下方，d1 左列下方，d2 下行左侧，d3 上行左侧
+    const pos = [[X0 + CS * 1.5, Y0 + 2 * CS + 34], [X0 + CS * 0.5, Y0 + 2 * CS + 34], [X0 - 26, Y0 + CS * 1.5 + 8], [X0 - 26, Y0 + CS * 0.5 + 8]];
+    for (let d = 0; d < dDone; d++) {
+      if (d === 3 && g.dig[3] === 0 && g.last === 0) continue;
+      h += '<text class="res" x="' + pos[d][0] + '" y="' + pos[d][1] + '" text-anchor="middle">' + g.dig[d] + "</text>";
+    }
+    CL.$("#gz-svg").innerHTML = h;
+    const nm = ["个位", "十位", "百位", "千位"];
+    let txt = g.a + " × " + g.b + "，第 " + gzStep + " 步（共 8 步）。\n";
+    if (gzStep === 0) txt += "把 " + g.a + " 写在格子上边，" + g.b + " 写在格子右边。";
+    else if (gzStep <= 4) { const k = g.cells[gzStep - 1]; txt += g.A[k.c] + " × " + g.B[k.r] + " = " + k.v + "，把 " + k.t + " 写在格子的左上角，" + k.o + " 写在右下角。"; }
+    else {
+      const d = gzStep - 5;
+      const expr = g.parts[d].join(" + ") + (g.carryIn[d] ? " + " + g.carryIn[d] + "（进上来的）" : "");
+      const s = g.sums[d] + g.carryIn[d];
+      if (d === 3 && s === 0) txt += "千位上是 0，最高位的 0 不写。";
+      else if (g.parts[d].length === 1 && !g.carryIn[d]) txt += nm[d] + "：这条斜线上只有一个数 " + s + "，写 " + s + "。";
+      else txt += nm[d] + "：" + expr + " = " + s + (s >= 10 && d < 3 ? "，写 " + (s % 10) + "，向" + nm[d + 1] + "进 1" : "") + "。";
+      if (gzStep === 8) txt += "\n结果：" + g.a + " × " + g.b + " = " + g.a * g.b + "。用竖式算，也是 " + g.a * g.b + "。";
+    }
+    CL.$("#gz-out").textContent = txt;
+    CL.$("#gz-prev").disabled = gzStep === 0; CL.$("#gz-next").disabled = gzStep === 8;
+  }
+  CL.$("#gz-next").addEventListener("click", () => { gzStep++; drawGrid(); });
+  CL.$("#gz-prev").addEventListener("click", () => { gzStep--; drawGrid(); });
+  CL.$("#gz-all").addEventListener("click", () => { gzStep = 8; drawGrid(); });
+  CL.$("#gz-reset").addEventListener("click", () => { gzStep = 0; drawGrid(); });
+  CL.$("#gz-q").addEventListener("change", () => { gzStep = 0; drawGrid(); });
+  drawGrid();
+
+  /* ---- 3. 积的变化规律 ---- */
+  let rlSide = 0, rlRows = [];
+  const OPW = { "*2": "乘 2", "*3": "乘 3", "*10": "乘 10", "/2": "除以 2", "/10": "除以 10" };
+  function rlStart() { const [a, b] = CL.$("#rl-base").value.split(",").map(Number); rlRows = [{ f: [a, b], op: null, side: null }]; rlMsg = "从 " + a + " × " + b + " = " + a * b + " 开始。选一个乘数，再选怎样变。"; drawRule(); }
+  let rlMsg = "";
+  function applyOp(op) {
+    const last = rlRows[rlRows.length - 1], f = last.f.slice();
+    const k = +op.slice(1), x = f[rlSide];
+    if (op[0] === "/") { if (x % k !== 0) { rlMsg = (rlSide ? "第二个" : "第一个") + "乘数 " + x + " 除以 " + k + " 除不尽。换一种变法试试。"; return drawRule(); } f[rlSide] = x / k; }
+    else { if (x * k > 100000) { rlMsg = "数太大了，点“重来”再试。"; return drawRule(); } f[rlSide] = x * k; }
+    if (rlRows.length >= 6) rlRows.splice(1, 1);
+    rlRows.push({ f, op, side: rlSide });
+    const p0 = last.f[0] * last.f[1], p1 = f[0] * f[1];
+    rlMsg = (rlSide ? "第二个" : "第一个") + "乘数从 " + x + " 变成 " + f[rlSide] + "，" + OPW[op] + "；另一个乘数 " + f[1 - rlSide] + " 不变。\n" +
+      "积从 " + p0 + " 变成 " + p1 + "，也" + OPW[op] + "：" + p0 + (op[0] === "*" ? " × " : " ÷ ") + k + " = " + p1 + "。";
+    drawRule();
+  }
+  function drawRule() {
+    const max = Math.max(...rlRows.map((r) => r.f[0] * r.f[1]));
+    let h = '<div class="tbl-wrap"><table class="rt"><tr><th>第一个乘数</th><th></th><th>第二个乘数</th><th></th><th>积</th><th>积的大小</th><th>怎样变</th></tr>';
+    rlRows.forEach((r) => {
+      const p = r.f[0] * r.f[1];
+      h += "<tr><td" + (r.side === 0 ? ' class="chg"' : "") + ">" + r.f[0] + "</td><td>×</td><td" + (r.side === 1 ? ' class="chg"' : "") + ">" + r.f[1] + "</td><td>=</td><td" + (r.op ? ' class="chg"' : "") + ">" + p +
+        '</td><td class="bar"><i style="width:' + Math.max(2, Math.round((170 * p) / max)) + 'px"></i></td><td>' + (r.op ? (r.side ? "第二个" : "第一个") + "乘数" + OPW[r.op] : "起始") + "</td></tr>";
+    });
+    CL.$("#rl-table").innerHTML = h + "</table></div>";
+    CL.$$("#demo-rule [data-side]").forEach((b) => b.classList.toggle("on", +b.dataset.side === rlSide));
+    CL.$("#rl-out").textContent = rlMsg + "\n规律：一个乘数不变，另一个乘数乘几或除以几（0 除外），积也乘几或除以几。";
+  }
+  CL.$$("#demo-rule [data-side]").forEach((b) => b.addEventListener("click", () => { rlSide = +b.dataset.side; drawRule(); }));
+  CL.$$("#demo-rule [data-op]").forEach((b) => b.addEventListener("click", () => applyOp(b.dataset.op)));
+  CL.$("#rl-base").addEventListener("change", rlStart);
+  CL.$("#rl-reset").addEventListener("click", rlStart);
+  rlStart();
+
+  /* ---- 4. 计算器找规律 ---- */
+  let ptKind = "one", ptShow = false;
+  const PT = {
+    one: { f: (n) => ["1".repeat(n), "1".repeat(n)], rule: "乘积左右对称：从 1 数到乘数的位数，再倒着数回 1。中间的数字是乘数的位数。" },
+    nine: { f: (n) => ["9".repeat(n), "9".repeat(n)], rule: "积的前面是比乘数少 1 个的 9，接着是 8，再接着是同样多个 0，最后是 1。" },
+    six: { f: (n) => ["6".repeat(n), "6".repeat(n - 1) + "7"], rule: "乘数有几位，积就是几个 4 后面接几个 2。" },
+    three: { f: (n) => ["3".repeat(n), "3".repeat(n - 1) + "4"], rule: "乘数有几位，积就是几个 1 后面接几个 2。" },
+  };
+  function drawPattern() {
+    const n = +CL.$("#pt-n").value; CL.$("#pt-nv").textContent = n;
+    const lines = [];
+    for (let i = 1; i <= n; i++) {
+      const [x, y] = PT[ptKind].f(i);
+      if (ptKind === "one" && i === 1) continue;
+      const p = (BigInt(x) * BigInt(y)).toString();
+      lines.push(x + " × " + y + " = " + (i === n ? "<b>" + p + "</b>" : p));
+    }
+    CL.$("#pt-list").innerHTML = lines.join("<br>") || "（11 × 11 一组从两位数开始，请把滑块往右拖。）";
+    CL.$$("#demo-pattern [data-pt]").forEach((b) => b.classList.toggle("on", b.dataset.pt === ptKind));
+    const [x, y] = PT[ptKind].f(n);
+    const last = ptKind === "one" && n === 1 ? "" : "最后一个：" + x + " × " + y + " = " + (BigInt(x) * BigInt(y)).toString() + "。\n";
+    CL.$("#pt-out").textContent = last + (ptShow ? "规律：" + PT[ptKind].rule : "先猜下一个的积，再把滑块往右拖一格检验。猜对了点“说出规律”。");
+  }
+  CL.$$("#demo-pattern [data-pt]").forEach((b) => b.addEventListener("click", () => { ptKind = b.dataset.pt; ptShow = false; drawPattern(); }));
+  CL.$("#pt-show").addEventListener("click", () => { ptShow = true; drawPattern(); });
+  CL.$("#pt-n").addEventListener("input", drawPattern);
+  drawPattern();
+
+  /* ---- 5. 估算 ---- */
+  // need: "cost" = 总数不能超过 T 才够；"seat" = 总数要不少于 T 才够
+  const ES = [
+    { la: "每套价格 108 元", lb: "套数 18", a: 108, b: 18, T: 2600, need: "cost", q: "带 2600 元，买 18 套 108 元的服装，钱够吗？" },
+    { la: "每套价格 130 元", lb: "套数 18", a: 130, b: 18, T: 2600, need: "cost", q: "带 2600 元，买 18 套 130 元的服装，钱够吗？" },
+    { la: "每套价格 208 元", lb: "套数 18", a: 208, b: 18, T: 2600, need: "cost", q: "带 2600 元，买 18 套 208 元的服装，钱够吗？" },
+    { la: "每辆坐 47 名师生", lb: "车 19 辆", a: 47, b: 19, T: 1026, need: "seat", q: "1026 名师生乘车，每辆车限乘 48 人，19 辆车够吗？" },
+    { la: "每人门票 38 元", lb: "师生 192 人", a: 38, b: 192, T: 8000, need: "cost", q: "192 名师生参观科技馆，每人门票 38 元，老师准备了 8000 元，够吗？" },
+    { la: "每个排球 108 元", lb: "买 52 个", a: 108, b: 52, T: 5000, need: "cost", q: "每个排球 108 元，买 52 个，带 5000 元钱够吗？" },
+  ];
+  let esDir = [0, 0];
+  function opts(n) { const up = Math.ceil(n / 10) * 10, dn = Math.floor(n / 10) * 10; return { 0: n, 1: up, "-1": dn }; }
+  function drawEst() {
+    const e = ES[+CL.$("#es-q").value];
+    CL.$("#es-la").textContent = e.la; CL.$("#es-lb").textContent = e.lb;
+    [["#es-a", e.a, 0], ["#es-b", e.b, 1]].forEach(([sel, n, i]) => {
+      const o = opts(n);
+      CL.$(sel).innerHTML = [[0, "不变 " + n], [1, "往大估 " + o[1]], [-1, "往小估 " + o[-1]]]
+        .map(([d, t]) => '<button type="button" class="btn' + (esDir[i] === d ? " on" : "") + '" data-i="' + i + '" data-d="' + d + '"' + ((d !== 0 && o[d] === n) ? " disabled" : "") + ">" + t + "</button>").join("");
+    });
+    const x = opts(e.a)[esDir[0]], y = opts(e.b)[esDir[1]], est = x * y, real = e.a * e.b;
+    const up = esDir.some((d) => d > 0), dn = esDir.some((d) => d < 0);
+    const unitT = e.need === "cost" ? " 元" : " 人";
+    let kind, verdict;
+    if (!up && !dn) kind = "精确计算";
+    else if (up && dn) kind = "一个往大、一个往小";
+    else kind = up ? "估大" : "估小";
+    const ok = e.need === "cost" ? (v) => v <= e.T : (v) => v >= e.T;
+    if (kind === "精确计算") verdict = ok(real) ? "够" : "不够";
+    else if (kind === "一个往大、一个往小") verdict = "不能判断";
+    else if (e.need === "cost") verdict = kind === "估大" ? (est <= e.T ? "一定够" : "不能判断") : (est >= e.T ? "一定不够" : "不能判断");
+    else verdict = kind === "估小" ? (est >= e.T ? "一定够" : "不能判断") : (est <= e.T ? "一定不够" : "不能判断");
+    CL.$("#es-verdict").textContent = "判断：" + verdict;
+    let why;
+    if (kind === "精确计算") why = "精确计算：" + e.a + " × " + e.b + " = " + real + "，和 " + e.T + unitT + "比，" + verdict + "。";
+    else if (kind === "一个往大、一个往小") why = "一个乘数往大估、一个往小估，不知道 " + est + " 比真实结果大还是小，不能用来判断。";
+    else {
+      why = kind + "：" + x + " × " + y + " = " + est + "。真实结果" + (kind === "估大" ? "比 " + est + " 小。" : "比 " + est + " 大。");
+      if (verdict === "不能判断") why += "\n" + est + " 和 " + e.T + unitT + "比，不能确定真实结果够不够。换一种估法，或者精确计算。";
+      else why += "\n" + (kind === "估大" ? "估大以后" : "估小以后") + (e.need === "cost" ? "是 " + est + " 元，" : "能坐 " + est + " 人，") + "和 " + e.T + unitT + "比，就能确定：" + verdict + "。";
+    }
+    if (e.need === "seat") why += "\n读题提示：限乘 48 人里包括司机，所以每辆车只能坐 47 名师生，算式用 47 × 19。";
+    CL.$("#es-out").textContent = e.q + "\n" + why;
+  }
+  CL.$("#demo-est").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button[data-i]"); if (!b || b.disabled) return;
+    esDir[+b.dataset.i] = +b.dataset.d; drawEst();
+  });
+  CL.$("#es-q").addEventListener("change", () => { esDir = [0, 0]; drawEst(); });
+  drawEst();
+});
+</script>
+</body>
+</html>

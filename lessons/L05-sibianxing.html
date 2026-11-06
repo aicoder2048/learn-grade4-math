@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>平行四边形和梯形 · L05</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .geo { width: 100%; max-width: 620px; display: block; margin: 0 auto; touch-action: none; user-select: none; }
+  .geo .pdot { fill: var(--ink-3); opacity: .55; }
+  .geo .poly { fill: var(--brand-2); fill-opacity: .12; stroke: none; }
+  .geo .poly2 { fill: var(--accent); fill-opacity: .18; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
+  .geo .poly1 { fill: var(--brand-2); fill-opacity: .16; stroke: var(--brand-2); stroke-width: 2.5; stroke-linejoin: round; }
+  .geo .e0 { stroke: var(--ink-2); stroke-width: 3; stroke-linecap: round; }
+  .geo .e1 { stroke: var(--brand-2); stroke-width: 4.5; stroke-linecap: round; }
+  .geo .e2 { stroke: var(--accent); stroke-width: 4.5; stroke-linecap: round; }
+  .geo .h { fill: var(--surface); stroke: var(--down); stroke-width: 3; cursor: grab; }
+  .geo .ra { fill: none; stroke: var(--down); stroke-width: 1.5; }
+  .geo text { font-size: 13px; fill: var(--ink-2); }
+  .geo text.lab { font-size: 16px; font-weight: 700; fill: var(--ink); font-style: italic; }
+  .geo text.ang { font-size: 12px; fill: var(--ink); font-family: var(--mono); }
+  .tree .node rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; cursor: pointer; }
+  .tree .node text { font-size: 14px; fill: var(--ink); cursor: pointer; }
+  .tree .node.on rect { fill: var(--rule-bg); stroke: var(--accent); stroke-width: 2.5; }
+  .tree .node.path rect { stroke: var(--accent); }
+  .tree .edge { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .tree .edge.on { stroke: var(--accent); stroke-width: 3; }
+  .tree text.cond { font-size: 12px; fill: var(--ink-2); }
+  .tree text.cond.on { fill: var(--accent); font-weight: 700; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">平行四边形</a></li>
+    <li><a href="#s2">平行四边形的边和角</a></li>
+    <li><a href="#s3">梯形</a></li>
+    <li><a href="#s4">直角梯形和等腰梯形</a></li>
+    <li><a href="#s5">四边形之间的关系</a></li>
+    <li><a href="#s6">拼一拼：两个梯形</a></li>
+    <li><a href="#s7">神奇的默比乌斯带</a></li>
+    <li><a href="#s8">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L05 · 角与图形</div>
+  <h1>平行四边形和梯形</h1>
+  <p>楼梯扶手、伸缩门、停车位里都有平行四边形；梯子、台灯罩、跳箱里藏着梯形。这一课，我们用上一课学的“平行”，给四边形分分类。</p>
+  <div class="meta"><span>教材：第五单元 第 78–87 页</span><span>学习约 30 分钟</span><span>含 3 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出<a class="term" href="glossary.html#pingxing-sibianxing">平行四边形</a>的定义，知道它的对边相等、对角相等。</li>
+    <li>说出<a class="term" href="glossary.html#tixing">梯形</a>的定义和各部分名称（<a class="term" href="glossary.html#tixing-mingcheng">上底、下底、腰</a>）。</li>
+    <li>认识<a class="term" href="glossary.html#zhijiao-tixing">直角梯形</a>和<a class="term" href="glossary.html#dengyao-tixing">等腰梯形</a>。</li>
+    <li>按对边平行的情况给<a class="term" href="glossary.html#sibianxing">四边形</a>分类，说出长方形、正方形和平行四边形的关系。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>平行四边形</h2>
+  <p>先说结论：两组对边分别平行的四边形，叫作平行四边形。</p>
+  <figure class="fig"><img src="img/t078-shenghuo.png" alt="教材第 78 页：楼梯扶手、伸缩门、停车位中的平行四边形，以及三个平行四边形"><figcaption><b>教材第 78 页</b>上面各图中都有平行四边形。</figcaption></figure>
+  <blockquote class="src">两组对边分别平行的四边形，叫作平行四边形。<cite>教材第 78 页</cite></blockquote>
+  <p>“对边”是四边形里不相邻的两条边。四边形有两组对边。两组都平行，才是平行四边形。</p>
+  <div class="callout tip"><span class="ttl">和上一课连起来</span>“平行”是在 <a href="L04-pingxing-chuizhi.html#s2">L04</a> 学的：在同一个平面内不相交的两条直线互相平行。判断平行四边形，就是看两组对边是不是都平行。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>平行四边形的边和角</h2>
+  <p>先说结论：平行四边形的对边相等，对角相等。</p>
+  <p>教材第 78 页用圆规比边：AB 与 CD 相等，AD 与 BC 相等。第 79 页用量角器量角，再把平行四边形沿对角线剪开、叠一叠。结果是：∠1 与 ∠3 相等，∠2 与 ∠4 相等。</p>
+  <figure class="fig"><img src="img/t079-duijiao.png" alt="教材第 79 页：用量角器量平行四边形的角，剪开后两个三角形重合"><figcaption><b>教材第 79 页</b>∠1 与 ∠3 相等，∠2 与 ∠4 相等。</figcaption></figure>
+  <div class="callout rule"><span class="ttl">本节要点（教材第 79 页）</span>平行四边形的对边相等，对角相等。</div>
+
+  <div class="chart-card" id="demo-quad">
+    <div class="chart-head">
+      <div class="chart-title">四边形识别器：拖动顶点，看它是什么图形</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">摆一个：
+        <button class="btn" type="button" id="qd-p0" data-preset="0">平行四边形</button>
+        <button class="btn" type="button" id="qd-p1" data-preset="1">长方形</button>
+        <button class="btn" type="button" id="qd-p2" data-preset="2">正方形</button>
+        <button class="btn" type="button" id="qd-p3" data-preset="3">梯形</button>
+        <button class="btn" type="button" id="qd-p4" data-preset="4">直角梯形</button>
+        <button class="btn" type="button" id="qd-p5" data-preset="5">等腰梯形</button>
+        <button class="btn" type="button" id="qd-p6" data-preset="6">一般四边形</button>
+      </div>
+      <svg class="geo" id="qd-svg" viewBox="-30 -30 540 300" role="img" aria-label="点子图上的四边形 ABCD"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="qd-out"></div></div>
+    <div class="chart-foot">点按钮摆出一个图形，再拖动红色的顶点。同一种颜色的两条边互相平行。试试把平行四边形拖成别的样子，看对边、对角是不是还相等。<br><span class="data-note">顶点只能停在点子上。1 格看作 1 cm。边长保留一位小数，角的度数取整数；“是否平行、是否直角、是否相等”按精确计算判断。</span></div>
+  </div>
+
+  <div class="callout tip"><span class="ttl">想一想：教材第 79 页“做一做”第 3 题</span>平行四边形 ABCD 中，BC 长 5 cm，∠C 是 135°。你还能知道哪些边的长度？哪些角的度数？用“对边相等，对角相等”来想。</div>
+  <div class="callout note"><span class="ttl">补充：撕一撕，拼一拼（教材第 79 页“做一做”第 4 题）</span>教材把平行四边形撕成两块，再把 ∠1 和 ∠2 拼到一起。拼好后，∠1 和 ∠2 合在一起成了一个平角。在上面的识别器里摆一个平行四边形，把相邻两个角的度数加一加，看看和是多少。四个角的和，读数里也写着。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>梯形</h2>
+  <p>先说结论：只有一组对边平行的四边形叫作梯形。</p>
+  <figure class="fig"><img src="img/t080-tixing.png" alt="教材第 80 页：梯子、台灯罩、跳箱中的梯形，梯形各部分名称"><figcaption><b>教材第 80 页</b>只有一组对边平行的四边形叫作梯形。右图标出了梯形各部分的名称。</figcaption></figure>
+  <blockquote class="src">只有一组对边平行的四边形叫作梯形。<cite>教材第 80 页</cite></blockquote>
+  <div class="grid-2">
+    <div class="kp"><div class="k">上底和下底</div><div class="v">互相平行</div><p>梯形里平行的一组对边。教材的图里，上面的叫上底，下面的叫下底。</p></div>
+    <div class="kp"><div class="k">腰</div><div class="v">不平行</div><p>梯形里另外两条边叫腰。</p></div>
+  </div>
+  <div class="callout warn"><span class="ttl">注意“只有”两个字</span>梯形只有一组对边平行。如果两组对边都平行，它就是平行四边形，不是梯形。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>直角梯形和等腰梯形</h2>
+  <p>先说结论：梯形里有两种特别的：有一个角是直角的，叫直角梯形；两腰相等的，叫等腰梯形。</p>
+  <p>教材第 80 页让你观察三个梯形。一个同学观察角，一个同学观察边。再量一量，折一折，验证你的发现。</p>
+  <figure class="fig"><img src="img/t080-zhijiao-dengyao.png" alt="教材第 80 页：直角梯形；等腰梯形对折后两边重合"><figcaption><b>教材第 80 页</b>直角梯形；把等腰梯形对折，∠1 和 ∠2 也相等。</figcaption></figure>
+  <blockquote class="src">有一个角是直角的梯形叫作直角梯形。<cite>教材第 80 页</cite></blockquote>
+  <blockquote class="src">两腰相等的梯形叫作等腰梯形。<cite>教材第 80 页</cite></blockquote>
+  <p>教材里的同学还发现：这个梯形的两腰相等，∠1 和 ∠2 也相等。回到<a href="#demo-quad">四边形识别器</a>，点“等腰梯形”，看看下底的两个角的度数。</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>四边形之间的关系</h2>
+  <p>先说结论：按对边平行的情况，四边形可以分成三类。两组对边互相平行的是平行四边形；只有一组对边平行的是梯形；还有没有互相平行的边的四边形。</p>
+  <p>教材第 81 页例 8 问：下面的图形有哪些共同的特点？又有哪些不同之处？一个同学说，这些图形都是四边形，都有四条边、四个角。另一个同学说，梯形只有一组对边互相平行，平行四边形有两组。</p>
+  <figure class="fig"><img src="img/t085-jiegou.png" alt="教材第 85 页：整理和复习的知识结构图，两条直线的位置关系和四边形的分类"><figcaption><b>教材第 85 页</b>小明整理的“知识结构图”。</figcaption></figure>
+
+  <div class="chart-card" id="demo-tree">
+    <div class="chart-head">
+      <div class="chart-title">四边形的“家谱”：点一个图形，看它的条件</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <button class="btn" type="button" data-node="px">平行四边形</button>
+        <button class="btn" type="button" data-node="cf">长方形</button>
+        <button class="btn" type="button" data-node="zf">正方形</button>
+        <button class="btn" type="button" data-node="tx">梯形</button>
+        <button class="btn" type="button" data-node="zt">直角梯形</button>
+        <button class="btn" type="button" data-node="dt">等腰梯形</button>
+        <button class="btn" type="button" data-node="qt">没有平行边的四边形</button>
+      </div>
+      <svg class="tree" id="tr-svg" viewBox="0 0 700 300" role="img" aria-label="四边形分类结构图"></svg>
+      <div class="btn-row" style="justify-content:center"><button class="btn primary" type="button" id="tr-draw">在识别器里摆一个</button></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="tr-out"></div></div>
+    <div class="chart-foot">点上面的按钮，或直接点图里的方框。从“四边形”出发，沿着亮起来的路往右走，每一步多一个条件。点“在识别器里摆一个”，可以在上面的识别器里摆出这个图形。<br><span class="data-note">结构图依据教材第 85 页重画。</span></div>
+  </div>
+
+  <div class="callout rule"><span class="ttl">长方形是特殊的平行四边形</span>长方形的两组对边分别平行，所以它是平行四边形。它还有直角，所以它“特殊”。正方形又多了一个条件：四边相等。教材第 87 页练习十七第 6 题就让你判断“长方形是特殊的平行四边形”这句话。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>拼一拼：两个梯形</h2>
+  <p>先说结论：两个完全相同的梯形能拼成一个平行四边形。能不能拼成长方形，要看是什么梯形、怎样拼。</p>
+  <p>教材第 87 页练习十七第 6 题有两句话要你判断。“两个完全相同的梯形一定能拼成一个平行四边形。”“两个完全相同的梯形一定能拼成一个长方形。”用下面的演示试一试，再自己下结论。</p>
+
+  <div class="chart-card" id="demo-pin">
+    <div class="chart-head">
+      <div class="chart-title">两个完全相同的梯形：拼成什么？</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">梯形：
+        <button class="btn on" type="button" id="pn-t0" data-t="0">一般梯形</button>
+        <button class="btn" type="button" id="pn-t1" data-t="1">直角梯形</button>
+        <button class="btn" type="button" id="pn-t2" data-t="2">等腰梯形</button>
+      </div>
+      <div class="btn-row">沿哪条腰拼：
+        <button class="btn on" type="button" id="pn-l" data-leg="L">左边的腰</button>
+        <button class="btn" type="button" id="pn-r" data-leg="R">右边的腰</button>
+        <button class="btn primary" type="button" id="pn-join">拼起来</button>
+      </div>
+      <svg class="geo" id="pn-svg" viewBox="-20 -10 560 150" role="img" aria-label="两个梯形拼图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="pn-out"></div></div>
+    <div class="chart-foot">选一种梯形和一条腰，点“拼起来”（换梯形或换腰会先分开）。橙色的梯形是蓝色梯形的复制品，转了半圈（180°），再和蓝色梯形沿选中的腰贴在一起。把三种梯形、两条腰都试一遍。<br><span class="data-note">演示只试“转半圈、沿一条腰贴合”这种拼法。图形是否平行、是否有直角，由程序精确判断。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">剪一剪（练习十六第 3 题）</span>在平行四边形纸上剪一刀，使剪下的两个图形都是梯形。在梯形纸上剪一刀，使剪下的图形中有一个是平行四边形，另一个可能是什么图形？动手剪之前，先想想剪的那一刀要和哪条边平行。</div>
+  <div class="callout tip"><span class="ttl">算一算（练习十六第 5 题）</span>一个周长是 42 m 的平行四边形花坛，AB 边长 13 m，BC 边有多长？提示：平行四边形的对边相等，所以 AB + BC 是周长的一半。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>神奇的默比乌斯带</h2>
+  <p>先说结论：把长纸条的一端扭转 180° 再粘起来，得到的纸环只有一个面。它叫作默比乌斯带。</p>
+  <figure class="fig"><img src="img/t084.png" alt="教材第 84 页：神奇的默比乌斯带"><figcaption><b>教材第 84 页</b>神奇的默比乌斯带。</figcaption></figure>
+  <ol class="steps">
+    <li>取两张两面颜色不同的长方形长纸条，标上序号 ①②。</li>
+    <li>把纸条①的两端粘贴在一起，形成一个环。</li>
+    <li>捏着纸条②的一端，把另一端扭转 180°，再粘贴起来，也形成一个环。</li>
+    <li>用彩色笔涂一涂：看能不能一次连续不断地涂完②号环的整个面。</li>
+    <li>拿剪刀，沿②号环的中线剪开，看看你有什么发现。</li>
+    <li>再沿②号环离边缘 1/3 宽度的地方一直剪下去，又有什么发现？</li>
+  </ol>
+  <p><a class="term" href="glossary.html#mobiwusi-dai">默比乌斯带</a>是德国数学家默比乌斯在 1858 年发现的。它在生活和生产中都有应用。例如，机器上的传动带可以做成默比乌斯带的形状，这样传动带就不会只磨损一面了。</p>
+  <div class="callout note"><span class="ttl">补充</span>剪开以后会得到什么，教材没有写出来，留给你动手发现。准备好纸条、胶水和剪刀，亲手试一试。</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="lesson-sec" id="s8">
+  <h2><span class="num">08</span>自测与速记</h2>
+  <div class="quiz" data-answer="2">
+    <div class="q">什么样的四边形叫作平行四边形？</div>
+    <div class="opts"><button>有一组对边平行的四边形</button><button>四条边都相等的四边形</button><button>两组对边分别平行的四边形</button><button>有四个直角的四边形</button></div>
+    <div class="explain">教材第 78 页：两组对边分别平行的四边形，叫作平行四边形。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">平行四边形 ABCD 中，∠A = 60°。∠C 是多少度？</div>
+    <div class="opts"><button>60°</button><button>120°</button><button>90°</button><button>不能确定</button></div>
+    <div class="explain">∠A 和 ∠C 是一组对角。教材第 79 页：平行四边形的对边相等，对角相等。所以 ∠C = 60°。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">只有一组对边平行的四边形叫作什么？</div>
+    <div class="opts"><button>平行四边形</button><button>梯形</button><button>长方形</button><button>正方形</button></div>
+    <div class="explain">教材第 80 页：只有一组对边平行的四边形叫作梯形。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">两腰相等的梯形叫作什么？</div>
+    <div class="opts"><button>直角梯形</button><button>平行四边形</button><button>长方形</button><button>等腰梯形</button></div>
+    <div class="explain">教材第 80 页：两腰相等的梯形叫作等腰梯形。有一个角是直角的梯形叫作直角梯形。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">下面哪句话是对的？</div>
+    <div class="opts"><button>长方形是特殊的平行四边形</button><button>梯形是特殊的平行四边形</button><button>平行四边形是特殊的长方形</button><button>正方形不是平行四边形</button></div>
+    <div class="explain">长方形的两组对边分别平行，所以它是平行四边形；它又有直角，所以是特殊的平行四边形（教材第 85 页结构图）。梯形只有一组对边平行，不是平行四边形。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>图形</th><th>条件</th></tr>
+    <tr><td>平行四边形</td><td>两组对边分别平行；对边相等，对角相等</td></tr>
+    <tr><td>长方形</td><td>平行四边形 + 有直角</td></tr>
+    <tr><td>正方形</td><td>长方形 + 四边相等</td></tr>
+    <tr><td>梯形</td><td>只有一组对边平行；平行的是上底、下底，另两条边是腰</td></tr>
+    <tr><td>直角梯形</td><td>梯形 + 有一个角是直角</td></tr>
+    <tr><td>等腰梯形</td><td>梯形 + 两腰相等</td></tr>
+    <tr><td>默比乌斯带</td><td>纸条一端扭转 180° 再粘起来；1858 年由默比乌斯发现</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L04-pingxing-chuizhi.html"><small>上一课 · L04</small>平行与垂直</a>
+    <a href="L03-jiao.html"><small>L03</small>角的度量</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L05-sibianxing.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）第五单元“平行四边形和梯形”第 78–87 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  const S = 40;
+  function svgPoint(svg, e) { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const f1 = (x) => CL.fmt(x, 1);
+  const sub = (p, q) => [p[0] - q[0], p[1] - q[1]];
+  const cr = (u, v) => u[0] * v[1] - u[1] * v[0];
+  const dt = (u, v) => u[0] * v[0] + u[1] * v[1];
+  const n2 = (u) => dt(u, u);
+
+  /* ---- 1. 四边形识别器 ---- */
+  const GW = 12, GH = 6, N = ["A", "B", "C", "D"];
+  const QPRE = [
+    [[3, 1], [9, 1], [8, 5], [2, 5]],   // 平行四边形
+    [[2, 1], [9, 1], [9, 5], [2, 5]],   // 长方形
+    [[4, 1], [8, 1], [8, 5], [4, 5]],   // 正方形
+    [[4, 1], [8, 1], [10, 5], [1, 5]],  // 梯形
+    [[2, 1], [6, 1], [9, 5], [2, 5]],   // 直角梯形
+    [[4, 1], [8, 1], [10, 5], [2, 5]],  // 等腰梯形
+    [[3, 1], [8, 2], [10, 6], [2, 5]],  // 一般四边形
+  ];
+  let Q = QPRE[0].map((p) => p.slice());
+  const qSvg = CL.$("#qd-svg");
+  function segX(p1, p2, p3, p4) {   // 两条线段是否相交（含端点接触）
+    const d1 = cr(sub(p4, p3), sub(p1, p3)), d2 = cr(sub(p4, p3), sub(p2, p3)), d3 = cr(sub(p2, p1), sub(p3, p1)), d4 = cr(sub(p2, p1), sub(p4, p1));
+    return ((d1 > 0) !== (d2 > 0) || d1 === 0 || d2 === 0) && ((d3 > 0) !== (d4 > 0) || d3 === 0 || d4 === 0);
+  }
+  function analyze(P) {
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) if (P[i][0] === P[j][0] && P[i][1] === P[j][1]) return { bad: "有两个顶点重合了。把它们拖开。" };
+    for (let i = 0; i < 4; i++) { const a = P[(i + 3) % 4], b = P[i], c = P[(i + 1) % 4]; if (cr(sub(b, a), sub(c, b)) === 0) return { bad: "顶点 " + N[i] + " 和相邻两个顶点在一条直线上，这样只有三个角，不是四边形。" }; }
+    if (segX(P[0], P[1], P[2], P[3]) || segX(P[1], P[2], P[3], P[0])) return { bad: "边交叉了，这不是一个四边形。把顶点拖开一些。" };
+    const E = [0, 1, 2, 3].map((i) => sub(P[(i + 1) % 4], P[i]));   // AB BC CD DA
+    const len = E.map((e) => Math.sqrt(n2(e)));
+    let area2 = 0; for (let i = 0; i < 4; i++) area2 += cr(P[i], P[(i + 1) % 4]);
+    const sgn = Math.sign(area2);
+    const ang = [0, 1, 2, 3].map((i) => {   // 内角（度）
+      const u = sub(P[(i + 3) % 4], P[i]), v = sub(P[(i + 1) % 4], P[i]);
+      let a = Math.acos(dt(u, v) / Math.sqrt(n2(u) * n2(v))) * 180 / Math.PI;
+      const turn = cr(sub(P[i], P[(i + 3) % 4]), sub(P[(i + 1) % 4], P[i]));
+      if (Math.sign(turn) !== sgn) a = 360 - a;
+      return a;
+    });
+    const right = [0, 1, 2, 3].map((i) => dt(sub(P[(i + 3) % 4], P[i]), sub(P[(i + 1) % 4], P[i])) === 0);
+    const par1 = cr(E[0], E[2]) === 0, par2 = cr(E[1], E[3]) === 0;   // AB//CD, BC//DA
+    return { E, len, ang, right, par1, par2 };
+  }
+  function qName(r) {
+    const anyR = r.right.some(Boolean), eq = (i, j) => n2(r.E[i]) === n2(r.E[j]);
+    if (r.par1 && r.par2) {
+      if (anyR) return eq(0, 1) ? ["正方形", "zf"] : ["长方形", "cf"];
+      return ["平行四边形", "px"];
+    }
+    if (r.par1 || r.par2) {
+      if (anyR) return ["直角梯形", "zt"];
+      const legs = r.par1 ? [1, 3] : [0, 2];
+      if (eq(legs[0], legs[1])) return ["等腰梯形", "dt"];
+      return ["梯形", "tx"];
+    }
+    return ["没有互相平行的边的四边形", "qt"];
+  }
+  function drawQuad() {
+    let h = "";
+    for (let x = 0; x <= GW; x++) for (let y = 0; y <= GH; y++) h += '<circle class="pdot" cx="' + x * S + '" cy="' + y * S + '" r="3"/>';
+    const r = analyze(Q), P = Q;
+    h += '<polygon class="poly" points="' + P.map((p) => p[0] * S + "," + p[1] * S).join(" ") + '"/>';
+    const ec = [0, 0, 0, 0];
+    if (!r.bad) { if (r.par1) { ec[0] = ec[2] = 1; } if (r.par2) { ec[1] = ec[3] = r.par1 ? 2 : 1; } }
+    for (let i = 0; i < 4; i++) { const a = P[i], b = P[(i + 1) % 4]; h += '<line class="e' + ec[i] + '" x1="' + a[0] * S + '" y1="' + a[1] * S + '" x2="' + b[0] * S + '" y2="' + b[1] * S + '"/>'; }
+    const cx = P.reduce((s, p) => s + p[0], 0) / 4, cy = P.reduce((s, p) => s + p[1], 0) / 4;
+    for (let i = 0; i < 4; i++) {
+      const p = P[i], dx = p[0] - cx, dy = p[1] - cy, d = Math.hypot(dx, dy) || 1;
+      h += '<text class="lab" x="' + (p[0] * S + dx / d * 22 - 5) + '" y="' + (p[1] * S + dy / d * 22 + 6) + '">' + N[i] + "</text>";
+      if (!r.bad) {
+        if (r.right[i]) {
+          const u = sub(P[(i + 3) % 4], p), v = sub(P[(i + 1) % 4], p), nu = Math.sqrt(n2(u)), nv = Math.sqrt(n2(v)), k = 12;
+          const a1 = [p[0] * S + u[0] / nu * k, p[1] * S + u[1] / nu * k], a2 = [p[0] * S + v[0] / nv * k, p[1] * S + v[1] / nv * k];
+          h += '<path class="ra" d="M' + a1[0] + " " + a1[1] + " L" + (a1[0] + a2[0] - p[0] * S) + " " + (a1[1] + a2[1] - p[1] * S) + " L" + a2[0] + " " + a2[1] + '"/>';
+        }
+        h += '<text class="ang" text-anchor="middle" x="' + (p[0] * S - dx / d * 30) + '" y="' + (p[1] * S - dy / d * 30 + 4) + '">' + Math.round(r.ang[i]) + "°</text>";
+      }
+    }
+    P.forEach((p, i) => { h += '<circle class="h" data-h="' + i + '" cx="' + p[0] * S + '" cy="' + p[1] * S + '" r="9"/>'; });
+    qSvg.innerHTML = h;
+    if (r.bad) { CL.$("#qd-out").textContent = r.bad; return; }
+    const [nm] = qName(r), L = r.len.map(f1), A = r.ang.map((a) => Math.round(a));
+    const parTxt = r.par1 && r.par2 ? "AB // CD，BC // DA：两组对边分别平行。" : r.par1 ? "只有 AB // CD 这一组对边平行。" : r.par2 ? "只有 BC // DA 这一组对边平行。" : "没有互相平行的边。";
+    let msg = "这是" + nm + "。" + parTxt + "\n边长：AB = " + L[0] + "，BC = " + L[1] + "，CD = " + L[2] + "，DA = " + L[3] + "（格）。\n角：∠A = " + A[0] + "°，∠B = " + A[1] + "°，∠C = " + A[2] + "°，∠D = " + A[3] + "°；四个角的和是 " + Math.round(r.ang.reduce((s, a) => s + a, 0)) + "°。";
+    if (r.par1 && r.par2) msg += "\n对边相等：AB = CD，BC = DA。对角相等：∠A = ∠C，∠B = ∠D。相邻两个角的和：∠A + ∠B = " + Math.round(r.ang[0] + r.ang[1]) + "°。";
+    else if (r.par1 || r.par2) {
+      const legs = r.par1 ? "BC 和 DA" : "AB 和 CD", bases = r.par1 ? "AB 和 CD" : "BC 和 DA";
+      msg += "\n" + bases + " 是上底和下底，" + legs + " 是腰。" + (nm === "等腰梯形" ? "两腰相等，同一条底上的两个角也相等。" : nm === "直角梯形" ? "它有直角。" : "");
+    }
+    CL.$("#qd-out").textContent = msg;
+  }
+  (function () {
+    let cur = null;
+    qSvg.addEventListener("pointerdown", (e) => { const t = e.target.closest("[data-h]"); if (!t) return; cur = +t.dataset.h; qSvg.setPointerCapture(e.pointerId); e.preventDefault(); });
+    qSvg.addEventListener("pointermove", (e) => { if (cur === null) return; const p = svgPoint(qSvg, e), np = [clamp(Math.round(p.x / S), 0, GW), clamp(Math.round(p.y / S), 0, GH)]; if (np[0] === Q[cur][0] && np[1] === Q[cur][1]) return; Q[cur] = np; drawQuad(); });
+    const end = () => { cur = null; }; qSvg.addEventListener("pointerup", end); qSvg.addEventListener("pointercancel", end);
+  })();
+  function loadQuad(i) { Q = QPRE[i].map((p) => p.slice()); drawQuad(); }
+  CL.$$("#demo-quad [data-preset]").forEach((b) => b.addEventListener("click", () => loadQuad(+b.dataset.preset)));
+  drawQuad();
+
+  /* ---- 2. 四边形的“家谱” ---- */
+  const NODES = {
+    sb: { x: 10, y: 130, t: "四边形", p: null },
+    px: { x: 240, y: 40, t: "平行四边形", p: "sb", c: "两组对边互相平行" },
+    cf: { x: 400, y: 40, t: "长方形", p: "px", c: "有直角" },
+    zf: { x: 580, y: 40, t: "正方形", p: "cf", c: "四边相等" },
+    tx: { x: 240, y: 160, t: "梯形", p: "sb", c: "只有一组对边平行" },
+    zt: { x: 440, y: 115, t: "直角梯形", p: "tx", c: "有直角" },
+    dt: { x: 440, y: 205, t: "等腰梯形", p: "tx", c: "两腰相等" },
+    qt: { x: 240, y: 255, t: "其他四边形", p: "sb", c: "没有互相平行的边" },
+  };
+  const PRE_OF = { px: 0, cf: 1, zf: 2, tx: 3, zt: 4, dt: 5, qt: 6 };
+  const BW = 110, BH = 34;
+  let sel = null;
+  function chain(k) { const out = []; while (k) { out.unshift(k); k = NODES[k].p; } return out; }
+  function drawTree() {
+    const path = sel ? chain(sel) : [];
+    let h = "";
+    for (const k in NODES) {
+      const n = NODES[k]; if (!n.p) continue;
+      const p = NODES[n.p], on = path.includes(k);
+      const x1 = p.x + BW, y1 = p.y + BH / 2, x2 = n.x, y2 = n.y + BH / 2, mx = (x1 + x2) / 2;
+      h += '<path class="edge' + (on ? " on" : "") + '" d="M' + x1 + " " + y1 + " C" + mx + " " + y1 + " " + mx + " " + y2 + " " + x2 + " " + y2 + '"/>';
+      h += '<text class="cond' + (on ? " on" : "") + '" x="' + (mx + 4) + '" y="' + (y2 - 6) + '" text-anchor="middle">' + n.c + "</text>";
+    }
+    for (const k in NODES) {
+      const n = NODES[k], cls = k === sel ? " on" : path.includes(k) ? " path" : "";
+      h += '<g class="node' + cls + '" data-k="' + k + '"><rect x="' + n.x + '" y="' + n.y + '" width="' + BW + '" height="' + BH + '" rx="8"/><text x="' + (n.x + BW / 2) + '" y="' + (n.y + 22) + '" text-anchor="middle">' + n.t + "</text></g>";
+    }
+    CL.$("#tr-svg").innerHTML = h;
+    CL.$$("#demo-tree [data-node]").forEach((b) => b.classList.toggle("on", b.dataset.node === sel));
+    if (!sel || sel === "sb") { CL.$("#tr-out").textContent = "四边形有四条边、四个角。按对边平行的情况，分成平行四边形、梯形和其他四边形三类。点一个图形，看它要满足哪些条件。"; return; }
+    const c = chain(sel), steps = c.slice(1).map((k) => NODES[k].c + " → " + NODES[k].t).join(" → ");
+    let extra = "";
+    if (sel === "cf") extra = "\n所以长方形是特殊的平行四边形：它两组对边分别平行，还有直角。";
+    if (sel === "zf") extra = "\n所以正方形是特殊的长方形，也是特殊的平行四边形。";
+    if (sel === "tx" || sel === "zt" || sel === "dt") extra = "\n梯形只有一组对边平行，所以梯形不是平行四边形。";
+    if (sel === "px") extra = "\n平行四边形的对边相等，对角相等。";
+    if (sel === "qt") extra = "\n这类四边形的四条边，没有哪两条互相平行。";
+    CL.$("#tr-out").textContent = NODES[sel].t + "：四边形 → " + steps + "。" + extra;
+  }
+  CL.$("#tr-svg").addEventListener("click", (e) => { const g = e.target.closest("[data-k]"); if (!g) return; sel = g.dataset.k; drawTree(); });
+  CL.$$("#demo-tree [data-node]").forEach((b) => b.addEventListener("click", () => { sel = b.dataset.node; drawTree(); }));
+  CL.$("#tr-draw").addEventListener("click", () => {
+    if (!sel || !(sel in PRE_OF)) { CL.$("#tr-out").textContent = "先点一个图形，再点“在识别器里摆一个”。"; return; }
+    loadQuad(PRE_OF[sel]); CL.$("#demo-quad").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  drawTree();
+
+  /* ---- 3. 两个梯形拼一拼 ---- */
+  // 梯形 ABCD：A、B 在上（y = 0），D、C 在下（y = H）；x1 = A 的横坐标，a = 上底，b = 下底
+  const TR = [{ x1: 3, a: 3, b: 8, nm: "一般梯形" }, { x1: 0, a: 4, b: 7, nm: "直角梯形" }, { x1: 2, a: 4, b: 8, nm: "等腰梯形" }];
+  const TH = 3, PS = 30;
+  let tk = 0, leg = "L", joined = false;
+  const pnSvg = CL.$("#pn-svg");
+  function trap(t) { return [[t.x1, 0], [t.x1 + t.a, 0], [t.b, TH], [0, TH]]; }   // A B C D
+  function rot(P, M2) { return P.map((p) => [M2[0] - p[0], M2[1] - p[1]]); }    // 绕中点转半圈：p' = 2M − p
+  function drawPin() {
+    const t = TR[tk], P = trap(t);
+    // 沿左腰（AD）或右腰（BC）的中点转半圈
+    const M2 = leg === "L" ? [P[0][0] + P[3][0], P[0][1] + P[3][1]] : [P[1][0] + P[2][0], P[1][1] + P[2][1]];
+    let R = rot(P, M2);
+    if (!joined) { const gap = leg === "L" ? -2 : 2; R = R.map((p) => [p[0] + gap, p[1]]); }
+    const ox = -Math.min(...P.map((p) => p[0]), ...R.map((p) => p[0])) + 0.5;
+    const pts = (Q) => Q.map((p) => (p[0] + ox) * PS + "," + (p[1] + 0.6) * PS).join(" ");
+    let h = '<polygon class="poly1" points="' + pts(P) + '"/><polygon class="poly2" points="' + pts(R) + '"/>';
+    pnSvg.innerHTML = h;
+    ["pn-t0", "pn-t1", "pn-t2"].forEach((id, i) => CL.$("#" + id).classList.toggle("on", i === tk));
+    CL.$("#pn-l").classList.toggle("on", leg === "L"); CL.$("#pn-r").classList.toggle("on", leg === "R");
+    CL.$("#pn-join").textContent = joined ? "分开" : "拼起来";
+    const legName = leg === "L" ? "左边的腰" : "右边的腰";
+    if (!joined) { CL.$("#pn-out").textContent = "两个完全相同的" + t.nm + "：上底 " + t.a + " 格，下底 " + t.b + " 格。点“拼起来”，沿" + legName + "贴在一起。"; return; }
+    // 拼成的图形：去掉重合的腰后剩下 4 个顶点
+    const U = leg === "L" ? [P[1], P[2], R[1], R[2]] : [P[0], R[0], R[3], P[3]];
+    // 按顺序：上边两点（左→右），下边两点（右→左）
+    const top = U.filter((p) => p[1] === 0).sort((p, q) => p[0] - q[0]), bot = U.filter((p) => p[1] === TH).sort((p, q) => q[0] - p[0]);
+    const V = top.concat(bot);
+    const e = [0, 1, 2, 3].map((i) => sub(V[(i + 1) % 4], V[i]));
+    const isPar = cr(e[0], e[2]) === 0 && cr(e[1], e[3]) === 0;
+    const hasRight = dt(e[3], e[0]) === 0;
+    const topLen = top[1][0] - top[0][0];
+    const name = isPar ? (hasRight ? "长方形" : "平行四边形") : "四边形";
+    CL.$("#pn-out").textContent = "沿" + legName + "拼起来，得到一个" + name + "。\n上下两条边都长 " + topLen + " 格，正好是上底加下底：" + t.a + " + " + t.b + " = " + (t.a + t.b) + "。" +
+      (name === "长方形" ? "\n这次拼出了长方形：被留在外面的那条腰本来就和底垂直。" : name === "平行四边形" ? "\n它没有直角，所以不是长方形。" : "");
+  }
+  CL.$$("#demo-pin [data-t]").forEach((b) => b.addEventListener("click", () => { tk = +b.dataset.t; joined = false; drawPin(); }));
+  CL.$$("#demo-pin [data-leg]").forEach((b) => b.addEventListener("click", () => { leg = b.dataset.leg; joined = false; drawPin(); }));
+  CL.$("#pn-join").addEventListener("click", () => { joined = !joined; drawPin(); });
+  drawPin();
+});
+</script>
+</body>
+</html>

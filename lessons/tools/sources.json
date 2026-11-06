@@ -1,0 +1,165 @@
+{
+  "course": {
+    "title": "四年级数学上册 · 互动课",
+    "prefix": "g4m",
+    "port": 8771,
+    "persona": "你像一位耐心、亲切的小学数学老师，学生是四年级（约 9–10 岁）的孩子。用短句、生活里的例子讲，一次只讲一个想法；先鼓励学生自己想，再一步步提示；算式和竖式写清楚每一步。",
+    "rules": [
+      "学生是四年级小学生：只用本册和以前学过的知识讲解，不引入负数、小数乘法、方程（字母表示数）、乘方等后面才学的内容；必须用到时说明“以后会学”。",
+      "教材页码一律写“教材第 N 页”（印刷页码），原文存档里每页标题已注明印刷页码与 PDF 页码。",
+      "学生答题时先肯定思路，再指出错在哪一步；不直接给出练习题答案，先给提示，学生再次请求时再给完整解答。",
+      "竖式、读数、写数要按教材的格式和方法讲（如“先分级，再从高位起按级读”“相同数位对齐”）。"
+    ]
+  },
+  "sources": [
+    {
+      "id": "u0-front",
+      "label": "教材 · 目录与致同学（封面、前言、目录）",
+      "path": "docs/articles/units/u0-front.md",
+      "scope": "all",
+      "aliases": [
+        "人教版《数学》四年级上册",
+        "《数学》"
+      ],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "0f7fb108881b6182ef97aec5996a6d197b377b1ac0ac8cbb48476ac074892c6e"
+      }
+    },
+    {
+      "id": "u1-wanyishang",
+      "label": "教材 · 第一单元 万以上数的认识（教材第 1–23 页）",
+      "path": "docs/articles/units/u1-wanyishang.md",
+      "scope": [
+        "L01-yi-yinei.html",
+        "L02-yi-yishang.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "a5966b846d64ba1043955ac1ddff62a3739c0a002bc635c41c8ce0603c3561bf"
+      }
+    },
+    {
+      "id": "u1x-yiyi",
+      "label": "教材 · 综合与实践 1 亿有多大（教材第 24–27 页）",
+      "path": "docs/articles/units/u1x-yiyi.md",
+      "scope": [
+        "L02-yi-yishang.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "ba77cdaede9f7949b0ff2a83a2767b78749300a87d223acb29191adff3e76d3b"
+      }
+    },
+    {
+      "id": "u2-jiao",
+      "label": "教材 · 第二单元 角的度量（教材第 28–38 页）",
+      "path": "docs/articles/units/u2-jiao.md",
+      "scope": [
+        "L03-jiao.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "f75953896daed1e0cae250c8e053b339a87d7c76164896561bdb350ce96ff347"
+      }
+    },
+    {
+      "id": "u3-chengfa",
+      "label": "教材 · 第三单元 多位数乘两位数（教材第 39–57 页）",
+      "path": "docs/articles/units/u3-chengfa.md",
+      "scope": [
+        "L06-kousuan-bisuan.html",
+        "L07-chengfa-guilv-gusuan.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "75a5ebdf0cfa850f9180323d631d9da9ab47191e79a5e89013700b901bb7f45e"
+      }
+    },
+    {
+      "id": "u4-moxing",
+      "label": "教材 · 第四单元 加法模型和乘法模型（教材第 58–69 页）",
+      "path": "docs/articles/units/u4-moxing.md",
+      "scope": [
+        "L08-moxing.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [
+        "《中国丹顶鹤》",
+        "《长城故事》",
+        "《成语故事》",
+        "《有趣的数学》"
+      ],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "faa54ff3c4359299db6b77f45667fb49a2f78ca37595258b398796a9b83be569"
+      }
+    },
+    {
+      "id": "u5-sibianxing",
+      "label": "教材 · 第五单元 平行四边形和梯形（教材第 70–87 页）",
+      "path": "docs/articles/units/u5-sibianxing.md",
+      "scope": [
+        "L04-pingxing-chuizhi.html",
+        "L05-sibianxing.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "ee957a5ffaeef37dfd8baf103fedbd6bd796a086aeef05d1cdd994b4ed8703bf"
+      }
+    },
+    {
+      "id": "u6-tongji",
+      "label": "教材 · 第六单元 条形统计图（教材第 88–101 页）",
+      "path": "docs/articles/units/u6-tongji.md",
+      "scope": [
+        "L09-tongjitu.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "058e77bdd699df5452fd52bfca9602c70de96842441301d12cb6e10dbb7d3a64"
+      }
+    },
+    {
+      "id": "u6x-xunbao",
+      "label": "教材 · 综合与实践 寻找宝藏（教材第 102–107 页）",
+      "path": "docs/articles/units/u6x-xunbao.md",
+      "scope": [
+        "L10-xunbao.html",
+        "L11-fuxi.html"
+      ],
+      "aliases": [],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "5e447072bfeaa452f4a5d4a16ca479207ca5f7cd1d8b5d4edff29662400f5a60"
+      }
+    },
+    {
+      "id": "u7-fuxi",
+      "label": "教材 · 第七单元 复习与关联（教材第 108–121 页）",
+      "path": "docs/articles/units/u7-fuxi.md",
+      "scope": [
+        "L11-fuxi.html"
+      ],
+      "aliases": [
+        "《孙子算经》",
+        "《算法统宗》"
+      ],
+      "snapshot": {
+        "kind": "file",
+        "sha256": "f2db26ab1b1cd1b3a5ddfde9f1415b44d29e6e985006fcdb225e3a418469d9ef"
+      }
+    }
+  ]
+}

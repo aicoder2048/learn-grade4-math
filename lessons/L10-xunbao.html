@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>寻找宝藏：方向与平面图 · L10</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .map-svg, .cp-svg { width: 100%; display: block; margin: 0 auto; }
+  .map-svg { max-width: 660px; }
+  .cp-svg { max-width: 340px; }
+  .map-svg .bld { fill: var(--tip-bg); stroke: var(--ink-3); stroke-width: 1.2; }
+  .map-svg .bld.lib { fill: var(--note-bg); }
+  .map-svg .flag { fill: var(--warn-bg); }
+  .map-svg .track { fill: var(--warn-bg); stroke: var(--ink-3); stroke-width: 1.2; }
+  .map-svg .field { fill: var(--tip-bg); stroke: var(--ink-3); stroke-width: 1; }
+  .map-svg .wall { fill: none; stroke: var(--ink-2); stroke-width: 2; }
+  .map-svg .gd { fill: var(--ink-3); opacity: .35; }
+  .map-svg .bl { font-size: 13px; fill: var(--ink); }
+  .map-svg .path { fill: none; stroke: var(--down); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
+  .map-svg .me { fill: var(--brand-2); stroke: var(--surface); stroke-width: 2; }
+  .map-svg .me-t { font-size: 12px; fill: #fff; font-weight: 700; }
+  .map-svg .tr { fill: var(--accent); stroke: var(--ink-2); stroke-width: 1; }
+  .map-svg .tr.hit { fill: var(--up); }
+  .map-svg .tr-t { font-size: 11px; font-weight: 700; fill: var(--ink); }
+  .map-svg .north { stroke: var(--down); stroke-width: 2; }
+  .cp-svg .ring { fill: var(--surface-2); stroke: var(--ink-3); stroke-width: 2; }
+  .cp-svg .sec { fill: transparent; cursor: pointer; }
+  .cp-svg .sec:hover { fill: var(--rule-bg); }
+  .cp-svg .sec.on { fill: var(--note-bg); }
+  .cp-svg .sec.ok { fill: var(--tip-bg); }
+  .cp-svg .sec.bad { fill: var(--warn-bg); }
+  .cp-svg .dl { font-size: 17px; font-weight: 700; fill: var(--ink); pointer-events: none; }
+  .cp-svg .dl.minor { font-size: 14px; fill: var(--ink-2); }
+  .cp-svg .needle-n { fill: var(--down); }
+  .cp-svg .needle-s { fill: var(--brand-2); }
+  .cp-svg .axis { stroke: var(--line); stroke-width: 1; pointer-events: none; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .clue { font-size: 15px; background: var(--rule-bg); border-left: 4px solid var(--accent); padding: 8px 12px; border-radius: 6px; margin: 6px 0; color: var(--ink); }
+  .cmd-list { font-size: 14px; color: var(--ink); min-height: 24px; }
+  .cmd-list span { display: inline-block; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 1px 10px; margin: 2px 4px 2px 0; }
+  .cmd-list span.cur { border-color: var(--down); background: var(--warn-bg); }
+  .dir-pad { display: grid; grid-template-columns: repeat(3, 64px); gap: 6px; }
+  .dir-pad .btn { padding: 6px 0; text-align: center; }
+  .dir-pad .mid { display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">寻找宝藏是什么活动</a></li>
+    <li><a href="#s2">读懂藏宝图</a></li>
+    <li><a href="#s3">认识八个方向</a></li>
+    <li><a href="#s4">照着寻宝指令找宝藏</a></li>
+    <li><a href="#s5">绘制藏宝图，设计寻宝指令</a></li>
+    <li><a href="#s6">藏宝—寻宝大挑战与点钟方向</a></li>
+    <li><a href="#s7">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L10 · 统计、方向与复习</div>
+  <h1>寻找宝藏：方向与平面图</h1>
+  <p>校园里藏了宝藏。要找到它，你得看懂藏宝图，认得八个方向，还要读懂寻宝指令。这一课是一次综合与实践活动，最后你也要自己藏宝、写指令。</p>
+  <div class="meta"><span>教材：综合与实践“寻找宝藏” 第 102–107 页</span><span>学习约 30 分钟</span><span>含 3 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出<a class="term" href="glossary.html#ba-ge-fangxiang">八个方向</a>：东、南、西、北、东北、西北、东南、西南，并说出哪两个方向相对。</li>
+    <li>看懂校园<a class="term" href="glossary.html#pingmiantu">平面图</a>，说出一个建筑在另一个建筑的什么方向。</li>
+    <li>按照<a class="term" href="glossary.html#xunbao-zhiling">寻宝指令</a>，在图上找到宝藏的位置。</li>
+    <li>用方向和<a class="term" href="glossary.html#biaozhiwu">标志物</a>写出准确的寻宝指令。</li>
+    <li>知道生活中还会用<a class="term" href="glossary.html#dianzhong-fangxiang">点钟方向</a>描述方向。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>寻找宝藏是什么活动</h2>
+  <p>先说结论：这是一次在校园里做的数学活动。你要用方向来描述位置，再按描述找到宝藏。</p>
+  <figure class="fig"><img src="img/t102-xiaoyuan.png" alt="教材第 102 页：校园全景图，同学拿着指南针说“4 号宝藏在校园的西南方向”“5 号宝藏在存车处的东南角”"><figcaption><b>教材第 102 页</b>校园全景图。同学们拿着指南针讨论宝藏的位置。</figcaption></figure>
+  <p>图里的同学这样说宝藏的位置：</p>
+  <ul class="checklist">
+    <li>4 号宝藏在校园的西南方向……</li>
+    <li>5 号宝藏在存车处的东南角……</li>
+  </ul>
+  <p>你看，这两句话都用了方向词：西南、东南。第二句还说了一个大家都认识的地方：存车处。说位置时，方向和地点都很重要。</p>
+  <div class="callout tip"><span class="ttl">本课的活动顺序</span>
+    <ol class="steps">
+      <li>校园寻宝：读懂藏宝图，认识八个方向，按指令找宝藏。</li>
+      <li>绘制藏宝图：自己画图，标方向，写寻宝指令。</li>
+      <li>“藏宝—寻宝”大挑战：小组之间交换藏宝图，比一比谁先找到。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>读懂藏宝图</h2>
+  <p>先说结论：藏宝图是一幅校园平面图。它标出了各个建筑物的位置，右上角的箭头指向北。</p>
+  <figure class="fig"><img src="img/t103-cangbaotu.png" alt="教材第 103 页：藏宝图，有食堂、教学楼、多功能厅、体育馆、操场、升旗台、图书馆、科技馆、存车处、大门，以及寻宝指令"><figcaption><b>教材第 103 页</b>藏宝图和寻宝指令。</figcaption></figure>
+  <p>藏宝图下面写着两条寻宝指令：</p>
+  <blockquote class="src">1号宝藏在校园北面中间建筑的2层，从西面数第一间教室里，离前黑板1 m处。<br>……<br>3号宝藏在科技馆东南角最大的树下。<cite>教材第 103 页</cite></blockquote>
+  <p>先读第一条。“校园北面中间建筑”是哪一座？图上北面有三座建筑：食堂、教学楼、多功能厅。中间的一座是教学楼。所以 1 号宝藏在教学楼里。</p>
+  <p>再读第二条。图里的同学问：“东南角”是什么意思？科技馆是一座房子，它有四个角。东南角就是靠东、又靠南的那个角。</p>
+  <div class="callout note"><span class="ttl">补充：地图上怎样看方向</span>三年级学过：地图通常是“上北下南，左西右东”。这幅藏宝图的箭头指向上方，所以上面是北，下面是南，左边是西，右边是东。拿到一张图，先找方向标，再看建筑。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>认识八个方向</h2>
+  <p>先说结论：除了东、南、西、北，借助指南针还能辨别东北、西北、东南、西南四个方向。合起来是八个方向。</p>
+  <figure class="fig"><img src="img/t104-zhinanzhen.png" alt="教材第 104 页：指南针上标有八个方向；同学说东南是东和南之间的方向，和西北相对"><figcaption><b>教材第 104 页</b>观察指南针，有什么新的发现？</figcaption></figure>
+  <blockquote class="src">借助指南针，还可以辨别东北、西北、东南、西南这四个方向。<cite>教材第 104 页</cite></blockquote>
+  <div class="grid-2">
+    <div class="kp"><div class="k">两个方向之间</div><div class="v">东南 = 东和南之间</div><p>东北在东和北之间，西北在西和北之间，西南在西和南之间。</p></div>
+    <div class="kp"><div class="k">相对的方向</div><div class="v">东南 ↔ 西北</div><p>东和西相对，南和北相对。东北和西南相对，东南和西北相对。</p></div>
+  </div>
+  <div class="callout warn"><span class="ttl">容易说错的地方</span>我们说“东北”“东南”，不说“北东”“南东”。东或西放在前面，南或北放在后面。</div>
+  <p>下面的方向盘，点一个方向，看它的名称和它相对的方向。再点“出一题”，用藏宝图上的建筑练一练。</p>
+
+  <div class="chart-card" id="demo-compass">
+    <div class="chart-head">
+      <div class="chart-title">方向盘：八个方向与校园建筑</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <button class="btn" id="cp-learn" type="button">认一认</button>
+        <button class="btn primary" id="cp-quiz" type="button">出一题</button>
+      </div>
+      <div class="clue" id="cp-q">点方向盘上的一个方向。</div>
+      <svg class="cp-svg" id="cp-svg" viewBox="0 0 320 320" role="img" aria-label="八个方向的方向盘"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="cp-out"></div></div>
+    <div class="chart-foot">“认一认”：点任意方向，看名称和相对的方向。“出一题”：以操场为中心，回答某个建筑在操场的什么方向，点方向盘作答。<br><span class="data-note">题目里的方向按教材第 103 页藏宝图中建筑的大致位置判断，以操场为中心。这是课程作者设计的练习。教材原文请你拿着指南针和藏宝图，到校园里看一看。</span></div>
+  </div>
+  <p>教材接着请你拿着指南针和藏宝图，到校园里看一看。学校东北、西北、东南、西南四个方向上都有哪些建筑？在藏宝图上，校园的西北角是食堂，东北角是多功能厅。西南角是科技馆，东南角是存车处。</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>照着寻宝指令找宝藏</h2>
+  <p>先说结论：图上只能标出宝藏的大概位置。要找到准确位置，还要靠寻宝指令。</p>
+  <figure class="fig"><img src="img/t105-cangbaotu.png" alt="教材第 105 页：标出 1 到 5 号宝藏的藏宝图。1 号在升旗台南面，2 号在操场西北，3 号在教学楼东南角，4 号在存车处东面，5 号在科技馆东北角"><figcaption><b>教材第 105 页</b>标出了 5 个宝藏大概位置的藏宝图。</figcaption></figure>
+  <p>教材里两位同学讨论了这幅图：</p>
+  <blockquote class="src">建筑物内、外的场地很大，图上宝藏的位置只是一个大概位置，还要设计寻宝指令……<br>寻宝指令可以描述宝藏的准确位置，包括方向、标志物……<cite>教材第 105 页</cite></blockquote>
+  <p>下面的演示把这幅藏宝图画在格子上。每条指令都从大门出发，告诉你向哪个方向走几格。点“走一步”，小人按指令走一段。走完后，看小人停在哪个宝藏上。</p>
+
+  <div class="chart-card" id="demo-walk">
+    <div class="chart-head">
+      <div class="chart-title">照指令寻宝：小人从大门出发</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选指令：
+        <select id="wk-pick" aria-label="选一条寻宝指令">
+          <option value="0">指令 A</option><option value="1">指令 B</option><option value="2">指令 C</option><option value="3">指令 D</option><option value="4">指令 E</option>
+        </select>
+        <button class="btn primary" id="wk-step" type="button">走一步</button>
+        <button class="btn" id="wk-all" type="button">全部走完</button>
+        <button class="btn" id="wk-reset" type="button">重来</button>
+      </div>
+      <div class="clue" id="wk-clue"></div>
+      <div class="cmd-list" id="wk-cmds"></div>
+      <svg class="map-svg" id="wk-svg" viewBox="0 0 600 410" role="img" aria-label="格子校园平面图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="wk-out"></div></div>
+    <div class="chart-foot">先自己在图上用手指走一遍，猜小人会停在几号宝藏，再点“走一步”验证。注意斜着走的方向：东北是向右上方，西南是向左下方。<br><span class="data-note">简化模型：宝藏位置按教材第 105 页的藏宝图摆放；“走几格”是课程作者为了练方向加的，不考虑建筑挡路。教材的寻宝指令用方向和标志物描述位置，不用格子。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：指令里的两种信息</span>演示里的每条指令都有两部分。前一部分说“向哪个方向走几格”，后一部分说“宝藏在哪个标志物的什么方向”。只有前一部分，走错一步就找不到；只有后一部分，场地太大也不好找。两部分合起来，宝藏的位置就准确了。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>绘制藏宝图，设计寻宝指令</h2>
+  <p>先说结论：如果你是藏宝人，画藏宝图时要标出方向，也要标清宝藏的序号和位置。然后再写准确的寻宝指令。</p>
+  <div class="grid-2">
+    <div class="kp"><div class="k">画图</div><div class="v">一定要标出方向</div><p>没有方向标，别人不知道哪边是北，图就看不懂。</p></div>
+    <div class="kp"><div class="k">藏宝</div><div class="v">标清序号和位置</div><p>每个宝藏有一个序号，在图上标出大概位置，方便藏宝和对照指令。</p></div>
+  </div>
+  <p>画好以后，按教材的要求检查一遍：</p>
+  <ul class="checklist">
+    <li>藏宝图是否把方向和藏宝位置都标好了？</li>
+    <li>设计的寻宝指令是否准确？</li>
+    <li>每组评出一幅最佳藏宝图。说一说为什么选它，它的寻宝指令从哪些方面描述了宝藏的位置。</li>
+  </ul>
+  <p>下面轮到你当藏宝人。选一个宝藏，用方向按钮拼出从大门出发的路线。点“试走”，看小人能不能走到宝藏那里。</p>
+
+  <div class="chart-card" id="demo-write">
+    <div class="chart-head">
+      <div class="chart-title">设计寻宝指令：拼出一条能找到宝藏的路线</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">要指向的宝藏：
+        <select id="ds-target" aria-label="要指向的宝藏">
+          <option value="0">1 号</option><option value="1">2 号</option><option value="2">3 号</option><option value="3">4 号</option><option value="4">5 号</option>
+        </select>
+        每次走：
+        <select id="ds-n" aria-label="每次走几格"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select> 格
+      </div>
+      <div class="btn-row">
+        <div class="dir-pad" id="ds-pad">
+          <button class="btn" type="button" data-dir="西北">西北</button><button class="btn" type="button" data-dir="北">北</button><button class="btn" type="button" data-dir="东北">东北</button>
+          <button class="btn" type="button" data-dir="西">西</button><span class="mid">加一步</span><button class="btn" type="button" data-dir="东">东</button>
+          <button class="btn" type="button" data-dir="西南">西南</button><button class="btn" type="button" data-dir="南">南</button><button class="btn" type="button" data-dir="东南">东南</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="btn primary" id="ds-go" type="button">试走</button>
+          <button class="btn" id="ds-undo" type="button">撤销一步</button>
+          <button class="btn" id="ds-clear" type="button">清空</button>
+        </div>
+      </div>
+      <div class="cmd-list" id="ds-cmds"></div>
+      <svg class="map-svg" id="ds-svg" viewBox="0 0 600 410" role="img" aria-label="格子校园平面图"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="ds-out"></div></div>
+    <div class="chart-foot">路线不止一条。到达以后，换一种走法再试一次，比一比哪条指令更短、更好懂。没到达时，看提示里的方向，想想还差哪一步。<br><span class="data-note">简化模型：格子和“走几格”是课程作者设计的，不考虑建筑挡路。到达后生成的指令句子，后半句是课程作者给每个宝藏写的标志物说明。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">好的寻宝指令</span>一条好的寻宝指令，别人只读一遍就能找到宝藏。它说清楚了方向，也说清楚了标志物，比如“科技馆东南角最大的树下”。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>藏宝—寻宝大挑战与点钟方向</h2>
+  <p>先说结论：最后一个活动是小组之间比赛。一组藏宝，另一组照着藏宝图和指令去找。</p>
+  <ol class="steps">
+    <li><b>藏一藏</b>：按照本组最佳藏宝图把宝物藏起来。藏宝时可以根据实际修改寻宝指令。不同小组要错开时间藏宝，注意保密。藏完以后，隐去藏宝图上标出的宝藏图标。</li>
+    <li><b>找一找</b>：与其他小组交换藏宝图，一起去寻宝。哪个小组最先找完宝藏，就作为最优寻宝小组接受采访。</li>
+    <li><b>问一问</b>：采访最优寻宝小组，看看他们是怎样快速找出所有宝藏的。</li>
+  </ol>
+  <div class="callout warn"><span class="ttl">为什么要隐去宝藏图标</span>藏完宝要先隐去图上的宝藏图标，再交换。否则别人看图就知道位置，不用读寻宝指令了，比赛就不公平。</div>
+  <h3>小讲堂：描述方向只能用八个方向吗</h3>
+  <p>教材的“小讲堂”提出了两个问题：描述方向时，只能用指南针上的八个方向吗？确定位置除了和方向、距离有关，还和什么有关？教材给了一个例子：点钟方向。</p>
+  <figure class="fig"><img src="img/t107-dianzhong.png" alt="教材第 107 页：点钟方向定位图，站立者在中心，正前方是 12 点钟方向，正右方是 3 点钟方向，正后方是 6 点钟方向，正左方是 9 点钟方向"><figcaption><b>教材第 107 页</b>点钟方向定位图。在军事、医学等方面，还经常用到点钟方向。</figcaption></figure>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>点钟方向</th><th>12 点钟</th><th>3 点钟</th><th>6 点钟</th><th>9 点钟</th></tr>
+    <tr><td>对站立者来说</td><td>正前方</td><td>正右方</td><td>正后方</td><td>正左方</td></tr>
+  </table></div>
+  <div class="callout note"><span class="ttl">补充：点钟方向和东南西北有什么不同</span>东、南、西、北是固定的，不管你面朝哪边，北都在同一个方向。点钟方向跟着站立者转：你转身，12 点钟方向也跟着变成你新的正前方。所以说点钟方向时，要先知道这个人面朝哪边。</div>
+  <p>活动结束后，教材的“成长小档案”请你从五个方面评价自己：</p>
+  <ul class="checklist"><li>能理解四面八方的含义</li><li>能根据平面图正确地辨认方向</li><li>能正确绘制平面图</li><li>能通过合作交流解决问题</li><li>能积极地参与活动</li></ul>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>自测与速记</h2>
+  <div class="quiz" data-answer="2">
+    <div class="q">东南是哪两个方向之间的方向？它和哪个方向相对？</div>
+    <div class="opts"><button>东和北之间，和西南相对</button><button>西和南之间，和东北相对</button><button>东和南之间，和西北相对</button><button>东和南之间，和东北相对</button></div>
+    <div class="explain">教材第 104 页：东南是东和南之间的方向，和西北相对。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">藏宝图上写着：1 号宝藏在“校园北面中间建筑”里。这座建筑是哪一座？</div>
+    <div class="opts"><button>食堂</button><button>教学楼</button><button>多功能厅</button><button>图书馆</button></div>
+    <div class="explain">藏宝图（教材第 103 页）北面从西到东依次是食堂、教学楼、多功能厅。中间的是教学楼。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">在藏宝图上，以操场为中心，科技馆在操场的什么方向？</div>
+    <div class="opts"><button>东北</button><button>西北</button><button>东南</button><button>西南</button></div>
+    <div class="explain">科技馆在图的左下方。图上“上北下南，左西右东”，左下方就是西南。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">教材说，寻宝指令可以描述宝藏的准确位置。它包括哪些信息？</div>
+    <div class="opts"><button>方向、标志物等</button><button>只要写宝藏的序号</button><button>只要画出宝藏图标</button><button>只要写“在校园里”</button></div>
+    <div class="explain">教材第 105 页：寻宝指令可以描述宝藏的准确位置，包括方向、标志物……<br>图上只能标出宝藏的大概位置。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">用点钟方向描述时，“正右方”是几点钟方向？</div>
+    <div class="opts"><button>12 点钟方向</button><button>6 点钟方向</button><button>3 点钟方向</button><button>9 点钟方向</button></div>
+    <div class="explain">看教材第 107 页的点钟方向定位图。正前方 12 点钟，正右方 3 点钟，正后方 6 点钟，正左方 9 点钟。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>八个方向</td><td>东、南、西、北，东北、西北、东南、西南</td></tr>
+    <tr><td>相对的方向</td><td>东—西，南—北，东北—西南，东南—西北</td></tr>
+    <tr><td>看平面图</td><td>先找方向标；藏宝图标示了建筑物的位置</td></tr>
+    <tr><td>寻宝指令</td><td>图上只是大概位置；指令说准确位置，包括方向、标志物</td></tr>
+    <tr><td>画藏宝图</td><td>一定要标出方向，标清宝藏的序号和位置</td></tr>
+    <tr><td>点钟方向</td><td>正前方 12 点钟，正右方 3 点钟，正后方 6 点钟，正左方 9 点钟</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L11-fuxi.html"><small>下一课 · L11</small>复习与关联</a>
+    <a href="L09-tongjitu.html"><small>上一课 · L09</small>条形统计图</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L10-xunbao.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）综合与实践“寻找宝藏”第 102–107 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  /* ================= 共用：方向 ================= */
+  const DIRS = { "东": [1, 0], "西": [-1, 0], "北": [0, -1], "南": [0, 1], "东北": [1, -1], "西北": [-1, -1], "东南": [1, 1], "西南": [-1, 1] };
+  const OPP = { "东": "西", "西": "东", "南": "北", "北": "南", "东北": "西南", "西南": "东北", "东南": "西北", "西北": "东南" };
+  const BETWEEN = { "东北": "东和北之间", "西北": "西和北之间", "东南": "东和南之间", "西南": "西和南之间" };
+  function dirName(dx, dy) {  // dx > 0 向东，dy > 0 向南
+    const ew = dx > 0 ? "东" : dx < 0 ? "西" : "", ns = dy > 0 ? "南" : dy < 0 ? "北" : "";
+    return ew + ns || "";
+  }
+  const fw = (d) => d.length === 1 ? d + "面" : d + "方向";   // 北面、东北方向
+
+  /* ================= 1. 方向盘 ================= */
+  // 方向盘上的位置：角度从北开始顺时针
+  const ANG = { "北": 0, "东北": 45, "东": 90, "东南": 135, "南": 180, "西南": 225, "西": 270, "西北": 315 };
+  const QS = [["食堂", "西北"], ["教学楼", "北"], ["多功能厅", "东北"], ["体育馆", "西"], ["图书馆", "东"], ["科技馆", "西南"], ["存车处", "东南"], ["大门", "南"], ["升旗台", "东"]];
+  let mode = "learn", picked = null, qi = -1, qOrder = [], score = 0, asked = 0, mark = {};
+  const rq = CL.rng(11); for (let i = 0; i < 50; i++) rq();
+  function shuffle() { qOrder = QS.map((_, i) => i); for (let i = qOrder.length - 1; i > 0; i--) { const j = Math.floor(rq() * (i + 1)); [qOrder[i], qOrder[j]] = [qOrder[j], qOrder[i]]; } }
+  shuffle();
+  function drawCompass() {
+    const cx = 160, cy = 160, R = 140, r0 = 34;
+    let h = '<circle class="ring" cx="160" cy="160" r="' + R + '"/>';
+    for (const [d, a] of Object.entries(ANG)) {
+      const a0 = ((a - 22.5) * Math.PI) / 180, a1 = ((a + 22.5) * Math.PI) / 180;
+      const p = (rr, t) => [cx + rr * Math.sin(t), cy - rr * Math.cos(t)];
+      const [x0, y0] = p(R, a0), [x1, y1] = p(R, a1), [x2, y2] = p(r0, a1), [x3, y3] = p(r0, a0);
+      const cls = "sec" + (picked === d ? " on" : "") + (mark[d] ? " " + mark[d] : "");
+      h += '<path class="' + cls + '" data-d="' + d + '" d="M' + x3 + " " + y3 + " L" + x0 + " " + y0 + " A" + R + " " + R + " 0 0 1 " + x1 + " " + y1 + " L" + x2 + " " + y2 + " A" + r0 + " " + r0 + ' 0 0 0 ' + x3 + " " + y3 + 'Z"><title>' + d + "</title></path>";
+      const [tx, ty] = p(R - 34, (a * Math.PI) / 180);
+      h += '<text class="dl' + (d.length > 1 ? " minor" : "") + '" x="' + tx + '" y="' + (ty + 6) + '" text-anchor="middle">' + d + "</text>";
+    }
+    h += '<line class="axis" x1="20" y1="160" x2="300" y2="160"/><line class="axis" x1="160" y1="20" x2="160" y2="300"/>';
+    h += '<polygon class="needle-n" points="160,104 150,160 170,160"/><polygon class="needle-s" points="160,216 150,160 170,160"/><circle cx="160" cy="160" r="6" style="fill:var(--surface)"/>';
+    CL.$("#cp-svg").innerHTML = h;
+  }
+  function learnText(d) {
+    return d + (BETWEEN[d] ? "：" + BETWEEN[d] + "的方向。" : "：基本方向之一。") + "\n和" + d + "相对的方向是" + OPP[d] + "。";
+  }
+  function setMode(m) {
+    mode = m; picked = null; mark = {};
+    CL.$("#cp-learn").classList.toggle("on", m === "learn");
+    if (m === "learn") { CL.$("#cp-q").textContent = "点方向盘上的一个方向。"; CL.$("#cp-out").textContent = "认一认：点任意一个方向，看它的名称和相对的方向。共有八个方向。"; }
+    drawCompass();
+  }
+  function nextQ() {
+    mode = "quiz"; picked = null; mark = {}; CL.$("#cp-learn").classList.remove("on");
+    qi = qOrder[asked % qOrder.length];
+    CL.$("#cp-q").textContent = "以操场为中心：" + QS[qi][0] + "在操场的什么方向？点方向盘作答。";
+    CL.$("#cp-out").textContent = "出一题：第 " + (asked + 1) + " 题。已答对 " + score + " 题。";
+    drawCompass();
+  }
+  CL.$("#cp-svg").addEventListener("click", (e) => {
+    const s = e.target.closest(".sec"); if (!s) return;
+    const d = s.dataset.d;
+    if (mode === "learn") { picked = d; drawCompass(); CL.$("#cp-out").textContent = learnText(d); return; }
+    if (qi < 0) return;
+    const [b, ans] = QS[qi];
+    mark = {}; mark[d] = d === ans ? "ok" : "bad"; mark[ans] = "ok";
+    if (d === ans) { score++; CL.$("#cp-out").textContent = "答对了：" + b + "在操场的" + fw(ans) + "。\n已答对 " + score + " 题，共 " + (asked + 1) + " 题。点“出一题”继续。"; }
+    else CL.$("#cp-out").textContent = "不对：你选了" + d + "。" + b + "在操场的" + fw(ans) + "（绿色）。\n提示：图上上北下南、左西右东。已答对 " + score + " 题，共 " + (asked + 1) + " 题。";
+    asked++; qi = -1; drawCompass();
+  });
+  CL.$("#cp-learn").addEventListener("click", () => setMode("learn"));
+  CL.$("#cp-quiz").addEventListener("click", nextQ);
+  setMode("learn");
+
+  /* ================= 共用：格子校园平面图 ================= */
+  const COLS = 12, ROWS = 8, gx = (c) => 25 + 50 * c, gy = (r) => 25 + 50 * r;
+  const B = [ // 建筑：名称、x、y、宽、高（按教材第 103 页藏宝图的布局重绘）
+    { n: "食堂", x: 35, y: 18, w: 100, h: 36 }, { n: "教学楼", x: 175, y: 14, w: 150, h: 40 }, { n: "多功能厅", x: 400, y: 18, w: 110, h: 36 },
+    { n: "体育馆", x: 30, y: 105, w: 60, h: 135, v: 1 }, { n: "升旗台", x: 350, y: 172, w: 50, h: 40, cls: "flag" },
+    { n: "图书馆", x: 450, y: 105, w: 60, h: 160, v: 1, cls: "lib" }, { n: "科技馆", x: 30, y: 290, w: 75, h: 48 },
+    { n: "存车处", x: 395, y: 300, w: 115, h: 30 }, { n: "大门", x: 215, y: 362, w: 120, h: 30 },
+  ];
+  const FIELD = { n: "操场", x: 200, y: 95, w: 120, h: 210 };
+  const START = [5, 7];
+  const TRE = [[7, 4], [4, 1], [6, 1], [10, 6], [2, 5]];   // 1–5 号宝藏的格点（按教材第 105 页的大概位置）
+  const LAND = ["升旗台的南面", "操场的西北角", "教学楼的东南角", "存车处的东面", "科技馆的东北角"];
+  function where(c, r) {   // 宝藏格点用它的标志物说明；其他位置用最近的建筑描述
+    const ti = TRE.findIndex(([a, b]) => a === c && b === r);
+    if (ti >= 0) return "在" + LAND[ti];
+    const x = gx(c), y = gy(r); let best = null, bd = 1e9;
+    for (const b of B.concat([FIELD])) {
+      const dx = x < b.x ? b.x - x : x > b.x + b.w ? x - b.x - b.w : 0;
+      const dy = y < b.y ? b.y - y : y > b.y + b.h ? y - b.y - b.h : 0;
+      const d = Math.hypot(dx, dy); if (d < bd) { bd = d; best = b; }
+    }
+    const b = best, x0 = b.x, x1 = b.x + b.w, y0 = b.y, y1 = b.y + b.h;
+    const ew = x < x0 ? "西" : x > x1 ? "东" : "", ns = y < y0 ? "北" : y > y1 ? "南" : "";
+    if (!ew && !ns) return b.n === "大门" ? "在大门口" : "在" + b.n + "上";
+    if (ew && ns) return "在" + b.n + "的" + ew + ns + "角";
+    return "在" + b.n + "的" + (ew || ns) + "面";
+  }
+  function drawMap(svgSel, opt) {
+    let h = '<rect class="wall" x="6" y="6" width="588" height="398" rx="4"/>';
+    for (let c = 0; c < COLS; c++) for (let r = 0; r < ROWS; r++) h += '<circle class="gd" cx="' + gx(c) + '" cy="' + gy(r) + '" r="2"/>';
+    h += '<rect class="track" x="' + FIELD.x + '" y="' + FIELD.y + '" width="' + FIELD.w + '" height="' + FIELD.h + '" rx="60"/>';
+    h += '<rect class="field" x="' + (FIELD.x + 22) + '" y="' + (FIELD.y + 26) + '" width="' + (FIELD.w - 44) + '" height="' + (FIELD.h - 52) + '" rx="38"/>';
+    h += '<text class="bl" x="260" y="205" text-anchor="middle">操场</text>';
+    for (const b of B) {
+      h += '<rect class="bld ' + (b.cls || "") + '" x="' + b.x + '" y="' + b.y + '" width="' + b.w + '" height="' + b.h + '" rx="3"/>';
+      if (b.v) [...b.n].forEach((ch, i) => { h += '<text class="bl" x="' + (b.x + b.w / 2) + '" y="' + (b.y + b.h / 2 - 8 * (b.n.length - 1) + 16 * i + 5) + '" text-anchor="middle">' + ch + "</text>"; });
+      else h += '<text class="bl" x="' + (b.n === "大门" ? b.x + b.w - 26 : b.x + b.w / 2) + '" y="' + (b.y + b.h / 2 + 5) + '" text-anchor="middle">' + b.n + "</text>";
+    }
+    h += '<line class="north" x1="565" y1="72" x2="565" y2="40"/><polygon points="565,32 559,44 571,44" style="fill:var(--down)"/><text class="bl" x="565" y="28" text-anchor="middle">北</text>';
+    TRE.forEach(([c, r], i) => {
+      const hit = opt.hit === i, show = opt.showAll || opt.target === i || hit;
+      if (!show) return;
+      h += '<circle class="tr' + (hit ? " hit" : "") + '" cx="' + gx(c) + '" cy="' + gy(r) + '" r="11"/><text class="tr-t" x="' + gx(c) + '" y="' + (gy(r) + 4) + '" text-anchor="middle">' + (i + 1) + "</text>";
+    });
+    if (opt.path && opt.path.length > 1) h += '<polyline class="path" points="' + opt.path.map(([c, r]) => gx(c) + "," + gy(r)).join(" ") + '"/>';
+    const [mc, mr] = opt.me;
+    h += '<circle class="me" cx="' + gx(mc) + '" cy="' + gy(mr) + '" r="10"/><text class="me-t" x="' + gx(mc) + '" y="' + (gy(mr) + 4) + '" text-anchor="middle">我</text>';
+    CL.$(svgSel).innerHTML = h;
+  }
+  function walk(cmds) {   // 返回每一步之后的位置；出界时停在边上
+    let [c, r] = START; const path = [[c, r]], notes = [];
+    for (const [d, n] of cmds) {
+      const [dx, dy] = DIRS[d]; let k = 0;
+      for (; k < n; k++) { const nc = c + dx, nr = r + dy; if (nc < 0 || nc >= COLS || nr < 0 || nr >= ROWS) break; c = nc; r = nr; path.push([c, r]); }
+      notes.push(k < n ? "碰到围墙，只走了 " + k + " 格" : "");
+    }
+    return { c, r, path, notes };
+  }
+  const cmdText = (cmds) => cmds.map(([d, n]) => "向" + d + "走 " + n + " 格").join("，再");
+
+  /* ================= 2. 照指令寻宝 ================= */
+  const CLUES = [ // [指令步骤, 标志物说明, 宝藏下标]
+    [[["东北", 2], ["北", 1]], 0], [[["西北", 1], ["北", 5]], 1], [[["东北", 1], ["北", 5]], 2],
+    [[["东", 4], ["东北", 1]], 3], [[["西", 1], ["西北", 2]], 4],
+  ].map(([cmds, i]) => [cmds, "宝藏在" + LAND[i] + "。", i]);
+  let wk = 0, wkDone = 0;
+  function drawWalk() {
+    const [cmds, land, ti] = CLUES[wk];
+    CL.$("#wk-clue").textContent = "指令 " + "ABCDE"[wk] + "：从大门出发，" + cmdText(cmds) + "。" + land;
+    CL.$("#wk-cmds").innerHTML = cmds.map(([d, n], i) => '<span class="' + (i === wkDone - 1 ? "cur" : "") + '">' + (i < wkDone ? "✓ " : "") + "向" + d + "走 " + n + " 格</span>").join("");
+    const res = walk(cmds.slice(0, wkDone));
+    const at = TRE.findIndex(([c, r]) => c === res.c && r === res.r);
+    const finished = wkDone === cmds.length;
+    drawMap("#wk-svg", { showAll: true, path: res.path, me: [res.c, res.r], hit: finished && at >= 0 ? at : -1 });
+    let txt;
+    if (!wkDone) txt = "小人站在大门。这条指令有 " + cmds.length + " 步。先猜一猜：它会停在几号宝藏？";
+    else {
+      const [d, n] = cmds[wkDone - 1];
+      txt = "第 " + wkDone + " 步：向" + d + "走 " + n + " 格。小人现在" + where(res.c, res.r) + "。";
+      if (finished) txt += at >= 0 ? "\n指令走完了，小人停在 " + (at + 1) + " 号宝藏上。对照指令后半句：" + land : "\n指令走完了，但这里没有宝藏。";
+      else txt += "\n还剩 " + (cmds.length - wkDone) + " 步。";
+    }
+    CL.$("#wk-out").textContent = txt;
+  }
+  CL.$("#wk-pick").addEventListener("change", (e) => { wk = +e.target.value; wkDone = 0; drawWalk(); });
+  CL.$("#wk-step").addEventListener("click", () => { if (wkDone < CLUES[wk][0].length) wkDone++; drawWalk(); });
+  CL.$("#wk-all").addEventListener("click", () => { wkDone = CLUES[wk][0].length; drawWalk(); });
+  CL.$("#wk-reset").addEventListener("click", () => { wkDone = 0; drawWalk(); });
+  drawWalk();
+
+  /* ================= 3. 设计寻宝指令 ================= */
+  let dsT = 0, dsCmds = [], dsTried = false, dsWins = 0, dsWon = new Set();
+  function drawDesign() {
+    CL.$("#ds-cmds").innerHTML = dsCmds.length ? "从大门出发：" + dsCmds.map(([d, n]) => "<span>向" + d + "走 " + n + " 格</span>").join("") : "还没有指令。点方向按钮加一步。";
+    const res = walk(dsTried ? dsCmds : []);
+    const ok = dsTried && res.c === TRE[dsT][0] && res.r === TRE[dsT][1];
+    drawMap("#ds-svg", { target: dsT, path: dsTried ? res.path : null, me: [res.c, res.r], hit: ok ? dsT : -1 });
+    let txt = "目标：" + (dsT + 1) + " 号宝藏，在" + LAND[dsT] + "。";
+    if (!dsTried) txt += "\n已加 " + dsCmds.length + " 步。拼好后点“试走”。";
+    else {
+      const wall = res.notes.filter(Boolean);
+      if (ok) {
+        if (!dsWon.has(dsT)) { dsWon.add(dsT); dsWins++; }
+        const steps = dsCmds.reduce((s, [, n]) => s + n, 0);
+        txt += "\n到达了。你的寻宝指令：从大门出发，" + cmdText(dsCmds) + "。宝藏在" + LAND[dsT] + "。\n这条路线共 " + dsCmds.length + " 步、" + steps + " 格。已设计成功 " + dsWins + " 个宝藏的指令。";
+      } else {
+        const dx = TRE[dsT][0] - res.c, dy = TRE[dsT][1] - res.r;
+        const need = [];
+        if (dx) need.push("向" + (dx > 0 ? "东" : "西") + "走 " + Math.abs(dx) + " 格");
+        if (dy) need.push("向" + (dy > 0 ? "南" : "北") + "走 " + Math.abs(dy) + " 格");
+        txt += "\n没到达。小人现在" + where(res.c, res.r) + "。" + (wall.length ? "（" + wall[0] + "）" : "") +
+          "\n宝藏在小人的" + fw(dirName(dx, dy)) + "，还要" + need.join("、") + "。";
+      }
+    }
+    CL.$("#ds-out").textContent = txt;
+  }
+  CL.$("#ds-pad").addEventListener("click", (e) => { const b = e.target.closest("[data-dir]"); if (!b) return; dsCmds.push([b.dataset.dir, +CL.$("#ds-n").value]); dsTried = false; drawDesign(); });
+  CL.$("#ds-go").addEventListener("click", () => { dsTried = true; drawDesign(); });
+  CL.$("#ds-undo").addEventListener("click", () => { dsCmds.pop(); dsTried = false; drawDesign(); });
+  CL.$("#ds-clear").addEventListener("click", () => { dsCmds = []; dsTried = false; drawDesign(); });
+  CL.$("#ds-target").addEventListener("change", (e) => { dsT = +e.target.value; dsCmds = []; dsTried = false; drawDesign(); });
+  drawDesign();
+});
+</script>
+</body>
+</html>

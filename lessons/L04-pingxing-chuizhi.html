@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>平行与垂直 · L04</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .geo { width: 100%; max-width: 620px; display: block; margin: 0 auto; touch-action: none; user-select: none; }
+  .geo .grid { stroke: var(--line); stroke-width: 1; }
+  .geo .ln1 { stroke: var(--brand-2); stroke-width: 3.5; stroke-linecap: round; }
+  .geo .ln2 { stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; }
+  .geo .ext { stroke-dasharray: 7 6; stroke-width: 2; opacity: .85; }
+  .geo .seg { stroke: var(--ink-3); stroke-width: 2; }
+  .geo .seg.best { stroke: var(--up); stroke-width: 3.5; }
+  .geo .seg.cur { stroke: var(--down); stroke-width: 3; }
+  .geo .h { fill: var(--surface); stroke-width: 3; cursor: grab; }
+  .geo .h1 { stroke: var(--brand-2); } .geo .h2 { stroke: var(--accent); }
+  .geo .h3 { stroke: var(--down); fill: var(--down); }
+  .geo .dot { fill: var(--down); }
+  .geo .foot { fill: var(--up); }
+  .geo .ra { fill: none; stroke: var(--down); stroke-width: 1.5; }
+  .geo text { font-size: 14px; fill: var(--ink-2); }
+  .geo text.lab { font-size: 16px; font-weight: 700; fill: var(--ink); font-style: italic; }
+  .geo text.len { font-size: 13px; fill: var(--ink); font-family: var(--mono); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">两条直线的位置关系</a></li>
+    <li><a href="#s2">平行线</a></li>
+    <li><a href="#s3">互相垂直</a></li>
+    <li><a href="#s4">画垂线</a></li>
+    <li><a href="#s5">点到直线的距离</a></li>
+    <li><a href="#s6">画平行线</a></li>
+    <li><a href="#s7">画长方形</a></li>
+    <li><a href="#s8">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L04 · 角与图形</div>
+  <h1>平行与垂直</h1>
+  <p>在方格纸上任意画两条直线，会有几种情况？这一课，我们给两条直线的位置关系分类。我们还要学会画垂线、画平行线，找出“最短的路”。</p>
+  <div class="meta"><span>教材：第五单元 第 70–77 页</span><span>学习约 30 分钟</span><span>含 3 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出同一个平面内两条直线的两种位置关系：相交和不相交（<a class="term" href="glossary.html#pingxingxian">平行</a>）。</li>
+    <li>说出什么是<a class="term" href="glossary.html#chuizhi">互相垂直</a>、<a class="term" href="glossary.html#chuixian">垂线</a>和<a class="term" href="glossary.html#chuizu">垂足</a>，会写 a // b 和 a ⊥ b。</li>
+    <li>用三角尺过一点画已知直线的垂线，画已知直线的平行线。</li>
+    <li>说出什么是<a class="term" href="glossary.html#dian-zhixian-juli">点到直线的距离</a>，知道垂直线段最短。</li>
+    <li>用三角尺和圆规画长方形。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>两条直线的位置关系</h2>
+  <p>先说结论：在同一个平面内，两条直线只有两种情况：相交，或者不相交。判断时要记住，<a class="term" href="glossary.html#zhixian">直线</a>可以向两端无限延伸。</p>
+  <figure class="fig"><img src="img/t070-liangtiao.png" alt="教材第 70 页：方格纸上的五种两条直线，以及把没有相交的直线画长后的情况"><figcaption><b>教材第 70 页</b>在方格纸上任意画两条直线。把没有相交的两条直线再画长一些，图⑤中的两条直线相交了。</figcaption></figure>
+  <p>教材里有一个同学按“有没有相交”来分类，把图①、图③和图⑤分成一类。另一个同学提醒：这里画的是直线，它们真的不相交吗？把它们画长一些就知道了。</p>
+  <ul class="checklist">
+    <li>图①和图③中的两条直线，画长以后还是没有相交。</li>
+    <li>图⑤中的两条直线，画长以后相交了。</li>
+  </ul>
+
+  <div class="chart-card" id="demo-lines">
+    <div class="chart-head">
+      <div class="chart-title">方格纸上的两条直线：相交还是平行？</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">教材第 70 页的图：
+        <button class="btn" type="button" id="ln-p1" data-preset="0">图①</button>
+        <button class="btn" type="button" id="ln-p2" data-preset="1">图②</button>
+        <button class="btn" type="button" id="ln-p3" data-preset="2">图③</button>
+        <button class="btn" type="button" id="ln-p4" data-preset="3">图④</button>
+        <button class="btn" type="button" id="ln-p5" data-preset="4">图⑤</button>
+        <button class="btn" type="button" id="ln-ext">画长一些</button>
+      </div>
+      <svg class="geo" id="ln-svg" viewBox="-20 -20 520 360" role="img" aria-label="方格纸上的两条直线"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="ln-out"></div></div>
+    <div class="chart-foot">点上面的按钮，看教材的五种情况。再拖动圆点，自己摆两条直线。没有碰到的两条线，点“画长一些”看它们会不会相交。<br><span class="data-note">圆点只能停在方格的交点上。“相交成几度”由程序计算，取整数。</span></div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>平行线</h2>
+  <p>先说结论：在同一个平面内，不相交的两条直线叫作平行线。</p>
+  <blockquote class="src">在同一个平面内不相交的两条直线叫作平行线，也可以说这两条直线互相平行。<cite>教材第 71 页</cite></blockquote>
+  <figure class="fig"><img src="img/t071-pingxing.png" alt="教材第 71 页：三组互相平行的直线 a 和 b"><figcaption><b>教材第 71 页</b>直线 a 与 b 互相平行，记作 a // b，读作 a 平行于 b。</figcaption></figure>
+  <div class="callout warn"><span class="ttl">注意“同一个平面内”</span>定义的前半句不能丢。平行线要在同一个平面内。斜着放、竖着放的两条直线，只要不相交，也是平行线。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>互相垂直</h2>
+  <p>先说结论：相交的情况还能再分。相交成直角的两条直线，叫作互相垂直。</p>
+  <p>教材第 71 页：一个同学把相交后有直角的分为一类，没有直角的分为一类。图②相交成直角，图④和图⑤相交但没有直角。</p>
+  <blockquote class="src">两条直线相交成直角，就说这两条直线互相垂直。其中一条直线叫作另一条直线的垂线，这两条直线的交点叫作垂足。<cite>教材第 71 页</cite></blockquote>
+  <figure class="fig"><img src="img/t071-chuizhi.png" alt="教材第 71 页：直线 a 与 b 互相垂直，交点 O 是垂足"><figcaption><b>教材第 71 页</b>直线 a 与 b 互相垂直，记作 a ⊥ b，读作 a 垂直于 b。点 O 是垂足。</figcaption></figure>
+  <div class="grid-2">
+    <div class="kp"><div class="k">平行</div><div class="v">a // b</div><p>读作 a 平行于 b。两条直线不相交。</p></div>
+    <div class="kp"><div class="k">垂直</div><div class="v">a ⊥ b</div><p>读作 a 垂直于 b。两条直线相交成直角。</p></div>
+  </div>
+  <p>教材第 72 页让你把两根硬纸条相交，旋转其中一根，观察角度的变化。回到上面的<a href="#demo-lines">方格纸演示</a>，拖动一条直线的端点，看“相交成几度”怎样变。变到 90° 时，两条直线互相垂直。</p>
+  <div class="callout tip"><span class="ttl">生活里找一找</span>教材第 71 页“做一做”：你在哪里见过互相平行和互相垂直的现象？例如黑板相邻的两条边互相垂直，相对的两条边互相平行。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>画垂线</h2>
+  <p>先说结论：可以用两把三角尺画，可以用量角器画，也可以用一把三角尺画。教材详细画出了用一把三角尺的画法。</p>
+  <figure class="fig"><img src="img/t072-huachuixian.png" alt="教材第 72 页：用两把三角尺、量角器、一把三角尺画互相垂直的两条直线"><figcaption><b>教材第 72 页</b>画互相垂直的两条直线；用一把三角尺过直线上一点画这条直线的垂线。</figcaption></figure>
+  <h3>过直线上一点画垂线（看图说步骤）</h3>
+  <ol class="steps">
+    <li>把三角尺的一条直角边和直线重合。</li>
+    <li>沿着直线移动三角尺，让直角的顶点对准直线上的那一点。</li>
+    <li>按住三角尺，沿另一条直角边画线。</li>
+    <li>画好后，在垂足处标出直角符号。</li>
+  </ol>
+  <div class="callout note"><span class="ttl">补充：过直线外一点怎样画</span>教材让你自己试一试。可以这样想：还是让三角尺的一条直角边和直线重合。再沿直线移动三角尺，直到另一条直角边经过直线外的那一点。然后沿这条直角边画线。</div>
+  <p>教材第 73 页“做一做”第 1 题：分别过点 A 和点 B，画出直线 l 的垂线。点 A 在直线上，点 B 在直线外，两种画法都要会。</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>点到直线的距离</h2>
+  <p>先说结论：从直线外一点到这条直线画很多条线段，垂直的那条最短。</p>
+  <figure class="fig"><img src="img/t073-juli.png" alt="教材第 73 页：从直线外一点 A 到直线画几条线段，垂直线段最短"><figcaption><b>教材第 73 页</b>从直线外一点 A，到这条直线画几条线段。量一量，哪一条最短？</figcaption></figure>
+  <blockquote class="src">从直线外一点到这条直线所画的垂直线段最短，它的长度叫作这点到直线的距离。<cite>教材第 73 页</cite></blockquote>
+
+  <div class="chart-card" id="demo-dist">
+    <div class="chart-head">
+      <div class="chart-title">哪条线段最短：从点 A 到直线 l</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label class="ctrl">点 B 的位置 <input id="ds-bx" type="range" min="0" max="12" step="0.5" value="9"></label>
+        <label class="ctrl">点 A 的高度 = <b id="ds-ahv">4</b> 格 <input id="ds-ah" type="range" min="1" max="5" step="1" value="4"></label>
+        <button class="btn" type="button" id="ds-foot">把 B 移到垂足</button>
+      </div>
+      <svg class="geo" id="ds-svg" viewBox="-20 -20 520 300" role="img" aria-label="点 A 到直线 l 的线段"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="ds-out"></div></div>
+    <div class="chart-foot">拖动红色的点 B（或用滑块），看线段 AB 的长度怎样变。B 离垂足越近，AB 越短。B 和垂足重合时，AB 最短。<br><span class="data-note">1 格看作 1 cm。长度由程序计算，保留一位小数。灰色的三条线段是固定的对照线段。</span></div>
+  </div>
+
+  <div class="callout tip"><span class="ttl">生活中的最短路线</span>教材第 73 页“做一做”第 3 题：小明从 A 点过马路，怎样走路线最短？想一想马路的对边是一条直线，答案就在本节里。练习十五还有两道类似的题：测定跳远成绩，从幸福镇修路到公路。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>画平行线</h2>
+  <p>先说结论：用直尺沿方格纸的格线画，或者用两把三角尺推着画，都能画出平行线。</p>
+  <figure class="fig"><img src="img/t074-huapingxing.png" alt="教材第 74 页：用直尺和方格纸、用两把三角尺画平行线"><figcaption><b>教材第 74 页</b>像这样画出的两条直线平行吗？</figcaption></figure>
+  <h3>用两把三角尺画平行线（看图说步骤）</h3>
+  <ol class="steps">
+    <li>沿一把三角尺的一条边画一条直线。</li>
+    <li>用另一把三角尺靠紧第一把三角尺的另一条边，按住不动。</li>
+    <li>沿着第二把三角尺，推动第一把三角尺。</li>
+    <li>沿第一把三角尺原来那条边，再画一条直线。</li>
+  </ol>
+  <p>教材第 74 页还做了一个实验：a // b，在 a 上任选几个点，分别向 b 画垂直的线段。然后问两个问题：这些线段与 a 也互相垂直吗？它们的长度相等吗？</p>
+  <figure class="fig"><img src="img/t074-chuizhixianduan.png" alt="教材第 74 页：a 平行于 b，从 a 上的点 A、B、C、D 向 b 画垂直的线段，用圆规比长度"><figcaption><b>教材第 74 页</b>端点分别在两条平行线上，且与平行线垂直的所有线段的长度都相等。</figcaption></figure>
+
+  <div class="chart-card" id="demo-gap">
+    <div class="chart-head">
+      <div class="chart-title">两条直线之间的垂直线段：一样长吗？</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <button class="btn on" type="button" id="gp-par">a // b</button>
+        <button class="btn" type="button" id="gp-tilt">b 斜一点（不平行）</button>
+        <label class="ctrl">移动 A、B、C、D <input id="gp-shift" type="range" min="0" max="4" step="0.5" value="0"></label>
+      </div>
+      <svg class="geo" id="gp-svg" viewBox="-20 -20 520 290" role="img" aria-label="两条直线之间的垂直线段"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="gp-out"></div></div>
+    <div class="chart-foot">先看 a // b 的情况：四条线段一样长，而且都和 a 垂直。再点“b 斜一点”，从 a 上的点向 b 画垂直的线段，看长度还相等吗？<br><span class="data-note">1 格看作 1 cm。长度和角度由程序计算。“b 斜一点”是对照用的反例，不是教材里的图。</span></div>
+  </div>
+
+  <div class="callout note"><span class="ttl">补充：两条直线都垂直于同一条直线</span>教材第 75 页“做一做”第 2 题：分别画出两条垂直于 c 的直线 a 和 b，说说 a 和 b 的关系。动手画一画，再对照上面演示里的四条垂直线段，想一想它们之间是什么关系。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>画长方形</h2>
+  <p>先说结论：长方形相邻的两条边互相垂直。所以画长方形可以先画一个直角，再画垂线。</p>
+  <figure class="fig"><img src="img/t075-changfangxing.png" alt="教材第 75 页：用三角尺和圆规画长方形的三个步骤"><figcaption><b>教材第 75 页</b>以两条线段作为长方形的长和宽，画出长方形。</figcaption></figure>
+  <ol class="steps">
+    <li>用三角尺先画一个直角。</li>
+    <li>用圆规在直角的两条边上截出相应的长和宽。</li>
+    <li>分别过点 B 和点 D 作垂线。</li>
+  </ol>
+  <p>两条垂线相交于点 C，长方形 ABCD 就画好了。教材还问：还可以怎样画？</p>
+  <div class="callout tip"><span class="ttl">动手试</span>教材第 75 页“做一做”：画一个长 4 cm、宽 3 cm 的长方形；画一个边长 5 cm 的正方形。画完量一量，四个角是不是都是直角。</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="lesson-sec" id="s8">
+  <h2><span class="num">08</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">教材第 70 页图⑤里，两条直线画出的部分没有碰到。它们是平行线吗？</div>
+    <div class="opts"><button>是，因为它们没有相交</button><button>不是，直线可以无限延伸，画长以后它们相交了</button><button>不能判断</button></div>
+    <div class="explain">直线可以向两端无限延伸。把图⑤中的两条直线画长一些，它们相交了，所以不是平行线（教材第 70 页）。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">两条直线相交成直角，交点叫作什么？</div>
+    <div class="opts"><button>顶点</button><button>端点</button><button>垂足</button><button>中点</button></div>
+    <div class="explain">教材第 71 页：两条直线相交成直角，就说这两条直线互相垂直。这两条直线的交点叫作垂足。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">从直线外一点 A 到直线画了四条线段。哪一条最短？</div>
+    <div class="opts"><button>和直线垂直的那一条</button><button>最斜的那一条</button><button>四条一样长</button><button>画在最左边的那一条</button></div>
+    <div class="explain">教材第 73 页：从直线外一点到这条直线所画的垂直线段最短，它的长度叫作这点到直线的距离。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">a // b。从 a 上的几个点分别向 b 画垂直的线段，这些线段怎样？</div>
+    <div class="opts"><button>越往右越长</button><button>长度各不相同</button><button>和 a 不垂直</button><button>长度都相等，也和 a 垂直</button></div>
+    <div class="explain">教材第 74 页：端点分别在两条平行线上，且与平行线垂直的所有线段的长度都相等。用三角尺量一量，这些线段和 a 也互相垂直。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">“a 垂直于 b”应该怎样写？</div>
+    <div class="opts"><button>a // b</button><button>a ⊥ b</button><button>a = b</button><button>a ∠ b</button></div>
+    <div class="explain">教材第 71 页：直线 a 与 b 互相垂直，记作 a ⊥ b，读作 a 垂直于 b。a // b 读作 a 平行于 b。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>位置关系</td><td>同一个平面内，两条直线要么相交，要么不相交（平行）</td></tr>
+    <tr><td>平行线</td><td>同一个平面内不相交的两条直线；a // b</td></tr>
+    <tr><td>互相垂直</td><td>两条直线相交成直角；a ⊥ b；交点叫垂足</td></tr>
+    <tr><td>画垂线</td><td>三角尺一条直角边和直线重合，移动，沿另一条直角边画</td></tr>
+    <tr><td>点到直线的距离</td><td>垂直线段最短，它的长度就是距离</td></tr>
+    <tr><td>平行线之间</td><td>和两条平行线都垂直的线段，长度都相等</td></tr>
+    <tr><td>画长方形</td><td>先画直角，截出长和宽，再分别画垂线</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L05-sibianxing.html"><small>下一课 · L05</small>平行四边形和梯形</a>
+    <a href="L03-jiao.html"><small>L03</small>角的度量</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L04-pingxing-chuizhi.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）第五单元“平行四边形和梯形”第 70–77 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  const S = 40; // 1 格 = 40 个单位
+  const NS = "http://www.w3.org/2000/svg";
+  function svgPoint(svg, e) { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+  function grid(w, h) { let g = ""; for (let x = 0; x <= w; x++) g += '<line class="grid" x1="' + x * S + '" y1="0" x2="' + x * S + '" y2="' + h * S + '"/>'; for (let y = 0; y <= h; y++) g += '<line class="grid" x1="0" y1="' + y * S + '" x2="' + w * S + '" y2="' + y * S + '"/>'; return g; }
+  function line(a, b, cls) { return '<line class="' + cls + '" x1="' + a[0] * S + '" y1="' + a[1] * S + '" x2="' + b[0] * S + '" y2="' + b[1] * S + '"/>'; }
+  function dragger(svg, onMove) {
+    let cur = null;
+    svg.addEventListener("pointerdown", (e) => { const t = e.target.closest("[data-h]"); if (!t) return; cur = t.dataset.h; svg.setPointerCapture(e.pointerId); e.preventDefault(); });
+    svg.addEventListener("pointermove", (e) => { if (!cur) return; const p = svgPoint(svg, e); onMove(cur, p.x / S, p.y / S); });
+    const end = () => { cur = null; };
+    svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+  }
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const f1 = (x) => CL.fmt(x, 1);
+
+  /* ---- 1. 两条直线的位置关系 ---- */
+  const W = 12, H = 8;
+  const PRE = [
+    [[3, 2], [9, 2], [3, 5], [9, 5]],      // ① 平行（横）
+    [[2, 4], [10, 4], [6, 1], [6, 7]],     // ② 垂直
+    [[5, 1], [5, 7], [7, 1], [7, 7]],      // ③ 平行（竖）
+    [[3, 1], [10, 7], [6, 1], [4, 7]],     // ④ 相交，没有直角
+    [[5, 3], [11, 2], [5, 5], [11, 7]],    // ⑤ 看着不相交，画长后相交
+  ];
+  let pts = PRE[0].map((p) => p.slice()), ext = false, preName = "图①";
+  const lnSvg = CL.$("#ln-svg");
+  // 直线和方格纸边框的交点（用于“画长一些”）
+  function clipLine(a, b) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], ts = [];
+    if (dx) { ts.push((0 - a[0]) / dx, (W - a[0]) / dx); }
+    if (dy) { ts.push((0 - a[1]) / dy, (H - a[1]) / dy); }
+    const ok = ts.map((t) => [a[0] + t * dx, a[1] + t * dy, t]).filter((p) => p[0] >= -1e-9 && p[0] <= W + 1e-9 && p[1] >= -1e-9 && p[1] <= H + 1e-9);
+    ok.sort((p, q) => p[2] - q[2]);
+    return ok.length >= 2 ? [ok[0], ok[ok.length - 1]] : [a, b];
+  }
+  function drawLines() {
+    const [a, b, c, d] = pts;
+    let h = grid(W, H);
+    if (ext) { const e1 = clipLine(a, b), e2 = clipLine(c, d); h += line(e1[0], e1[1], "ln1 ext") + line(e2[0], e2[1], "ln2 ext"); }
+    h += line(a, b, "ln1") + line(c, d, "ln2");
+    const d1 = [b[0] - a[0], b[1] - a[1]], d2 = [d[0] - c[0], d[1] - c[1]];
+    const cross = d1[0] * d2[1] - d1[1] * d2[0], dot = d1[0] * d2[0] + d1[1] * d2[1];
+    let msg = "";
+    if (!d1[0] && !d1[1] || !d2[0] && !d2[1]) msg = "一条直线的两个圆点重合了。把它们拖开。";
+    else if (cross === 0) {
+      const w = [c[0] - a[0], c[1] - a[1]];
+      if (w[0] * d1[1] - w[1] * d1[0] === 0) msg = "两条直线重合在一起了。把其中一条拖开一些。";
+      else msg = "两条直线不相交。" + (ext ? "画长以后也没有相交。" : "") + "直线向两端无限延伸，也永远不会相交。\n它们互相平行：蓝线 // 橙线。";
+    } else {
+      const t = ((c[0] - a[0]) * d2[1] - (c[1] - a[1]) * d2[0]) / cross;
+      const u = ((c[0] - a[0]) * d1[1] - (c[1] - a[1]) * d1[0]) / cross;
+      const X = [a[0] + t * d1[0], a[1] + t * d1[1]];
+      const touch = t >= 0 && t <= 1 && u >= 0 && u <= 1;
+      const inGrid = X[0] >= 0 && X[0] <= W && X[1] >= 0 && X[1] <= H;
+      const ang = Math.round(Math.atan2(Math.abs(cross), Math.abs(dot)) * 180 / Math.PI);
+      const showX = touch || (ext && inGrid);
+      if (showX) {
+        h += '<circle class="dot" cx="' + X[0] * S + '" cy="' + X[1] * S + '" r="6"/>';
+        if (dot === 0) {   // 直角符号
+          const n1 = Math.hypot(d1[0], d1[1]), n2 = Math.hypot(d2[0], d2[1]), k = 0.35;
+          const p1 = [X[0] + d1[0] / n1 * k, X[1] + d1[1] / n1 * k], p2 = [X[0] + d2[0] / n2 * k, X[1] + d2[1] / n2 * k];
+          h += '<path class="ra" d="M' + p1[0] * S + " " + p1[1] * S + " L" + (p1[0] + p2[0] - X[0]) * S + " " + (p1[1] + p2[1] - X[1]) * S + " L" + p2[0] * S + " " + p2[1] * S + '"/>';
+        }
+      }
+      const kind = dot === 0 ? "相交成直角（90°），两条直线互相垂直。红点是垂足。" : "相交成 " + ang + "° 和 " + (180 - ang) + "° 的角，没有直角。";
+      if (touch) msg = "两条直线相交。" + kind;
+      else if (!ext) msg = "画出的这两段没有碰到。但直线可以向两端无限延伸。\n点“画长一些”，看它们会不会相交。";
+      else if (inGrid) msg = "画长以后，两条直线在方格纸上相交了（红点）。" + kind + "\n所以它们不是平行线。";
+      else msg = "画长以后，交点还在方格纸外面。再画长，它们一定会相交。" + kind + "\n所以它们不是平行线。";
+    }
+    pts.forEach((p, i) => { h += '<circle class="h ' + (i < 2 ? "h1" : "h2") + '" data-h="' + i + '" cx="' + p[0] * S + '" cy="' + p[1] * S + '" r="9"/>'; });
+    lnSvg.innerHTML = h;
+    CL.$("#ln-ext").classList.toggle("on", ext);
+    CL.$("#ln-out").textContent = (preName ? preName + "：" : "") + msg;
+  }
+  dragger(lnSvg, (k, x, y) => { const p = [clamp(Math.round(x), 0, W), clamp(Math.round(y), 0, H)]; if (p[0] === pts[k][0] && p[1] === pts[k][1]) return; pts[k] = p; preName = ""; drawLines(); });
+  CL.$$("#demo-lines [data-preset]").forEach((b) => b.addEventListener("click", () => { const i = +b.dataset.preset; pts = PRE[i].map((p) => p.slice()); ext = false; preName = "图" + "①②③④⑤"[i]; drawLines(); }));
+  CL.$("#ln-ext").addEventListener("click", () => { ext = !ext; drawLines(); });
+  drawLines();
+
+  /* ---- 2. 点到直线的距离 ---- */
+  const LY = 6, dsSvg = CL.$("#ds-svg");
+  let A = [5, 2], bx = 9;
+  const FIX = [-4, -2, 3];   // 固定对照线段：落点在垂足左 4 格、左 2 格、右 3 格
+  function drawDist() {
+    A[1] = LY - (+CL.$("#ds-ah").value); CL.$("#ds-ahv").textContent = LY - A[1];
+    bx = +CL.$("#ds-bx").value;
+    let h = grid(W, 7);
+    h += '<line class="ln1" x1="0" y1="' + LY * S + '" x2="' + W * S + '" y2="' + LY * S + '"/><text class="lab" x="' + (W * S - 14) + '" y="' + (LY * S - 8) + '">l</text>';
+    const F = [A[0], LY], dist = LY - A[1];
+    const lens = [];
+    FIX.forEach((o) => { const x = A[0] + o; if (x < 0 || x > W) return; const L = Math.hypot(o, dist); lens.push(L); const lx = A[0] + 0.8 * o, ly = A[1] + 0.8 * dist; h += line(A, [x, LY], "seg") + '<text class="len" x="' + (lx * S + (o < 0 ? -30 : 6)) + '" y="' + (ly * S) + '">' + f1(L) + "</text>"; });
+    h += line(A, F, "seg best");
+    h += '<path class="ra" d="M' + (F[0] * S + 12) + " " + F[1] * S + " L" + (F[0] * S + 12) + " " + (F[1] * S - 12) + " L" + F[0] * S + " " + (F[1] * S - 12) + '"/>';
+    const AB = Math.hypot(bx - A[0], dist);
+    if (bx !== A[0]) h += line(A, [bx, LY], "seg cur");
+    h += '<circle class="foot" cx="' + F[0] * S + '" cy="' + F[1] * S + '" r="5"/><text x="' + (F[0] * S - 6) + '" y="' + (F[1] * S + 22) + '">垂足</text>';
+    h += '<circle class="h h3" data-h="B" cx="' + bx * S + '" cy="' + LY * S + '" r="8"/><text class="lab" x="' + (bx * S + 8) + '" y="' + (LY * S + 24) + '">B</text>';
+    h += '<circle class="h h1" data-h="A" cx="' + A[0] * S + '" cy="' + A[1] * S + '" r="9"/><text class="lab" x="' + (A[0] * S + 12) + '" y="' + (A[1] * S - 8) + '">A</text>';
+    h += '<text class="len" x="' + (A[0] * S + 8) + '" y="' + ((A[1] + LY) / 2 * S + 18) + '">' + f1(dist) + "</text>";
+    dsSvg.innerHTML = h;
+    const atFoot = Math.abs(bx - A[0]) < 1e-9;
+    CL.$("#ds-out").textContent =
+      "垂直线段长 " + f1(dist) + " 格，是所有线段里最短的。所以点 A 到直线 l 的距离是 " + f1(dist) + " 格。\n" +
+      (atFoot ? "现在点 B 和垂足重合，AB 就是垂直线段，长 " + f1(AB) + " 格。"
+              : "线段 AB 长 " + f1(AB) + " 格，比垂直线段长 " + f1(AB - dist) + " 格。B 离垂足 " + f1(Math.abs(bx - A[0])) + " 格。") +
+      "\n灰色对照线段：" + lens.map(f1).join("、") + " 格，都比垂直线段长。";
+  }
+  dragger(dsSvg, (k, x, y) => {
+    if (k === "B") { CL.$("#ds-bx").value = clamp(Math.round(x * 2) / 2, 0, W); }
+    else { A[0] = clamp(Math.round(x), 1, W - 1); CL.$("#ds-ah").value = clamp(LY - Math.round(y), 1, 5); }
+    drawDist();
+  });
+  CL.$("#ds-bx").addEventListener("input", drawDist);
+  CL.$("#ds-ah").addEventListener("input", drawDist);
+  CL.$("#ds-foot").addEventListener("click", () => { CL.$("#ds-bx").value = A[0]; drawDist(); });
+  drawDist();
+
+  /* ---- 3. 两条直线之间的垂直线段 ---- */
+  const gpSvg = CL.$("#gp-svg"), AY = 1;
+  let tilt = false;
+  function drawGap() {
+    const sh = +CL.$("#gp-shift").value;
+    const B0 = [0, 5.5], B1 = tilt ? [W, 4] : [W, 5.5];
+    const u0 = [B1[0] - B0[0], B1[1] - B0[1]], n = Math.hypot(u0[0], u0[1]), u = [u0[0] / n, u0[1] / n];
+    let h = grid(W, 6);
+    h += '<line class="ln1" x1="0" y1="' + AY * S + '" x2="' + W * S + '" y2="' + AY * S + '"/><text class="lab" x="-16" y="' + (AY * S + 5) + '">a</text>';
+    h += line(B0, B1, "ln2") + '<text class="lab" x="-16" y="' + (B0[1] * S + 5) + '">b</text>';
+    const names = ["A", "B", "C", "D"], xs = [2, 4, 6.5, 8].map((x) => x + sh * 0.75);
+    const lens = [], angs = [];
+    xs.forEach((x, i) => {
+      const P = [x, AY], t = (P[0] - B0[0]) * u[0] + (P[1] - B0[1]) * u[1];
+      const F = [B0[0] + t * u[0], B0[1] + t * u[1]], L = Math.hypot(F[0] - P[0], F[1] - P[1]);
+      const ang = Math.round(Math.atan2(Math.abs(F[0] - P[0]), Math.abs(F[1] - P[1])) * 180 / Math.PI);  // 与竖直方向的偏角
+      lens.push(L); angs.push(90 - ang);
+      h += line(P, F, "seg cur") + '<circle class="dot" cx="' + P[0] * S + '" cy="' + P[1] * S + '" r="4"/>';
+      h += '<text class="lab" x="' + (P[0] * S - 5) + '" y="' + (P[1] * S - 8) + '">' + names[i] + "</text>";
+      h += '<text class="len" x="' + (P[0] * S + 4) + '" y="' + ((P[1] + F[1]) / 2 * S) + '">' + f1(L) + "</text>";
+    });
+    gpSvg.innerHTML = h;
+    CL.$("#gp-par").classList.toggle("on", !tilt); CL.$("#gp-tilt").classList.toggle("on", tilt);
+    const same = lens.every((L) => Math.abs(L - lens[0]) < 0.05);
+    CL.$("#gp-out").textContent = (tilt
+      ? "现在 a 和 b 不平行。从 A、B、C、D 向 b 画垂直的线段，长度分别是 " + lens.map(f1).join("、") + " 格，不相等。\n这些线段和 a 相交成 " + angs[0] + "° 左右，不是直角。"
+      : "a // b。从 A、B、C、D 向 b 画垂直的线段，长度都是 " + f1(lens[0]) + " 格。\n这些线段和 a 也相交成 90°，也和 a 垂直。") +
+      (same && !tilt ? "\n移动这些点，长度还是相等。" : "");
+  }
+  CL.$("#gp-par").addEventListener("click", () => { tilt = false; drawGap(); });
+  CL.$("#gp-tilt").addEventListener("click", () => { tilt = true; drawGap(); });
+  CL.$("#gp-shift").addEventListener("input", drawGap);
+  drawGap();
+});
+</script>
+</body>
+</html>

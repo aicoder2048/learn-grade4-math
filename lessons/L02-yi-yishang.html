@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>亿以上数、比大小与近似数 · L02</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .pv { border-collapse: collapse; margin: 8px auto; font-size: 13px; }
+  .pv th, .pv td { border: 1px solid var(--line); padding: 3px 4px; text-align: center; min-width: 30px; }
+  .pv th.grp { background: var(--surface-2); color: var(--ink-2); font-weight: 600; }
+  .pv th.pl { font-weight: 400; color: var(--ink-3); font-size: 11.5px; line-height: 1.2; }
+  .pv td.d { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--ink); height: 38px; }
+  .pv td.z-read { background: var(--tip-bg); color: var(--up); }
+  .pv td.z-skip { color: var(--ink-3); background: var(--surface-2); }
+  .pv td.lvl-yi { border-top: 3px solid var(--down); }
+  .pv td.lvl-wan { border-top: 3px solid var(--brand-2); }
+  .pv td.lvl-ge { border-top: 3px solid var(--accent); }
+  .pv td.hl { outline: 3px solid var(--accent); outline-offset: -3px; background: var(--rule-bg); }
+  .pv td.win { background: var(--tip-bg); color: var(--up); outline: 3px solid var(--up); outline-offset: -3px; }
+  .pv td.same { color: var(--ink-3); }
+  .pv td.tail { color: var(--ink-3); background: var(--surface-2); }
+  .pv td.lead { background: var(--rule-bg); color: var(--accent); }
+  .pv th.rowh { font-weight: 600; color: var(--ink-2); background: var(--surface-2); white-space: nowrap; }
+  .big-read { font-size: 20px; font-weight: 700; text-align: center; margin: 6px 0 2px; color: var(--brand-2); font-family: var(--serif); }
+  .num-in { font-family: var(--mono); font-size: 17px; width: 170px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .ans-in { font-family: var(--mono); font-size: 17px; width: 90px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .key { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--ink-3); justify-content: center; }
+  .key i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; border: 1px solid var(--line); }
+  .nl-svg { width: 100%; max-width: 640px; display: block; margin: 6px auto; }
+  .nl-svg .axis { stroke: var(--ink-2); stroke-width: 2; }
+  .nl-svg .tick { stroke: var(--ink-3); stroke-width: 1.5; }
+  .nl-svg .mid { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 4 3; }
+  .nl-svg .pt { fill: var(--down); }
+  .nl-svg .arr { stroke: var(--up); stroke-width: 2.5; fill: none; }
+  .nl-svg text { font-size: 13px; fill: var(--ink-2); }
+  .nl-svg text.b { font-weight: 700; fill: var(--ink); font-size: 14px; }
+  .yi-svg { width: 100%; max-width: 640px; display: block; margin: 6px auto; }
+  .yi-svg .bar { fill: var(--brand-2); }
+  .yi-svg .ref { fill: var(--accent); }
+  .yi-svg text { font-size: 13px; fill: var(--ink-2); }
+  .yi-svg text.b { font-weight: 700; fill: var(--ink); }
+  .demo select { font-size: 14px; padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">比亿大的计数单位</a></li>
+    <li><a href="#s2">亿以上数的读法和写法</a></li>
+    <li><a href="#s3">数的大小比较</a></li>
+    <li><a href="#s4">改写和求近似数</a></li>
+    <li><a href="#s5">准确数、近似数和合理的数</a></li>
+    <li><a href="#s6">1 亿有多大</a></li>
+    <li><a href="#s7">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L02 · 大数的世界</div>
+  <h1>亿以上数、比大小与近似数</h1>
+  <p>全国总人口是 1443497378 人。这个数比一亿还大。这一课，你会学读、写亿以上的数，学比较大数的大小。你还会学把大数说成“大约多少万”“大约多少亿”。最后动手算一算：1 亿到底有多大。</p>
+  <div class="meta"><span>教材：第一单元 第 10–23 页 · 综合与实践 第 24–27 页</span><span>学习约 35 分钟</span><span>含 4 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>说出亿级的计数单位和数位，说出什么是<a class="term" href="glossary.html#shijinzhi">十进制计数法</a>。</li>
+    <li>用“先分级，再从最高级读起”的方法读、写亿以上的数。</li>
+    <li>按<a class="term" href="glossary.html#weishu">位数</a>和数位比较大数的大小。</li>
+    <li>把整万、整亿的数<a class="term" href="glossary.html#gaixie">改写</a>成用“万”“亿”作单位的数，用<a class="term" href="glossary.html#sishe-wuru">四舍五入</a>法求<a class="term" href="glossary.html#jinsishu">近似数</a>。</li>
+    <li>用“先算一小份，再推到 1 亿”的方法感受 1 亿的大小。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>比亿大的计数单位</h2>
+  <p>先说结论：从一亿开始，还可以继续数下去。10 个一亿是十亿，10 个十亿是一百亿，10 个一百亿是一千亿。</p>
+  <p>教材举了两个比亿大的数：</p>
+  <ul class="checklist">
+    <li>现代科学研究表明，人一生心跳 25 亿～30 亿次。</li>
+    <li>第七次全国人口普查结果：全国总人口为 1443497378 人。</li>
+  </ul>
+  <figure class="fig"><img src="img/t010-shijinzhi.png" alt="教材第 10 页：计数器从一亿数下去，以及到千亿位的数位顺序表"><figcaption><b>教材第 10 页</b>从一亿继续数下去；数位顺序表多了亿级的数位。</figcaption></figure>
+  <blockquote class="src">个（一）、十、百、千、万……亿、十亿、百亿、千亿都是计数单位。<cite>教材第 10 页</cite></blockquote>
+  <div class="grid-3">
+    <div class="kp"><div class="k">个级</div><div class="v">个 十 百 千</div><p>表示多少个一。</p></div>
+    <div class="kp"><div class="k">万级</div><div class="v">万 十万 百万 千万</div><p>表示多少个万。</p></div>
+    <div class="kp"><div class="k">亿级</div><div class="v">亿 十亿 百亿 千亿</div><p>表示多少个亿。排法和个级、万级一样。</p></div>
+  </div>
+  <blockquote class="src">像这样，每相邻两个计数单位之间的进率都是 10 的计数方法叫作十进制计数法。<cite>教材第 10 页</cite></blockquote>
+  <div class="callout tip"><span class="ttl">记一记</span>每一级都是“个、十、百、千”四个数位。万级在后面加“万”，亿级在后面加“亿”。记住个级，就记住了全部。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>亿以上数的读法和写法</h2>
+  <p>先说结论：亿以上的数也要先分级，再从最高级读起。读完亿级加“亿”字，读完万级加“万”字。写数时，先写亿级，再写万级，最后写个级。</p>
+  <div class="callout rule"><span class="ttl">亿以上的数怎么读（教材第 11 页）</span>
+    <ol class="steps">
+      <li>先分级，再从最高级读起。</li>
+      <li>读完亿级或万级的数，要加“亿”字或“万”字。</li>
+      <li>还要注意什么位置上的 0 不读，什么位置上的 0 要读，读几个零。</li>
+    </ol>
+  </div>
+  <p>0 的读法和 L01 一样。每级末尾的 0 都不读。其他数位上有一个 0 或连续几个 0，都只读一个零。教材第 11 页的例子：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>数</th><th>分级</th><th>读作</th></tr>
+    <tr><td>8000000000</td><td>80 0000 0000</td><td>八十亿</td></tr>
+    <tr><td>10040002000</td><td>100 4000 2000</td><td>一百亿四千万二千</td></tr>
+    <tr><td>400305000000</td><td>4003 0500 0000</td><td>四千零三亿零五百万</td></tr>
+  </table></div>
+
+  <div class="chart-card" id="demo-big">
+    <div class="chart-head">
+      <div class="chart-title">读数小助手（到千亿位）：分级、读数、写数</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row"><label>输入一个数（最多 12 位）：<input class="num-in" id="big-num" inputmode="numeric" maxlength="12" value="10040002000" aria-label="要读的数"></label></div>
+      <div class="btn-row">教材里的数：
+        <button class="btn" type="button" data-num="1443497378">1443497378</button>
+        <button class="btn" type="button" data-num="8000000000">8000000000</button>
+        <button class="btn" type="button" data-num="10040002000">10040002000</button>
+        <button class="btn" type="button" data-num="400305000000">400305000000</button>
+        <button class="btn" type="button" data-num="26705000000">267 0500 0000</button>
+        <button class="btn" type="button" data-num="300700400">300700400</button>
+        <button class="btn" type="button" data-num="3090001500">3090001500</button>
+        <button class="btn" type="button" data-num="700300200000">700300200000</button>
+      </div>
+      <div id="big-table"></div>
+      <div class="key"><span><i style="background:var(--tip-bg)"></i>这个 0（或这串 0）读一个“零”</span><span><i style="background:var(--surface-2)"></i>级末尾的 0，不读</span></div>
+      <div class="big-read" id="big-read"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="big-out"></div></div>
+    <div class="chart-foot">点教材里的数，或自己输入一个数。先看它分成几级，再看每一级怎样读，最后看哪些 0 读、哪些 0 不读。<br><span class="data-note">读法按教材第 4 页和第 11 页的规则由程序生成。数据来自教材第 10–12 页。</span></div>
+  </div>
+
+  <h3>写法</h3>
+  <p>回忆一下亿以内数的写法：先分级，哪个数位上一个也没有，就写 0。亿以上的数也这样写。教材第 12 页的例子：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>读法</th><th>亿级</th><th>万级</th><th>个级</th><th>写作</th></tr>
+    <tr><td>三亿</td><td>3</td><td>0000</td><td>0000</td><td>300000000</td></tr>
+    <tr><td>三十亿九千万一千五百</td><td>30</td><td>9000</td><td>1500</td><td>3090001500</td></tr>
+    <tr><td>七千零三亿零二十万</td><td>7003</td><td>0020</td><td>0000</td><td>700300200000</td></tr>
+  </table></div>
+  <div class="callout warn"><span class="ttl">写数最容易错的地方</span>一级里不满四个数字时，要在前面补 0。七千零三亿零二十万的万级是“零二十万”，要写成 0020，不能只写 20。写完数一数：亿级后面一定还有 8 位。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>数的大小比较</h2>
+  <p>先说结论：比较大数，方法和万以内的数一样。位数多的数就大；位数相同，从最高位比起。</p>
+  <p>教材第 15 页给出 2024 年全国主要农产品的产量（单位：t）：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>稻谷</th><th>小麦</th><th>玉米</th><th>大豆</th></tr>
+    <tr><td>207534900</td><td>140099400</td><td>294916900</td><td>20647800</td></tr>
+  </table></div>
+  <blockquote class="src">位数相同的两个数，从最高位比起，最高位上的数大的那个数就大，如果最高位上的数相同，就比较下一个数位上的数。<cite>教材第 15 页</cite></blockquote>
+
+  <div class="chart-card" id="demo-cmp">
+    <div class="chart-head">
+      <div class="chart-title">比大小“对决”：一位一位比</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label>数 A：<input class="num-in" id="cmp-a" inputmode="numeric" maxlength="12" value="207534900" aria-label="数 A"></label>
+        <label>数 B：<input class="num-in" id="cmp-b" inputmode="numeric" maxlength="12" value="294916900" aria-label="数 B"></label>
+      </div>
+      <div class="btn-row">教材里的一组：
+        <button class="btn" type="button" data-pair="207534900,20647800">稻谷 和 大豆</button>
+        <button class="btn" type="button" data-pair="207534900,294916900">稻谷 和 玉米</button>
+        <button class="btn" type="button" data-pair="207534900,140099400">稻谷 和 小麦</button>
+        <button class="btn" type="button" data-pair="28906,28890">28906 和 28890</button>
+        <button class="btn" type="button" data-pair="100388770000,99385270000">100388770000 和 99385270000</button>
+        <button class="btn" type="button" data-pair="26090800000,26900800000">26090800000 和 26900800000</button>
+      </div>
+      <div id="cmp-table"></div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn primary" id="cmp-step" type="button">下一步</button>
+        <button class="btn" id="cmp-all" type="button">直接看结果</button>
+        <button class="btn" id="cmp-reset" type="button">重来</button>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="cmp-out"></div></div>
+    <div class="chart-foot">点“下一步”，一步一步比。第一步先数位数。位数相同时，从最高位开始，一位一位往右比，直到遇到不同的数字。<br><span class="data-note">数据来自教材第 15 页和练习三第 1 题。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">不用全部比完</span>只要在某一位上分出大小，就有结论了。后面的数位再大也没有用。26090800000 和 26900800000 都是十一位数，前两位相同，在亿位就分出了大小：0 &lt; 9。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>改写和求近似数</h2>
+  <p>先说结论：整万、整亿的数，可以改写成用“万”“亿”作单位的数，用“=”连接。不是整万、整亿的数，可以用“四舍五入”法求近似数，用“≈”连接。</p>
+  <h3>改写：大小不变，写法变短</h3>
+  <p>教材第 16 页说：为了读、写方便，有时会改写整万或整亿的数，用“万”或“亿”作单位。一小滴血液大约含有红细胞 25000000 个 = 2500 万个，白细胞 30000 个 = 3 万个。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>原数</th><th>先分级</th><th>改写</th></tr>
+    <tr><td>25000000</td><td>2500 0000</td><td>2500 万</td></tr>
+    <tr><td>200000000</td><td>2 0000 0000</td><td>2 亿</td></tr>
+    <tr><td>1000000000</td><td>10 0000 0000</td><td>10 亿</td></tr>
+    <tr><td>530500000000</td><td>5305 0000 0000</td><td>5305 亿</td></tr>
+  </table></div>
+  <div class="callout rule"><span class="ttl">改写的方法（教材第 21 页知识结构图）</span>以“万”为单位：末尾 4 个 0 改为“万”。以“亿”为单位：末尾 8 个 0 改为“亿”。用“=”连接。</div>
+
+  <h3>求近似数：四舍五入</h3>
+  <figure class="fig"><img src="img/t017-sishewuru.png" alt="教材第 17 页：张阿姨走了 182068 步说大约 18 万步，李阿姨走了 218309 步说大约 22 万步"><figcaption><b>教材第 17 页</b>182068 ≈ 18 万，218309 ≈ 22 万。</figcaption></figure>
+  <p>张阿姨这个月走了 182068 步，她说“大约 18 万步”。省略万位后面的尾数，尾数是 2068。尾数的最高位是千位，千位上是 2，小于 5，所以把尾数舍去：182068 ≈ 18 万。</p>
+  <p>李阿姨走了 218309 步。千位上是 8，大于 5，所以向前一位进 1，再把尾数舍去：218309 ≈ 22 万。</p>
+  <blockquote class="src">这种求近似数的方法叫“四舍五入”法。是“舍”还是“入”，要看省略的尾数部分的最高位上的数是小于 5 还是大于或等于 5。<cite>教材第 17 页</cite></blockquote>
+
+  <div class="chart-card" id="demo-round">
+    <div class="chart-head">
+      <div class="chart-title">四舍五入：这个数离哪个整万（整亿）更近</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">
+        <label>数：<input class="num-in" id="rd-num" inputmode="numeric" maxlength="12" value="182068" aria-label="要求近似数的数"></label>
+        <label>省略
+          <select id="rd-unit" aria-label="省略哪一位后面的尾数"><option value="4">万位</option><option value="8">亿位</option></select>
+          后面的尾数</label>
+      </div>
+      <div class="btn-row">教材里的数：
+        <button class="btn" type="button" data-r="182068,4">182068</button>
+        <button class="btn" type="button" data-r="218309,4">218309</button>
+        <button class="btn" type="button" data-r="1034500000,8">1034500000</button>
+        <button class="btn" type="button" data-r="9876540000,8">9876540000</button>
+        <button class="btn" type="button" data-r="250000,4">250000（整万）</button>
+        <button class="btn" type="button" data-r="950228500,8">950228500</button>
+      </div>
+      <svg class="nl-svg" id="rd-svg" viewBox="0 0 640 130" role="img" aria-label="数轴"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rd-out"></div></div>
+    <div class="chart-foot">红点是这个数，虚线是两个整万（整亿）的正中间。红点在虚线左边就“舍”，在虚线上或右边就“入”。这和“看尾数的最高位是不是小于 5”是一回事。<br><span class="data-note">数轴只画出两个相邻的整万（整亿）之间的一段，用来解释四舍五入的道理。教材用的是“看尾数最高位”的方法。</span></div>
+  </div>
+
+  <div class="callout note"><span class="ttl">补充：为什么看尾数的最高位就够了</span>正中间的数是“5 后面全是 0”。例如 18 万和 19 万的正中间是 185000。尾数最高位是 5 到 9，这个数就在正中间或它的右边，离 19 万不远于离 18 万。尾数最高位是 0 到 4，这个数就在正中间的左边，离 18 万更近。</div>
+
+  <div class="chart-card" id="demo-rq">
+    <div class="chart-head">
+      <div class="chart-title">练一练：求近似数</div>
+    </div>
+    <div class="demo">
+      <div class="big-read" id="rq-prompt"></div>
+      <div class="btn-row" style="justify-content:center"><span id="rq-left"></span> ≈ <input class="ans-in" id="rq-ans" inputmode="numeric" aria-label="你的答案"> <span id="rq-unit"></span></div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn primary" id="rq-check" type="button">检查</button>
+        <button class="btn" id="rq-show" type="button">看答案</button>
+        <button class="btn" id="rq-next" type="button">下一题</button>
+        <select id="rq-q" aria-label="选题"></select>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="rq-out"></div></div>
+    <div class="chart-foot">在空格里填数，再点“检查”。先找到万位（亿位），再看它右边一位。<br><span class="data-note">题目来自教材第 17 页“做一做”和练习三第 3 题。人口数据是第七次人口普查的部分地区。</span></div>
+  </div>
+  <div class="callout warn"><span class="ttl">“=”和“≈”别用错</span>改写前后大小不变，用“=”：250000 = 25 万。求近似数会把尾数舍掉或进上去，大小变了，用“≈”：182068 ≈ 18 万。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>准确数、近似数和合理的数</h2>
+  <p>先说结论：有的数和实际数量完全一样，是<a class="term" href="glossary.html#zhunqueshu">准确数</a>；有的数只是接近实际数量，是近似数。读到一个数，要想一想它是不是合理。</p>
+  <p>练习三第 2 题让我们分辨：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>句子</th><th>是准确数还是近似数</th></tr>
+    <tr><td>小明身高约 140 cm，体重约 35 kg。</td><td>近似数（有“约”字）</td></tr>
+    <tr><td>四（2）班有 45 人，全校有 730 人。</td><td>准确数</td></tr>
+    <tr><td>珠穆朗玛峰海拔为 8800 多米。</td><td>近似数（“多”说明不是正好）</td></tr>
+    <tr><td>城市志愿者参与服务约 200000 人次。</td><td>近似数</td></tr>
+  </table></div>
+  <div class="callout note"><span class="ttl">补充：怎样判断</span>“约”“大约”“多”“左右”常常说明是近似数。数人数、数东西，能一个一个数清楚的，常常是准确数。最后还要结合句子的意思判断。</div>
+  <p>练习二第 8 题问：下面哪些说法不合理？“我们学校有十万人。”“我今天卖了两千多万根冰棍。”“我们学校图书馆有八万册藏书。”一所学校不会有十万人，一个人一天也卖不了两千多万根冰棍。这两句不合理。</p>
+  <h3>最大和最小</h3>
+  <p>练习三第 6 题问：最大的九位数是多少？最小的十位数呢？最大的九位数是 999999999，最小的十位数是 1000000000。它们只相差 1。</p>
+  <div class="callout tip"><span class="ttl">本单元知识结构（教材第 21 页）</span><ol class="steps" style="margin:4px 0 0"><li>数的认识：计数单位、数位、数级、十进制计数法。</li><li>数的读、写：先分级，再从高位起按级读、写。</li><li>数的大小比较。</li><li>数的改写：用“=”连接。</li><li>求近似数：四舍五入，用“≈”连接。</li></ol></div>
+  <div class="callout note"><span class="ttl">你知道吗？数字的由来（教材第 20 页）</span>古时候，人们用实物、结绳、刻划来记数。后来人们发明了记数符号，叫作<a class="term" href="glossary.html#shuzi">数字</a>。各地的数字不同，交流不方便，后来才逐渐统一成现在通用的阿拉伯数字。</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>1 亿有多大</h2>
+  <p>先说结论：1 亿太大了，没法直接数。可以先量一小份，再用计数单位之间的关系推到 1 亿。</p>
+  <p>参观印刷厂时，小丽估计一摞纸有 1 亿张。怎样知道她估计得对不对？教材的办法是：先量出 100 张纸的厚度，大约是 1 cm。</p>
+  <figure class="fig"><img src="img/t025-yizhang.png" alt="教材第 25 页：100 张纸厚 1 cm，10000 张纸高 1 m，1 亿张纸高 10000 m"><figcaption><b>教材第 25 页</b>100 张纸厚 1 cm，算一算 1 亿张纸有多高。</figcaption></figure>
+  <ol class="steps">
+    <li>100 个一百是一万，所以 10000 张纸高 100 cm，也就是 1 m。</li>
+    <li>10000 个一万是一亿，所以 1 亿张纸摞起来就有 10000 m 高。</li>
+    <li>比珠穆朗玛峰（8800 多米）还高。</li>
+  </ol>
+
+  <div class="chart-card" id="demo-yi">
+    <div class="chart-head">
+      <div class="chart-title">从一小份推到 1 亿</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">选一个例子：
+        <button class="btn on" type="button" data-ex="paper">1 亿张纸有多高</button>
+        <button class="btn" type="button" data-ex="rice">1 亿粒大米有多重</button>
+        <button class="btn" type="button" data-ex="write">1 秒写 1 个字，1 亿个字写多久</button>
+      </div>
+      <div id="yi-table"></div>
+      <svg class="yi-svg" id="yi-svg" viewBox="0 0 640 120" role="img" aria-label="和身边事物比一比"></svg>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn primary" id="yi-step" type="button">再多一些（数量 × 100）</button>
+        <button class="btn" id="yi-reset" type="button">回到起点</button>
+      </div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="yi-out"></div></div>
+    <div class="chart-foot">每点一次，数量变成原来的 100 倍：100 → 1 万 → 100 万 → 1 亿。看结果怎样跟着变大。<br><span class="data-note">纸：100 张约 1 cm，1 亿张约 10000 m（教材第 25 页）。大米：教材只给出“1 亿粒大米大约重 2 t”。中间各行由课程作者按 2 t 倒推，标“推算”。写字：1 亿个字要 1 亿秒，教材说“一刻不停，3 年多才能写完”；1 年按 365 天算是补充。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">小讲堂（教材第 27 页）</span>把 1 dm 平均分成 1 亿份，1 份才是 1 纳米。纳米是非常小的长度单位。1 亿名同学手拉手，可以绕地球赤道 3 圈半。</div>
+  <div class="callout tip"><span class="ttl">你也来研究</span>教材请你提出自己的问题，和同学组成小组探索，并记录研究过程。例如：1 亿滴水有多少？1 亿步能走多远？方法都一样：先测一小份，再推到 1 亿。</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">400305000000 的正确读法是哪一个？</div>
+    <div class="opts"><button>四千零三亿五百万</button><button>四千零三亿零五百万</button><button>四千零三亿零五百万零</button><button>四百零三亿零五百万</button></div>
+    <div class="explain">先分级：4003 | 0500 | 0000。亿级读“四千零三亿”；万级开头的 0 要读一个零，读“零五百万”；个级全是 0，不读（教材第 11 页）。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">比较 207534900 和 294916900，在哪一位上分出了大小？</div>
+    <div class="opts"><button>亿位</button><button>个位</button><button>千万位</button><button>十万位</button></div>
+    <div class="explain">两个数都是九位数。最高位亿位都是 2，相同；下一位千万位上 0 &lt; 9，所以 207534900 &lt; 294916900（教材第 15 页）。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">省略亿位后面的尾数，9876540000 ≈ ？亿</div>
+    <div class="opts"><button>98</button><button>97</button><button>100</button><button>99</button></div>
+    <div class="explain">亿位上是 8，尾数的最高位是千万位，上面是 7，大于 5，向亿位进 1：98 + 1 = 99。所以 9876540000 ≈ 99 亿（教材第 17 页）。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">下面哪个式子写对了？</div>
+    <div class="opts"><button>25000000 = 2500 万</button><button>182068 = 18 万</button><button>218309 ≈ 21 万</button><button>530500000000 = 53 亿</button></div>
+    <div class="explain">25000000 是整万的数，去掉末尾 4 个 0 改为“万”，用“=”。182068 不是整万的数，要用“≈”。218309 ≈ 22 万。530500000000 = 5305 亿。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">100 张纸厚约 1 cm，那么 10000 张纸大约有多高？</div>
+    <div class="opts"><button>10 cm</button><button>1 m</button><button>10 m</button><button>10000 m</button></div>
+    <div class="explain">100 个一百是一万，所以 10000 张纸高 100 cm，也就是 1 m（教材第 25 页）。1 亿张纸才是 10000 m。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>亿级</td><td>亿、十亿、百亿、千亿；相邻计数单位进率都是 10，叫十进制计数法</td></tr>
+    <tr><td>读、写</td><td>先分级，从最高级起按级读、写；读完亿级、万级加“亿”“万”</td></tr>
+    <tr><td>比大小</td><td>位数多的数就大；位数相同，从最高位起依次比较</td></tr>
+    <tr><td>改写</td><td>末尾 4 个 0 改为“万”，末尾 8 个 0 改为“亿”，用“=”</td></tr>
+    <tr><td>近似数</td><td>四舍五入：看尾数最高位，小于 5 舍，大于或等于 5 入，用“≈”</td></tr>
+    <tr><td>1 亿有多大</td><td>先测一小份，再推到 1 亿：1 亿张纸约 10000 m 高</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L01-yi-yinei.html"><small>上一课 · L01</small>亿以内数的认识</a>
+    <a href="L03-jiao.html"><small>下一课 · L03</small>角的度量</a>
+    <a href="L11-fuxi.html"><small>L11</small>复习与关联</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L02-yi-yishang.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册第一单元第 10–23 页，综合与实践“1 亿有多大”第 24–27 页。标为“补充”“推算”的内容和模拟演示是课程作者的解释。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  const NAMES = ["个", "十", "百", "千", "万", "十万", "百万", "千万", "亿", "十亿", "百亿", "千亿"];
+  const LV = (p) => (p >= 8 ? "yi" : p >= 4 ? "wan" : "ge");
+  const N = 12;
+  const clean = (v) => String(v).replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+  function head() {
+    let h = '<div class="tbl-wrap" style="overflow-x:auto"><table class="pv"><tr><th class="grp" colspan="4">亿级</th><th class="grp" colspan="4">万级</th><th class="grp" colspan="4">个级</th></tr><tr>';
+    for (let k = 0; k < N; k++) h += '<th class="pl">' + NAMES[N - 1 - k] + "<br>位</th>";
+    return h + "</tr>";
+  }
+  function head2(extra) {   // 带行名的表头（比大小用）
+    let h = '<div class="tbl-wrap" style="overflow-x:auto"><table class="pv"><tr><th></th><th class="grp" colspan="4">亿级</th><th class="grp" colspan="4">万级</th><th class="grp" colspan="4">个级</th></tr><tr><th></th>';
+    for (let k = 0; k < N; k++) h += '<th class="pl">' + NAMES[N - 1 - k] + "<br>位</th>";
+    return h + "</tr>";
+  }
+
+  /* ---- 1. 读数小助手（12 位） ---- */
+  function classify(s) {
+    const n = s.length, cls = new Array(n).fill("");
+    let started = false, run = [];
+    for (let i = 0; i < n; i++) {
+      const p = n - 1 - i;
+      if (s[i] === "0") { if (started) run.push(i); }
+      else { run.forEach((j) => (cls[j] = "z-read")); run = []; started = true; }
+      if (p % 4 === 0) { run.forEach((j) => (cls[j] = "z-skip")); run = []; }
+    }
+    return cls;
+  }
+  function drawBig() {
+    const raw = CL.$("#big-num").value.replace(/\D/g, "");
+    const s = clean(raw);
+    if (!s) { CL.$("#big-table").innerHTML = ""; CL.$("#big-read").textContent = ""; CL.$("#big-out").textContent = "请输入一个数。"; return; }
+    if (s.length > 12) {
+      CL.$("#big-table").innerHTML = ""; CL.$("#big-read").textContent = "";
+      CL.$("#big-out").textContent = "这个数有 " + s.length + " 位，超过了千亿位。小助手最多读 12 位。";
+      return;
+    }
+    const cls = classify(s), off = N - s.length;
+    let h = head() + "<tr>";
+    for (let k = 0; k < N; k++) {
+      const p = N - 1 - k, i = k - off;
+      h += '<td class="d lvl-' + LV(p) + " " + (i >= 0 ? cls[i] : "") + '">' + (i >= 0 ? s[i] : "") + "</td>";
+    }
+    CL.$("#big-table").innerHTML = h + "</tr></table></div>";
+    const read = CL.readNum(s);
+    CL.$("#big-read").textContent = s + " 读作：" + read;
+    const g = CL.groupNum(s).split(" "), names = ["个级", "万级", "亿级"];
+    const parts = g.map((x, j) => {
+      const lv = names[g.length - 1 - j], unit = lv === "亿级" ? "亿" : lv === "万级" ? "万" : "";
+      const r = +x === 0 ? "全是 0，不读" : "读" + CL.readNum(x) + (unit ? "，加“" + unit + "”" : "");
+      return lv + " " + x + "：" + r;
+    });
+    const nRead = cls.filter((c) => c === "z-read").length, nSkip = cls.filter((c) => c === "z-skip").length;
+    const zeros = (read.match(/零/g) || []).length;
+    let note = "";
+    if (nRead || nSkip) note = "\n0 的情况：" + (nSkip ? nSkip + " 个 0 在级末尾，不读；" : "") + (nRead ? nRead + " 个 0 在中间，读了 " + zeros + " 个“零”。" : "中间没有要读的 0。");
+    let comp = "";
+    if (s.length > 8) {
+      const yi = +s.slice(0, -8), wan = +s.slice(-8, -4), one = +s.slice(-4);
+      comp = "\n组成：" + yi + " 个亿" + (wan ? "、" + wan + " 个万" : "") + (one ? "和 " + one + " 个一" : "") + "。";
+    }
+    CL.$("#big-out").textContent = "这是一个 " + s.length + " 位数。先分级：" + CL.groupNum(s) + "\n" + parts.join("\n") + "\n读作：" + read + note + comp;
+  }
+  CL.$("#big-num").addEventListener("input", drawBig);
+  CL.$$("#demo-big [data-num]").forEach((b) => b.addEventListener("click", () => { CL.$("#big-num").value = b.dataset.num; drawBig(); }));
+  drawBig();
+
+  /* ---- 2. 比大小对决 ---- */
+  let cmpStep = 0, cmpPlan = null;
+  function plan() {
+    const a = clean(CL.$("#cmp-a").value).slice(0, 12), b = clean(CL.$("#cmp-b").value).slice(0, 12);
+    if (!a || !b) return null;
+    const steps = [];
+    steps.push({ kind: "len", text: "第 1 步：数位数。A 是 " + a.length + " 位数，B 是 " + b.length + " 位数。" + (a.length === b.length ? "位数相同，要从最高位比起。" : "位数不同，位数多的数就大。") });
+    let res = 0, at = -1;
+    if (a.length !== b.length) res = a.length > b.length ? 1 : -1;
+    else {
+      for (let i = 0; i < a.length; i++) {
+        const p = a.length - 1 - i, da = +a[i], db = +b[i];
+        if (da === db) steps.push({ kind: "eq", i, text: "比" + NAMES[p] + "位：都是 " + da + "，相同，比下一位。" });
+        else { res = da > db ? 1 : -1; at = i; steps.push({ kind: "win", i, text: "比" + NAMES[p] + "位：" + da + (da > db ? " > " : " < ") + db + "，分出了大小。" }); break; }
+      }
+    }
+    const sign = res > 0 ? " > " : res < 0 ? " < " : " = ";
+    const why = a.length !== b.length ? "因为位数多的数就大。" : res === 0 ? "两个数每一位都相同。" : "因为" + NAMES[a.length - 1 - at] + "位上 " + a[at] + (res > 0 ? " > " : " < ") + b[at] + "。";
+    steps.push({ kind: "end", text: "结论：" + a + sign + b + "，" + why });
+    return { a, b, steps, at };
+  }
+  function drawCmp() {
+    if (!cmpPlan) { CL.$("#cmp-table").innerHTML = ""; CL.$("#cmp-out").textContent = "请输入两个数。"; return; }
+    const { a, b, steps } = cmpPlan;
+    const shown = steps.slice(0, cmpStep + 1);
+    const last = shown[shown.length - 1];
+    const same = a.length === b.length;
+    const doneIdx = new Set(shown.filter((x) => x.kind === "eq").map((x) => x.i));
+    const winStep = shown.find((x) => x.kind === "win");
+    const curI = last.kind === "eq" || last.kind === "win" ? last.i : -1;
+    function row(label, s) {
+      const off = N - s.length;
+      let h = '<tr><th class="rowh">' + label + "</th>";
+      for (let k = 0; k < N; k++) {
+        const p = N - 1 - k, i = k - off;
+        let c = "d lvl-" + LV(p);
+        if (i >= 0) {
+          if (!same && cmpStep >= 0) c += i === 0 ? " lead" : "";
+          if (same && doneIdx.has(i)) c += " same";
+          if (same && winStep && winStep.i === i) c += " win";
+          if (same && i === curI && last.kind === "eq") c += " hl";
+        }
+        h += '<td class="' + c + '">' + (i >= 0 ? s[i] : "") + "</td>";
+      }
+      return h + "</tr>";
+    }
+    CL.$("#cmp-table").innerHTML = head2() + row("A", a) + row("B", b) + "</table></div>";
+    CL.$("#cmp-out").textContent = shown.map((x) => x.text).join("\n") + (cmpStep < steps.length - 1 ? "\n（点“下一步”继续）" : "");
+    CL.$("#cmp-step").disabled = cmpStep >= steps.length - 1;
+  }
+  function resetCmp() { cmpPlan = plan(); cmpStep = 0; drawCmp(); }
+  CL.$("#cmp-step").addEventListener("click", () => { if (cmpPlan && cmpStep < cmpPlan.steps.length - 1) { cmpStep++; drawCmp(); } });
+  CL.$("#cmp-all").addEventListener("click", () => { if (cmpPlan) { cmpStep = cmpPlan.steps.length - 1; drawCmp(); } });
+  CL.$("#cmp-reset").addEventListener("click", resetCmp);
+  ["#cmp-a", "#cmp-b"].forEach((id) => CL.$(id).addEventListener("input", resetCmp));
+  CL.$$("#demo-cmp [data-pair]").forEach((b) => b.addEventListener("click", () => {
+    const [x, y] = b.dataset.pair.split(","); CL.$("#cmp-a").value = x; CL.$("#cmp-b").value = y; resetCmp();
+  }));
+  resetCmp();
+
+  /* ---- 3. 四舍五入数轴 ---- */
+  const UN = { 4: "万", 8: "亿" }, UP = { 4: "万位", 8: "亿位" }, TOP = { 4: "千位", 8: "千万位" };
+  function roundInfo(s, e) {
+    const n = BigInt(s), u = 10n ** BigInt(e);
+    const lo = n / u, tail = n % u;
+    const top = s.length > e ? +s[s.length - e] : +String(n).padStart(e, "0")[0];
+    const up = top >= 5;
+    return { n, lo, hi: lo + 1n, tail, top, up, approx: up ? lo + 1n : lo, exact: tail === 0n };
+  }
+  function drawRound() {
+    const s = clean(CL.$("#rd-num").value).slice(0, 12), e = +CL.$("#rd-unit").value;
+    const svg = CL.$("#rd-svg");
+    if (!s) { svg.innerHTML = ""; CL.$("#rd-out").textContent = "请输入一个数。"; return; }
+    if (s.length <= e) { svg.innerHTML = ""; CL.$("#rd-out").textContent = s + " 还不到 1" + UN[e] + "。请换一个更大的数，或改成省略万位后面的尾数。"; return; }
+    const r = roundInfo(s, e), u = 10 ** e;
+    const frac = Number(r.tail) / u;
+    const X0 = 60, X1 = 580, x = X0 + frac * (X1 - X0), xm = (X0 + X1) / 2;
+    const tailStr = s.slice(-e);
+    let h = '<line class="axis" x1="' + (X0 - 20) + '" y1="70" x2="' + (X1 + 20) + '" y2="70"/>';
+    h += '<line class="tick" x1="' + X0 + '" y1="60" x2="' + X0 + '" y2="80"/><line class="tick" x1="' + X1 + '" y1="60" x2="' + X1 + '" y2="80"/>';
+    h += '<line class="mid" x1="' + xm + '" y1="50" x2="' + xm + '" y2="90"/>';
+    h += '<text class="b" x="' + X0 + '" y="106" text-anchor="middle">' + r.lo + UN[e] + '</text><text class="b" x="' + X1 + '" y="106" text-anchor="middle">' + r.hi + UN[e] + "</text>";
+    h += '<text x="' + xm + '" y="122" text-anchor="middle">正中间 ' + (r.lo * BigInt(u) + BigInt(u / 2)) + "</text>";
+    const tx = Math.min(Math.max(x, 110), 530);
+    h += '<circle class="pt" cx="' + x + '" cy="70" r="7"/><text class="b" x="' + tx + '" y="40" text-anchor="middle" style="fill:var(--down)">' + s + "</text>";
+    const tgt = r.up ? X1 : X0;
+    if (!r.exact) h += '<path class="arr" d="M' + x + " 58 Q " + (x + tgt) / 2 + " 20 " + tgt + ' 58" marker-end="url(#rd-ar)"/>';
+    svg.innerHTML = '<defs><marker id="rd-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--up)"/></marker></defs>' + h;
+    let out;
+    if (r.exact) out = s + " 是整" + UN[e] + "的数，尾数全是 0。\n可以直接改写：" + s + " = " + r.lo + UN[e] + "（大小不变，用“=”）。";
+    else out = "省略" + UP[e] + "后面的尾数：尾数是 " + tailStr + "，尾数的最高位是" + TOP[e] + "，上面是 " + r.top + "。\n" +
+      r.top + (r.up ? (r.top === 5 ? " 等于 5" : " 大于 5") + "，向" + UP[e] + "进 1，再把尾数舍去（入）。" : " 小于 5，把尾数舍去（舍）。") + "\n" +
+      s + " ≈ " + r.approx + UN[e] + "（大小变了，用“≈”）。";
+    CL.$("#rd-out").textContent = out;
+  }
+  CL.$("#rd-num").addEventListener("input", drawRound);
+  CL.$("#rd-unit").addEventListener("change", drawRound);
+  CL.$$("#demo-round [data-r]").forEach((b) => b.addEventListener("click", () => {
+    const [v, e] = b.dataset.r.split(","); CL.$("#rd-num").value = v; CL.$("#rd-unit").value = e; drawRound();
+  }));
+  drawRound();
+
+  /* ---- 4. 求近似数练习 ---- */
+  const RQ = [
+    ["25520", 4, ""], ["7244100", 4, ""], ["923456000", 8, ""], ["950228500", 8, ""],
+    ["24870895", 4, "上海人口"], ["34915616", 4, "山西人口"], ["64567588", 4, "浙江人口"],
+    ["66444864", 4, "湖南人口"], ["50126804", 4, "广西人口"], ["47209277", 4, "云南人口"],
+  ];
+  let rqi = 0;
+  CL.$("#rq-q").innerHTML = RQ.map((r, i) => "<option value=\"" + i + "\">第 " + (i + 1) + " 题</option>").join("");
+  function drawRq() {
+    const [s, e, label] = RQ[rqi];
+    CL.$("#rq-prompt").textContent = "第 " + (rqi + 1) + " 题：" + (label ? label + "，" : "") + "省略" + UP[e] + "后面的尾数";
+    CL.$("#rq-left").textContent = s; CL.$("#rq-unit").textContent = UN[e];
+    CL.$("#rq-ans").value = ""; CL.$("#rq-q").value = String(rqi);
+    CL.$("#rq-out").textContent = "在空格里填近似数，再点“检查”。";
+  }
+  CL.$("#rq-check").addEventListener("click", () => {
+    const [s, e] = RQ[rqi], r = roundInfo(s, e), v = CL.$("#rq-ans").value.replace(/\D/g, "");
+    if (!v) { CL.$("#rq-out").textContent = "先在空格里填一个数。"; return; }
+    if (BigInt(v) === r.approx) {
+      CL.$("#rq-out").textContent = "对了：" + s + " ≈ " + r.approx + UN[e] + "。";
+    } else {
+      const hint = BigInt(v) === r.lo || BigInt(v) === r.hi ? "\n提示：看" + TOP[e] + "上的数是几，它决定是舍还是入。" : "\n提示：先分级，找到" + UP[e] + "。" + UN[e] + "前面的数是 " + r.lo + " 或 " + r.hi + "。";
+      CL.$("#rq-out").textContent = "还不对。" + hint;
+    }
+  });
+  CL.$("#rq-show").addEventListener("click", () => {
+    const [s, e] = RQ[rqi], r = roundInfo(s, e);
+    CL.$("#rq-ans").value = String(r.approx);
+    CL.$("#rq-out").textContent = "答案：" + s + " ≈ " + r.approx + UN[e] + "。" + TOP[e] + "上是 " + r.top + "，" + (r.up ? "大于或等于 5，入。" : "小于 5，舍。");
+  });
+  CL.$("#rq-next").addEventListener("click", () => { rqi = (rqi + 1) % RQ.length; drawRq(); });
+  CL.$("#rq-q").addEventListener("change", () => { rqi = +CL.$("#rq-q").value; drawRq(); });
+  CL.$("#rq-ans").addEventListener("keydown", (ev) => { if (ev.key === "Enter") CL.$("#rq-check").click(); });
+  drawRq();
+
+  /* ---- 5. 1 亿有多大 ---- */
+  const COUNTS = ["100", "1 万", "100 万", "1 亿"];
+  const EX = {
+    paper: { thing: "张纸", col: "高度", vals: ["约 1 cm", "约 1 m", "约 100 m", "约 10000 m"], src: ["教材", "教材", "推算", "教材"], h: [0.01, 1, 100, 10000],
+      ref: { name: "珠穆朗玛峰 8800 多米", v: 8800 }, unitName: "m",
+      say: ["100 张纸厚约 1 cm。", "100 个一百是一万，所以 10000 张纸高 100 cm，也就是 1 m。", "100 万张纸高 100 m。", "10000 个一万是一亿，1 亿张纸摞起来就有 10000 m 高，比珠穆朗玛峰（8800 多米）还高。"] },
+    rice: { thing: "粒大米", col: "重量", vals: ["约 2 g（推算）", "约 200 g（推算）", "约 20 kg（推算）", "约 2 t"], src: ["推算", "推算", "推算", "教材"], h: [0.002, 0.2, 20, 2000],
+      ref: { name: "小明的体重约 35 kg", v: 35 }, unitName: "kg",
+      say: ["教材建议：先称一称 100 粒大米有多重。按教材的 1 亿粒约 2 t 倒推，100 粒约 2 g。", "1 万粒约 200 g（推算）。", "100 万粒约 20 kg（推算）。", "教材：1 亿粒大米大约重 2 t，“我 10 年都吃不完”。"] },
+    write: { thing: "个字", col: "要用的时间", vals: ["100 秒", "10000 秒，约 2 时 47 分", "100 万秒，约 11 天半", "1 亿秒，3 年多"], src: ["推算", "推算", "推算", "教材"], h: [100, 10000, 1000000, 100000000],
+      ref: { name: "1 年约 3154 万秒（补充）", v: 31536000 }, unitName: "秒",
+      say: ["1 秒写 1 个字，100 个字要 100 秒，不到 2 分钟。", "1 万个字要 10000 秒，约 2 小时 47 分。", "100 万个字要 100 万秒，约 11 天半，还要一刻不停。", "写 1 亿个字需要 1 亿秒。教材：一刻不停，3 年多才能写完 1 亿个字，那时候我已经上中学了。"] },
+  };
+  let ex = "paper", ys = 0;
+  function drawYi() {
+    const E = EX[ex];
+    let t = '<div class="tbl-wrap"><table class="tbl"><tr><th>数量</th>';
+    COUNTS.forEach((c, i) => (t += "<th" + (i === ys ? ' style="outline:3px solid var(--accent);outline-offset:-3px"' : "") + ">" + c + E.thing + "</th>"));
+    t += "</tr><tr><td>" + E.col + "</td>";
+    E.vals.forEach((v, i) => (t += "<td>" + (i <= ys ? v : "？") + "</td>"));
+    CL.$("#yi-table").innerHTML = t + "</tr></table></div>";
+    // 条形：当前值 和 参照物，按较大者缩放
+    const cur = E.h[ys], mx = Math.max(cur, E.ref.v), W = 440;
+    const w1 = Math.max(2, (cur / mx) * W), w2 = Math.max(2, (E.ref.v / mx) * W);
+    CL.$("#yi-svg").innerHTML =
+      '<text class="b" x="10" y="38">' + COUNTS[ys] + E.thing + '</text><rect class="bar" x="150" y="22" width="' + w1 + '" height="22" rx="4"/>' +
+      '<text x="10" y="88">' + E.ref.name + '</text><rect class="ref" x="150" y="72" width="' + w2 + '" height="22" rx="4"/>' +
+      '<text x="' + Math.min(150 + w1 + 6, 600) + '" y="38" text-anchor="' + (w1 > 400 ? "end" : "start") + '">' + E.vals[ys] + "</text>";
+    CL.$("#yi-out").textContent = E.say[ys] + "\n这一行数据来源：" + (E.src[ys] === "教材" ? "教材原文。" : "课程作者推算（教材没有给出这一行）。") + (ys < 3 ? "\n再点一次，数量变成 " + COUNTS[ys + 1] + E.thing + "。" : "\n已经推到 1 亿了。");
+    CL.$("#yi-step").disabled = ys >= 3;
+  }
+  CL.$$("#demo-yi [data-ex]").forEach((b) => b.addEventListener("click", () => {
+    CL.$$("#demo-yi [data-ex]").forEach((x) => x.classList.toggle("on", x === b)); ex = b.dataset.ex; ys = 0; drawYi();
+  }));
+  CL.$("#yi-step").addEventListener("click", () => { if (ys < 3) { ys++; drawYi(); } });
+  CL.$("#yi-reset").addEventListener("click", () => { ys = 0; drawYi(); });
+  drawYi();
+});
+</script>
+</body>
+</html>

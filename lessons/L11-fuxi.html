@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>复习与关联 · L11</title>
+<link rel="stylesheet" href="assets/course.css">
+<script src="assets/glossary-data.js"></script>
+<script src="assets/course-lib.js"></script>
+<style>
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; color: var(--ink-2); }
+  .btn.on { background: var(--brand); color: var(--surface); border-color: var(--brand); }
+  .demo select, .demo input[type=range] { font-size: 14px; }
+  .demo select { padding: 3px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  /* 知识结构图 */
+  .km { display: grid; gap: 10px; }
+  .km-br { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: start; border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: var(--surface); }
+  .km-root { font-weight: 700; color: var(--brand-2); font-family: var(--serif); font-size: 16px; padding: 6px 4px; }
+  .km-kids { display: flex; flex-direction: column; gap: 6px; }
+  .km-grp { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; color: var(--ink-3); }
+  .km-grp b { min-width: 96px; color: var(--ink-2); font-weight: 600; }
+  .km-leaf { font-size: 13px; padding: 3px 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); cursor: pointer; }
+  .km-leaf:hover { border-color: var(--accent); }
+  .km-leaf.on { background: var(--rule-bg); border-color: var(--accent); font-weight: 600; }
+  .km-leaf.seen { border-color: var(--up); }
+  @media (max-width: 640px) { .km-br { grid-template-columns: 1fr; } }
+  /* 数位顺序表 */
+  .pv { border-collapse: collapse; margin: 8px auto; font-size: 13px; }
+  .pv th, .pv td { border: 1px solid var(--line); padding: 3px 4px; text-align: center; min-width: 32px; }
+  .pv th.grp { background: var(--surface-2); color: var(--ink-2); font-weight: 600; }
+  .pv th.pl { font-weight: 400; color: var(--ink-3); font-size: 11.5px; line-height: 1.2; }
+  .pv td.d { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--ink); height: 36px; cursor: pointer; }
+  .pv td.d.on { background: var(--rule-bg); color: var(--accent); }
+  .num-in { font-family: var(--mono); font-size: 17px; width: 170px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+  .big-read { font-size: 20px; font-weight: 700; text-align: center; margin: 6px 0 2px; color: var(--brand-2); font-family: var(--serif); }
+  /* 动物园 */
+  .zoo-svg { width: 100%; max-width: 600px; display: block; margin: 0 auto; }
+  .zoo-svg .road { stroke: var(--ink-3); stroke-width: 7; opacity: .35; stroke-linecap: round; }
+  .zoo-svg .road.walked { stroke: var(--down); opacity: .9; stroke-width: 5; }
+  .zoo-svg .nd { fill: var(--tip-bg); stroke: var(--ink-3); stroke-width: 1.2; cursor: pointer; }
+  .zoo-svg .nd.center { fill: var(--rule-bg); }
+  .zoo-svg .nd.gate { fill: var(--warn-bg); }
+  .zoo-svg .nd.on { stroke: var(--accent); stroke-width: 3; }
+  .zoo-svg .nd.goal { stroke: var(--up); stroke-width: 3; stroke-dasharray: 5 3; }
+  .zoo-svg .nl { font-size: 14px; fill: var(--ink); pointer-events: none; }
+  .zoo-svg .me { fill: var(--brand-2); stroke: var(--surface); stroke-width: 2; }
+  .zoo-svg .me-t { font-size: 11px; fill: #fff; font-weight: 700; pointer-events: none; }
+  .dir-pad { display: grid; grid-template-columns: repeat(3, 60px); gap: 6px; }
+  .dir-pad .btn { padding: 5px 0; text-align: center; }
+  .dir-pad .mid { display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink-3); }
+  /* 鸡兔同笼 */
+  .cage-svg { width: 100%; max-width: 620px; display: block; margin: 0 auto; }
+  .cage-svg .head { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
+  .cage-svg .leg { stroke: var(--ink); stroke-width: 1.8; }
+  .cage-svg .leg.add { stroke: var(--down); stroke-width: 2.2; }
+  .cage-svg .leg.up { stroke: var(--ink-3); stroke-dasharray: 2 3; }
+  .cage-svg .cage { fill: none; stroke: var(--brand-2); stroke-width: 2; }
+  .cage-svg .tg { font-size: 12px; fill: var(--ink-2); }
+  .ltbl { border-collapse: collapse; margin: 8px auto; font-size: 13.5px; }
+  .ltbl th, .ltbl td { border: 1px solid var(--line); padding: 3px 7px; text-align: center; min-width: 30px; font-family: var(--mono); }
+  .ltbl th { background: var(--surface-2); color: var(--ink-2); font-family: var(--sans); font-weight: 600; }
+  .ltbl td.cur { background: var(--rule-bg); font-weight: 700; }
+  .ltbl td.hit { background: var(--tip-bg); color: var(--up); font-weight: 700; }
+  .steps-box { font-size: 15px; line-height: 1.8; color: var(--ink); }
+  .steps-box .dim { color: var(--ink-3); }
+  .ctrl-wide input[type=range] { width: 260px; max-width: 70vw; }
+</style>
+</head>
+<body>
+<header id="cl-topbar"></header>
+
+<div class="layout">
+<aside class="toc">
+  <h4>本课目录</h4>
+  <ol>
+    <li><a href="#s1">整理复习：画知识结构图</a></li>
+    <li><a href="#s2">数与运算</a></li>
+    <li><a href="#s3">数量关系</a></li>
+    <li><a href="#s4">图形的认识与测量</a></li>
+    <li><a href="#s5">统计与方向</a></li>
+    <li><a href="#s6">数学广角：鸡兔同笼</a></li>
+    <li><a href="#s7">挑战自我：百僧百馍</a></li>
+    <li><a href="#s8">自测与速记</a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="hero">
+  <div class="kicker">L11 · 统计、方向与复习</div>
+  <h1>复习与关联</h1>
+  <p>这个学期学了大数、乘法、数量关系、角和四边形、统计图和方向。这一课先把它们连成一张知识结构图。然后用古代的数学趣题“鸡兔同笼”和“百僧百馍”挑战一下自己。</p>
+  <div class="meta"><span>教材：第七单元 第 108–120 页</span><span>学习约 40 分钟</span><span>含 6 个互动演示</span></div>
+</div>
+
+<div class="objectives">
+  <h4>学完本课，你能够：</h4>
+  <ul>
+    <li>用<a class="term" href="glossary.html#zhishi-jiegoutu">知识结构图</a>整理本学期的知识，说出每一块知识在哪一课。</li>
+    <li>读、写、改写一个比 1 亿大的数，说出其中数字的含义，并求近似数。</li>
+    <li>选对数量关系解决实际问题：总量 = 分量 + 分量，总价 = 单价 × 数量，路程 = 速度 × 时间。</li>
+    <li>在平面图上辨认八个方向，描述行走路线。</li>
+    <li>用画图、列表和古人的方法解决<a class="term" href="glossary.html#ji-tu-tonglong">鸡兔同笼</a>问题。</li>
+  </ul>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="lesson-sec" id="s1">
+  <h2><span class="num">01</span>整理复习：画知识结构图</h2>
+  <p>先说结论：知识结构图把学过的知识按类别连起来。教材把本学期的知识分成五块。它们是：数与运算、数量关系、图形的认识与测量、数据的收集整理与表达、认识方向。</p>
+  <figure class="fig"><img src="img/t108-zhishitu.png" alt="教材第 108 页：小明整理的数与运算知识结构图，分为万以上数的认识和多位数乘两位数"><figcaption><b>教材第 108 页</b>小明整理的“数与运算”知识结构图。</figcaption></figure>
+  <p>教材请你也来整理一下。下面这张图按教材第 108–111 页的结构画好了。点任意一个知识点，看它的例子和它在哪一课。</p>
+
+  <div class="chart-card" id="demo-map">
+    <div class="chart-head">
+      <div class="chart-title">本学期的知识结构图（点一点）</div>
+    </div>
+    <div class="demo"><div class="km" id="km"></div></div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="km-out"></div></div>
+    <div class="chart-foot">每个知识点都点一遍。点过的会变成绿色边框。说不出例子的知识点，回到对应的课再看一看。<br><span class="data-note">分类和知识点照教材第 108–111 页的知识结构图；例子取自教材，课程链接是本课程的课号。</span></div>
+  </div>
+  <div class="callout tip"><span class="ttl">自己画一张</span>教材让你“也来整理一下吧”。拿一张纸，先写五个大类，再往下分。画完和上面的图对照，看看漏了什么。</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson-sec" id="s2">
+  <h2><span class="num">02</span>数与运算</h2>
+  <p>先说结论：认识大数，核心还是数位顺序表；笔算乘法，核心是“用一个乘数每一位上的数去乘另一个乘数”。</p>
+  <h3>回顾：万以上数的认识</h3>
+  <p>教材第 108 页的数位顺序表里写着一个数：60174690000。两位同学提出了问题：</p>
+  <ul class="checklist">
+    <li>数位顺序表中的这个数中的两个“6”分别表示……</li>
+    <li>把这个数改写成用“万”作单位的数是……省略亿位后面的尾数，求近似数是……</li>
+  </ul>
+  <p>用下面的大数小助手回答这些问题。点表格里的数字，看它表示多少。</p>
+
+  <div class="chart-card" id="demo-bignum">
+    <div class="chart-head">
+      <div class="chart-title">大数小助手：读、写、改写、求近似数</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row"><label>输入一个数（最多 12 位）：<input class="num-in" id="bn-num" inputmode="numeric" maxlength="12" value="60174690000" aria-label="要研究的数"></label></div>
+      <div class="btn-row">教材里的数：
+        <button class="btn" type="button" data-num="60174690000">60174690000</button>
+        <button class="btn" type="button" data-num="100384000500">100384000500</button>
+        <button class="btn" type="button" data-num="5200000">5200000</button>
+        <button class="btn" type="button" data-num="791460000">791460000</button>
+      </div>
+      <div id="bn-table"></div>
+      <div class="big-read" id="bn-big"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="bn-out"></div></div>
+    <div class="chart-foot">先自己读，再看答案。点表格里不同位置上的同一个数字，比较它们表示的大小。<br><span class="data-note">读法用课程共用的读数程序，按教材的读数规则生成。整万、整亿的数用“=”改写；其他数用“四舍五入”法求近似数，用“≈”连接。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：60174690000 的答案</span>两个“6”：一个在百亿位上，表示 6 个百亿；另一个在十万位上，表示 6 个十万。这个数末尾有 4 个 0，是整万的数，改写成用“万”作单位的数是 6017469 万。省略亿位后面的尾数，要看千万位：千万位是 7，7 ≥ 5，要向亿位进 1，所以约是 602 亿。</div>
+
+  <h3>回顾：多位数乘两位数</h3>
+  <figure class="fig"><img src="img/t109-shushi.png" alt="教材第 109 页：14 乘 12 的竖式，28 是 14 乘 2，140 是 14 乘 10"><figcaption><b>教材第 109 页</b>14 × 12 的竖式，每一步算的是什么。</figcaption></figure>
+  <p>12 是 1 个十和 2 个一。所以先算 14 × 2 = 28，再算 14 × 10 = 140，最后 28 + 140 = 168。第二行的 14 写在十位上，末尾的 0 可以不写。</p>
+  <div class="callout warn"><span class="ttl">应用提升第 2 题：竖式错在哪</span>
+    教材给了两道错题，请你分析错误原因：
+    <ul>
+      <li><b>34 × 21，写成 764。</b>第一行应该是 34 × 1 = 34，竖式里写成了 84。所以和也错了。正确结果是 34 + 680 = 714。</li>
+      <li><b>143 × 26，写成 3508。</b>第一行应该是 143 × 6 = 858。竖式里写成 648：4 × 6 = 24 时忘了加上个位进的 1，1 × 6 时又忘了加上进的 2。正确结果是 858 + 2860 = 3718。</li>
+    </ul>
+    笔算乘法要注意：相同数位对齐，用第二个乘数十位上的数去乘时，积的末位和十位对齐；有进位时别忘了加上。</div>
+  <div class="callout note"><span class="ttl">补充：这两个错误原因是课程作者的分析</span>教材只给出错题，让你自己分析。上面的原因，是从竖式里的数字推出来的。第一题的“84”是怎么来的，竖式里看不出来，只能确定它算错了。</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson-sec" id="s3">
+  <h2><span class="num">03</span>数量关系</h2>
+  <p>先说结论：本学期总结了三个常见的数量关系。一个是加法模型，两个是乘法模型。</p>
+  <div class="grid-3">
+    <div class="kp"><div class="k">加法</div><div class="v">总量 = 分量 + 分量</div><p><a class="term" href="glossary.html#zongliang-fenliang">总量与分量</a>。例：245 人 + 376 人 = 621 人。</p></div>
+    <div class="kp"><div class="k">乘法</div><div class="v">总价 = 单价 × 数量</div><p><a class="term" href="glossary.html#danjia-zongjia">单价、数量、总价</a>。</p></div>
+    <div class="kp"><div class="k">乘法</div><div class="v">路程 = 速度 × 时间</div><p><a class="term" href="glossary.html#sudu-lucheng">速度、时间、路程</a>。</p></div>
+  </div>
+  <figure class="fig"><img src="img/t109-shuliang.png" alt="教材第 109 页：小红整理的数量关系知识结构图，以及李叔叔从北京经南京到上海的骑行路程：北京到南京 1033 km，南京到上海 295 km"><figcaption><b>教材第 109 页</b>小红整理的“数量关系”结构图，和李叔叔的骑行计划。</figcaption></figure>
+  <p>教材用李叔叔的骑行计划说明怎样选数量关系。北京到南京 1033 km，南京到上海 295 km。</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>问题</th><th>用哪个数量关系</th><th>怎样算</th></tr>
+    <tr><td>（1）北京到上海一共多少千米？</td><td>总量 = 分量 + 分量</td><td>1033 + 295 = 1328（km）</td></tr>
+    <tr><td>（2）每天骑 115 千米，15 天后能到上海吗？</td><td>路程 = 速度 × 时间</td><td>115 × 15 = 1725（km），1725 > 1328，能到达</td></tr>
+    <tr><td>（3）4 袋面包（每袋 15 元）和 1 包矿泉水（36 元），一共多少钱？</td><td>先用 总价 = 单价 × 数量，再用 总量 = 分量 + 分量</td><td>15 × 4 = 60（元），60 + 36 = 96（元）</td></tr>
+  </table></div>
+  <div class="callout tip"><span class="ttl">问题（3）用了两个关系</span>教材说：问题（3）可先用“总价 = 单价 × 数量”求出买面包的钱数。再利用“总量 = 分量 + 分量”，把面包和矿泉水的钱数加起来。复杂一点的问题，常常要把几个数量关系连起来用。</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson-sec" id="s4">
+  <h2><span class="num">04</span>图形的认识与测量</h2>
+  <p>先说结论：这学期从“线”“角”“四边形”三个方面研究了图形。研究图形时，要从边和角两个方面看。</p>
+  <figure class="fig"><img src="img/t110-tuxing.png" alt="教材第 110 页：图形的认识与测量知识结构图：线（平行和垂直）、角（量角、画角、角的分类）、平行四边形和梯形"><figcaption><b>教材第 110 页</b>图形的认识与测量知识结构图。</figcaption></figure>
+  <ul class="checklist">
+    <li><b>线</b>：a ⊥ c，b ⊥ c，所以 a // b。见 <a href="L04-pingxing-chuizhi.html">L04</a>。</li>
+    <li><b>角</b>：量角时，量角器的中心和角的顶点重合，0° 刻度线和角的一条边重合。0° 刻度线在哪一圈，就看哪一圈的刻度。见 <a href="L03-jiao.html">L03</a>。</li>
+    <li><b>角的分类</b>：<a class="term" href="glossary.html#ruijiao">锐角</a> &lt; <a class="term" href="glossary.html#zhijiao">直角</a> &lt; <a class="term" href="glossary.html#dunjiao">钝角</a> &lt; <a class="term" href="glossary.html#pingjiao">平角</a> &lt; <a class="term" href="glossary.html#zhoujiao">周角</a>。</li>
+    <li><b>平行四边形和梯形</b>：见 <a href="L05-sibianxing.html">L05</a>。</li>
+  </ul>
+  <p>教材里的同学说：“我从边和角两个方面研究了图形的特点，了解了图形之间的关系。”应用提升第 3 题请你用一张表整理正方形、长方形、平行四边形和梯形。表里第一行已经填好：</p>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>四边形</th><th>四边相等</th><th>两组对边分别相等</th><th>只有一组对边平行</th><th>两组对边分别平行</th><th>有四个直角</th></tr>
+    <tr><td>正方形</td><td>✓</td><td>✓</td><td></td><td>✓</td><td>✓</td></tr>
+    <tr><td>长方形</td><td>？</td><td>？</td><td>？</td><td>？</td><td>？</td></tr>
+    <tr><td>平行四边形</td><td>？</td><td>？</td><td>？</td><td>？</td><td>？</td></tr>
+    <tr><td>梯形</td><td>？</td><td>？</td><td>？</td><td>？</td><td>？</td></tr>
+  </table></div>
+  <div class="callout tip"><span class="ttl">怎样填</span>回想定义。<a class="term" href="glossary.html#pingxing-sibianxing">平行四边形</a>是两组对边分别平行的四边形，它的对边相等。<a class="term" href="glossary.html#tixing">梯形</a>只有一组对边平行。长方形和正方形也是两组对边分别平行。填完后问问右边的 AI 助教，请它检查。</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson-sec" id="s5">
+  <h2><span class="num">05</span>统计与方向</h2>
+  <p>先说结论：用条形统计图表示数据，可以更清楚地看出数量的多少。辨认方向可以借助太阳、指南针，还可以看平面图。</p>
+  <figure class="fig"><img src="img/t111-tongji.png" alt="教材第 111 页：我国 2018—2023 年电话用户数统计图，固定电话用户从 19209 万户降到 17333 万户，移动电话用户从 156610 万户升到 174358 万户"><figcaption><b>教材第 111 页</b>我国 2018—2023 年电话用户数统计图（单位：万户）。</figcaption></figure>
+  <p>从图里能读出很多信息。例如：移动电话用户从 2018 年的 156610 万户，增加到 2023 年的 174358 万户；固定电话用户从 19209 万户，减少到 17333 万户。每一年，移动电话用户都比固定电话用户多得多。条形统计图的读法和画法见 <a href="L09-tongjitu.html">L09</a>。</p>
+  <figure class="fig"><img src="img/t111-fangxiang.png" alt="教材第 111 页：八个方向示意图"><figcaption><b>教材第 111 页</b>通过活动，我们认识了方向，学会了看平面图。</figcaption></figure>
+  <h3>应用提升第 4 题：动物园导游图</h3>
+  <figure class="fig"><img src="img/t113-dongwuyuan.png" alt="教材第 113 页：动物园导游图，狮虎山在中间，周围有长颈鹿馆、猩猩馆、飞禽馆、象馆、海洋馆、猴山、大门、大熊猫馆"><figcaption><b>教材第 113 页</b>小丽和小红在动物园大门口看导游图。</figcaption></figure>
+  <p>小丽说：“我先向东走去看大熊猫，然后我想去看猩猩，可以怎么走呢？”小红说：“长颈鹿馆在西北角。去长颈鹿馆，可以先向北走到狮虎山，再向西北走；也可以……”</p>
+
+  <div class="chart-card" id="demo-zoo">
+    <div class="chart-head">
+      <div class="chart-title">动物园导游图：说方向，走路线</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">任务：
+        <select id="zoo-task" aria-label="选择任务">
+          <option value="center">说一说：各场馆在狮虎山的什么方向</option>
+          <option value="li">小丽：先看大熊猫，再看猩猩</option>
+          <option value="hong">小红：去长颈鹿馆</option>
+          <option value="free">自由走</option>
+        </select>
+        <button class="btn" id="zoo-reset" type="button">回到大门</button>
+      </div>
+      <div class="btn-row">
+        <div class="dir-pad" id="zoo-pad">
+          <button class="btn" type="button" data-dir="西北">西北</button><button class="btn" type="button" data-dir="北">北</button><button class="btn" type="button" data-dir="东北">东北</button>
+          <button class="btn" type="button" data-dir="西">西</button><span class="mid">走一段</span><button class="btn" type="button" data-dir="东">东</button>
+          <button class="btn" type="button" data-dir="西南">西南</button><button class="btn" type="button" data-dir="南">南</button><button class="btn" type="button" data-dir="东南">东南</button>
+        </div>
+      </div>
+      <svg class="zoo-svg" id="zoo-svg" viewBox="0 0 600 360" role="img" aria-label="动物园导游图重绘"></svg>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="zoo-out"></div></div>
+    <div class="chart-foot">“说一说”任务：点任意场馆，看它在狮虎山的什么方向。走路线的任务：用方向按钮走，每按一次走到下一个场馆。没有路的方向走不通。<br><span class="data-note">按教材第 113 页导游图重绘，只保留场馆和道路。“走一段”是课程作者为了练方向设计的操作。</span></div>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson-sec" id="s6">
+  <h2><span class="num">06</span>数学广角：鸡兔同笼</h2>
+  <p>先说结论：鸡兔同笼问题知道头的总数和脚的总数，要求鸡和兔各有几只。先从数量小的问题想办法，再解决原题。</p>
+  <figure class="fig"><img src="img/t118-yuanti.png" alt="教材第 118 页：《孙子算经》中的鸡兔同笼问题：今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何"><figcaption><b>教材第 118 页</b>《孙子算经》中的“鸡兔同笼”问题。</figcaption></figure>
+  <blockquote class="src">今有雉兔同笼，上有三十五头，下有九十四足，问雉兔各几何？<cite>教材第 118 页</cite></blockquote>
+  <p>这道题的意思是：笼子里有若干只鸡和兔。从上面数，有 35 个头；从下面数，有 94 只脚。鸡和兔各有几只？</p>
+  <div class="callout rule"><span class="ttl">先记住两件事</span>每只鸡、每只兔都只有 1 个头。每只鸡有 2 只脚，每只兔有 4 只脚。</div>
+  <h3>尝试：先解决一个小问题</h3>
+  <p>教材说：我们可以先从数量较小的问题来探索解决问题的方法。笼子里有若干只鸡和兔。从上面数，有 8 个头；从下面数，有 28 只脚。鸡和兔各有几只？</p>
+  <div class="grid-2">
+    <div class="kp"><div class="k">方法 1 · <a class="term" href="glossary.html#huatu-fa">画图</a></div><div class="v">先画 8 只鸡</div><p>脚数不够，给 1 只鸡添上 2 只脚，变成 1 只兔……一直添到脚数正好。</p></div>
+    <div class="kp"><div class="k">方法 2 · <a class="term" href="glossary.html#liebiao-fa">列表</a></div><div class="v">按顺序列表</div><p>鸡从 8 只、7 只……到 0 只，算出每种情况的脚数，看看能发现什么规律。</p></div>
+  </div>
+  <figure class="fig"><img src="img/t119-liebiao.png" alt="教材第 119 页：按顺序列表，鸡 8 7 6 5 4 3 2 1 0，兔 0 1，脚 16 18；同学说从 4 只鸡和 4 只兔开始数，一共有 24 只脚"><figcaption><b>教材第 119 页</b>按顺序列表试试，看看你能发现什么规律。</figcaption></figure>
+  <p>教材里的两位同学还发现了一个更快的办法：从 4 只鸡和 4 只兔开始数，一共有 24 只脚。每减少 1 只鸡、增加 1 只兔，就增加 2 只脚。现在还差 4 只脚，要增加 2 只兔……</p>
+
+  <div class="chart-card" id="demo-cage">
+    <div class="chart-head">
+      <div class="chart-title">鸡兔同笼：画图 + 列表</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">题目：
+        <select id="cg-prob" aria-label="选择题目">
+          <option value="0">8 个头，28 只脚（尝试）</option>
+          <option value="1">35 个头，94 只脚（《孙子算经》）</option>
+        </select>
+      </div>
+      <div class="btn-row ctrl-wide"><label>兔的只数 = <b id="cg-rv">0</b> <input id="cg-r" type="range" min="0" max="8" value="0"></label>
+        <button class="btn" id="cg-plus" type="button">换 1 只鸡为兔</button>
+        <button class="btn" id="cg-mid" type="button">从一半一半开始</button>
+      </div>
+      <svg class="cage-svg" id="cg-svg" viewBox="0 0 620 120" role="img" aria-label="笼子里的鸡和兔"></svg>
+      <div class="tbl-wrap" style="overflow-x:auto"><table class="ltbl" id="cg-tbl"></table></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="cg-out"></div></div>
+    <div class="chart-foot">从“全是鸡”开始，一次把 1 只鸡换成兔，看脚数怎样变。再点“从一半一半开始”，试试教材里同学的办法。表格里黄色是你现在的情况，绿色是脚数正好的情况。<br><span class="data-note">图中画法照教材第 118 页。一个圆圈是头，两条线是鸡的脚，四条线是兔的脚，红线是刚添上的脚。35 个头时只画头和脚数，不逐只画。</span></div>
+  </div>
+
+  <h3>反思：古人的方法</h3>
+  <figure class="fig"><img src="img/t119-taijiao.png" alt="教材第 119 页：古人解决鸡兔同笼问题的方法：让鸡抬起 1 只脚，兔抬起 2 只脚，还有 47 只脚；47 减 35 等于 12，就是兔的只数"><figcaption><b>教材第 119 页</b>古人解决“鸡兔同笼”问题的方法，你能看懂吗？</figcaption></figure>
+  <blockquote class="src">（1）假如让鸡抬起 1 只脚，兔抬起 2 只脚，还有 47 只脚。<br>（2）这时，每只鸡 1 只脚，每只兔 2 只脚。笼子里只要有 1 只兔，脚的总数就比头的总数多 1。<br>（3）这时脚的总数与头的总数之差 47 − 35 = 12，就是兔的只数。<cite>教材第 119 页</cite></blockquote>
+
+  <div class="chart-card" id="demo-lift">
+    <div class="chart-head">
+      <div class="chart-title">古人的方法：一步一步“抬脚”</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row">题目：
+        <select id="lf-prob" aria-label="选择题目">
+          <option value="1">35 个头，94 只脚</option>
+          <option value="0">8 个头，28 只脚</option>
+        </select>
+        <button class="btn primary" id="lf-next" type="button">下一步</button>
+        <button class="btn" id="lf-reset" type="button">重来</button>
+      </div>
+      <svg class="cage-svg" id="lf-svg" viewBox="0 0 620 120" role="img" aria-label="抬脚示意"></svg>
+      <div class="steps-box" id="lf-steps"></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="lf-out"></div></div>
+    <div class="chart-foot">每点一次“下一步”，看一步。想一想：为什么抬脚以后，脚数比头数多几，就有几只兔？<br><span class="data-note">步骤照教材第 119 页“反思”。示意图只画 8 个头的情况，帮你看清“每只兔比每只鸡多 1 只脚”。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：别忘了验算</span>求出兔的只数后，鸡的只数 = 头数 − 兔的只数。35 − 12 = 23，所以鸡有 23 只。验算：23 只鸡有 46 只脚，12 只兔有 48 只脚，46 + 48 = 94，对了。</div>
+  <p>教材最后问：生活中还有类似“鸡兔同笼”的问题吗？比如，一共有几辆自行车和三轮车，知道车的总数和轮子的总数，求各有几辆。</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson-sec" id="s7">
+  <h2><span class="num">07</span>挑战自我：百僧百馍</h2>
+  <p>先说结论：百僧百馍也是古代数学趣题。它和鸡兔同笼一样，可以用列表的方法试出来。</p>
+  <figure class="fig"><img src="img/t119-baiseng.png" alt="教材第 119 页：《算法统宗》中的百僧百馍问题：一百馒头一百僧，大和三个更无争，小和三人分一个，大小和尚得几丁"><figcaption><b>教材第 119 页</b>《算法统宗》中的“百僧百馍”问题。</figcaption></figure>
+  <blockquote class="src">一百馒头一百僧，大和三个更无争。小和三人分一个，大小和尚得几丁？<cite>教材第 119 页</cite></blockquote>
+  <p>意思是：100 个和尚吃 100 个馒头。大和尚 1 人吃 3 个，小和尚 3 人吃 1 个。大、小和尚各多少人？</p>
+
+  <div class="chart-card" id="demo-monk">
+    <div class="chart-head">
+      <div class="chart-title">百僧百馍：调一调大和尚的人数</div>
+    </div>
+    <div class="demo">
+      <div class="btn-row ctrl-wide"><label>大和尚 = <b id="mk-bv">10</b> 人 <input id="mk-b" type="range" min="0" max="34" value="10"></label></div>
+      <div class="tbl-wrap" style="overflow-x:auto"><table class="ltbl" id="mk-tbl"></table></div>
+    </div>
+    <div class="chart-body" style="padding:0 16px"><div class="readout" id="mk-out"></div></div>
+    <div class="chart-foot">拖动滑块，和尚总数始终是 100 人。看馒头数比 100 多还是少，再决定大和尚该多一些还是少一些。<br><span class="data-note">小和尚 3 人分 1 个馒头，所以小和尚的人数要是 3 的倍数，馒头才正好分完。表格只列出小和尚是 3 的倍数的情况。</span></div>
+  </div>
+  <div class="callout note"><span class="ttl">补充：另一种想法（分组）</span>让 1 个大和尚和 3 个小和尚坐一组。这一组有 4 个人，正好吃 3 + 1 = 4 个馒头。100 个人可以分成 100 ÷ 4 = 25 组。所以大和尚有 25 人，小和尚有 75 人。这是课程作者补充的方法，教材只给了题目。</div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="lesson-sec" id="s8">
+  <h2><span class="num">08</span>自测与速记</h2>
+  <div class="quiz" data-answer="1">
+    <div class="q">60174690000 里的两个“6”分别表示什么？</div>
+    <div class="opts"><button>6 个十亿和 6 个万</button><button>6 个百亿和 6 个十万</button><button>6 个千亿和 6 个百万</button><button>6 个百亿和 6 个万</button></div>
+    <div class="explain">分级：601 | 7469 | 0000。左边的 6 在百亿位上，表示 6 个百亿；右边的 6 在十万位上，表示 6 个十万（教材第 108 页）。</div>
+  </div>
+  <div class="quiz" data-answer="2">
+    <div class="q">李叔叔每天骑 115 千米，骑 15 天。求一共能骑多少千米，用哪个数量关系？</div>
+    <div class="opts"><button>总量 = 分量 + 分量</button><button>总价 = 单价 × 数量</button><button>路程 = 速度 × 时间</button><button>分量 = 总量 − 分量</button></div>
+    <div class="explain">115 千米 / 天是速度，15 天是时间，求的是路程。教材第 110 页：问题（2）可以用“路程 = 速度 × 时间”来解决。115 × 15 = 1725（km）。</div>
+  </div>
+  <div class="quiz" data-answer="0">
+    <div class="q">在动物园导游图上，长颈鹿馆在狮虎山的什么方向？</div>
+    <div class="opts"><button>西北</button><button>东北</button><button>西南</button><button>北</button></div>
+    <div class="explain">长颈鹿馆在图的左上角，狮虎山在中间。左上方是西北。小红也说“长颈鹿馆在西北角”（教材第 113 页）。</div>
+  </div>
+  <div class="quiz" data-answer="3">
+    <div class="q">8 个头、28 只脚的鸡兔同笼问题，用古人的方法，第一步“抬脚”以后还剩几只脚？</div>
+    <div class="opts"><button>20 只</button><button>16 只</button><button>12 只</button><button>14 只</button></div>
+    <div class="explain">鸡抬起 1 只脚、兔抬起 2 只脚，每只动物都只剩一半的脚：28 ÷ 2 = 14。再算 14 − 8 = 6，兔有 6 只，鸡有 2 只。</div>
+  </div>
+  <div class="quiz" data-answer="1">
+    <div class="q">鸡兔同笼的列表里，每把 1 只鸡换成 1 只兔，脚的总数会怎样？</div>
+    <div class="opts"><button>增加 4 只</button><button>增加 2 只</button><button>减少 2 只</button><button>不变</button></div>
+    <div class="explain">鸡有 2 只脚，兔有 4 只脚。换一只，头数不变，脚多 2 只。教材第 119 页：每减少 1 只鸡，增加 1 只兔，就增加 2 只脚。</div>
+  </div>
+
+  <h3>速记表</h3>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th>要点</th><th>一句话</th></tr>
+    <tr><td>知识结构图</td><td>数与运算、数量关系、图形的认识与测量、数据的收集整理与表达、认识方向</td></tr>
+    <tr><td>大数</td><td>先分级再读写；整万、整亿用“=”改写；求近似数用“四舍五入”，用“≈”</td></tr>
+    <tr><td>笔算乘法</td><td>用一个乘数每一位上的数去乘另一个乘数，数位对齐，别忘进位</td></tr>
+    <tr><td>数量关系</td><td>总量 = 分量 + 分量；总价 = 单价 × 数量；路程 = 速度 × 时间</td></tr>
+    <tr><td>图形</td><td>从边和角两个方面研究；锐角 &lt; 直角 &lt; 钝角 &lt; 平角 &lt; 周角</td></tr>
+    <tr><td>鸡兔同笼</td><td>画图、列表（换 1 只鸡为兔，脚多 2 只）、抬脚法（脚数 ÷ 2 − 头数 = 兔数）</td></tr>
+    <tr><td>百僧百馍</td><td>列表试一试；小和尚人数要是 3 的倍数</td></tr>
+  </table></div>
+
+  <h3>相关课程</h3>
+  <div class="related">
+    <a href="L01-yi-yinei.html"><small>L01</small>亿以内数的认识</a>
+    <a href="L08-moxing.html"><small>L08</small>加法模型和乘法模型</a>
+    <a href="L10-xunbao.html"><small>上一课 · L10</small>寻找宝藏：方向与平面图</a>
+  </div>
+</section>
+
+<nav id="cl-pager" data-current="L11-fuxi.html"></nav>
+<p class="disclaimer">教材：人教版《数学》四年级上册（2022 课标修订版）第七单元“复习与关联”第 108–120 页。标为“补充”的内容和模拟演示是课程作者的解释，不是教材原文。</p>
+</main>
+</div>
+
+<script>
+CL.onReady(function () {
+  /* ================= 1. 知识结构图 ================= */
+  const KM = [
+    ["数与运算", [
+      ["万以上数的认识", [
+        ["计数单位和数位", "十万、百万、千万、亿、十亿……都是计数单位。每相邻两个计数单位之间的进率都是 10。", "L01-yi-yinei.html", "L01"],
+        ["读法和写法", "先分级，再从高位起按级读、写。计数器上的 100384000500 读作" + CL.readNum("100384000500") + "。", "L02-yi-yishang.html", "L02"],
+        ["比大小", "位数不同，位数多的数就大；位数相同，从最高位起依次比较。", "L02-yi-yishang.html", "L02"],
+        ["用“万”或“亿”作单位改写", "5200000 = 520 万。整万的数去掉末尾 4 个 0，加“万”字。", "L02-yi-yishang.html", "L02"],
+        ["求近似数", "791460000 ≈ 8 亿。用“四舍五入”法，看省略的尾数部分的最高位。", "L02-yi-yishang.html", "L02"]]],
+      ["多位数乘两位数", [
+        ["口算", "24 × 3：20 × 3 = 60，4 × 3 = 12，60 + 12 = 72。", "L06-kousuan-bisuan.html", "L06"],
+        ["笔算", "14 × 12：先算 14 × 2 = 28，再算 14 × 10 = 140，28 + 140 = 168。", "L06-kousuan-bisuan.html", "L06"],
+        ["积的变化规律", "一个乘数不变，另一个乘数乘几或除以几（0 除外），积也乘几或除以几。", "L07-chengfa-guilv-gusuan.html", "L07"]]]]],
+    ["数量关系", [
+      ["加法", [["总量 = 分量 + 分量", "245 人 + 376 人 = 621 人。知道总量和一个分量，用 分量 = 总量 − 分量。", "L08-moxing.html", "L08"]]],
+      ["乘法", [
+        ["总价 = 单价 × 数量", "图里的例子：单价 25 元，总价 125 元。如果买 5 个，25 × 5 = 125（元）。", "L08-moxing.html", "L08"],
+        ["路程 = 速度 × 时间", "图里的例子：速度 80 km，路程 400 km。如果每小时行 80 km、行 5 小时，80 × 5 = 400（km）。", "L08-moxing.html", "L08"]]]]],
+    ["图形的认识与测量", [
+      ["线", [["平行和垂直", "a ⊥ c，b ⊥ c，所以 a // b。", "L04-pingxing-chuizhi.html", "L04"]]],
+      ["角", [
+        ["量角", "量角器的中心与顶点重合，0° 刻度线与角的一条边重合。注意看内圈还是外圈的刻度。", "L03-jiao.html", "L03"],
+        ["画角", "先画一条射线，再用量角器找到度数，点点、连线。", "L03-jiao.html", "L03"],
+        ["角的分类", "锐角 < 直角 < 钝角 < 平角 < 周角。", "L03-jiao.html", "L03"]]],
+      ["平行四边形和梯形", [
+        ["平行四边形", "两组对边分别平行的四边形。对边相等，对角相等。", "L05-sibianxing.html", "L05"],
+        ["梯形", "只有一组对边平行的四边形。", "L05-sibianxing.html", "L05"]]]]],
+    ["数据的收集、整理与表达", [
+      ["统计", [["条形统计图", "用条形统计图表示数据，可以更清楚地看出数量的多少。例如电话用户数统计图。", "L09-tongjitu.html", "L09"]]]]],
+    ["认识方向", [
+      ["方向", [
+        ["八个方向", "东、南、西、北，东北、西北、东南、西南。辨认方向可以借助太阳、指南针……", "L10-xunbao.html", "L10"],
+        ["看平面图", "先找方向标，再看建筑的位置。藏宝图、动物园导游图都是平面图。", "L10-xunbao.html", "L10"]]]]],
+  ];
+  const leaves = []; let kh = "";
+  KM.forEach(([root, groups]) => {
+    kh += '<div class="km-br"><div class="km-root">' + root + '</div><div class="km-kids">';
+    groups.forEach(([g, ls]) => {
+      kh += '<div class="km-grp"><b>' + g + "</b>";
+      ls.forEach((l) => { kh += '<button type="button" class="km-leaf" data-i="' + leaves.length + '">' + l[0] + "</button>"; leaves.push([root, g].concat(l)); });
+      kh += "</div>";
+    });
+    kh += "</div></div>";
+  });
+  CL.$("#km").innerHTML = kh;
+  const seen = new Set();
+  function showLeaf(i) {
+    const [root, g, name, ex, file, id] = leaves[i];
+    seen.add(i);
+    CL.$$("#km .km-leaf").forEach((b) => { const k = +b.dataset.i; b.classList.toggle("on", k === i); b.classList.toggle("seen", seen.has(k) && k !== i); });
+    CL.$("#km-out").innerHTML = CL.esc(root + " → " + g + " → " + name) + "\n例子：" + CL.esc(ex) + '\n在哪一课：<a href="' + file + '">' + id + " · " + CL.esc((CL.LESSONS.find((l) => l.file === file) || {}).title || "") + "</a>\n已经点过 " + seen.size + " / " + leaves.length + " 个知识点。";
+  }
+  CL.$("#km").addEventListener("click", (e) => { const b = e.target.closest(".km-leaf"); if (b) showLeaf(+b.dataset.i); });
+  CL.$("#km-out").textContent = "这张图有 5 个大类、" + leaves.length + " 个知识点。点一个知识点开始。";
+
+  /* ================= 2. 大数小助手 ================= */
+  const PL = CL.PLACE;   // ["个", "十", …, "千亿"]
+  let bnSel = -1;
+  function drawBig() {
+    const s = CL.$("#bn-num").value.replace(/\D/g, "").replace(/^0+(?=\d)/, "").slice(0, 12);
+    const n = 12, pad = s.padStart(n, " ");
+    let h = '<div class="tbl-wrap" style="overflow-x:auto"><table class="pv"><tr><th class="grp" colspan="4">亿级</th><th class="grp" colspan="4">万级</th><th class="grp" colspan="4">个级</th></tr><tr>';
+    for (let k = 0; k < n; k++) h += '<th class="pl">' + PL[11 - k] + "<br>位</th>";
+    h += "</tr><tr>";
+    for (let k = 0; k < n; k++) h += '<td class="d' + (11 - k === bnSel && pad[k] !== " " ? " on" : "") + '" data-p="' + (11 - k) + '">' + (pad[k] === " " ? "" : pad[k]) + "</td>";
+    CL.$("#bn-table").innerHTML = h + "</tr></table></div>";
+    if (!s) { CL.$("#bn-big").textContent = ""; CL.$("#bn-out").textContent = "请输入一个数。"; return; }
+    const read = CL.readNum(s), v = Number(s);
+    CL.$("#bn-big").textContent = s + " 读作：" + read;
+    const lines = ["先分级：" + CL.groupNum(s) + "（" + s.length + " 位数，最高位是" + PL[s.length - 1] + "位）", "读作：" + read];
+    if (bnSel >= 0 && bnSel < s.length) {
+      const d = s[s.length - 1 - bnSel];
+      lines.push("你点的数字：" + d + " 在" + PL[bnSel] + "位上，表示 " + d + " 个" + (PL[bnSel] === "个" ? "一" : PL[bnSel]) + "。");
+    } else lines.push("点表格里的一个数字，看它表示多少。");
+    if (/0{8}$/.test(s)) lines.push("改写：" + s + " = " + s.slice(0, -8) + " 亿（整亿的数，去掉末尾 8 个 0，加“亿”字）");
+    else if (/0{4}$/.test(s)) lines.push("改写：" + s + " = " + s.slice(0, -4) + " 万（整万的数，去掉末尾 4 个 0，加“万”字）");
+    if (v >= 100000000) {
+      const d = +s[s.length - 8], r = Math.round(v / 1e8);
+      lines.push("省略亿位后面的尾数：千万位是 " + d + "，" + (d >= 5 ? d + " ≥ 5，向亿位进 1" : d + " < 5，舍去") + "，" + s + " ≈ " + r + " 亿");
+    } else if (v >= 10000 && !/0{4}$/.test(s)) {
+      const d = +s[s.length - 4], r = Math.round(v / 1e4);
+      lines.push("省略万位后面的尾数：千位是 " + d + "，" + (d >= 5 ? d + " ≥ 5，向万位进 1" : d + " < 5，舍去") + "，" + s + " ≈ " + r + " 万");
+    }
+    CL.$("#bn-out").textContent = lines.join("\n");
+  }
+  CL.$("#bn-num").addEventListener("input", () => { bnSel = -1; drawBig(); });
+  CL.$("#bn-table").addEventListener("click", (e) => { const td = e.target.closest("td.d"); if (td && td.textContent) { bnSel = +td.dataset.p; drawBig(); } });
+  CL.$$("#demo-bignum [data-num]").forEach((b) => b.addEventListener("click", () => { CL.$("#bn-num").value = b.dataset.num; bnSel = -1; drawBig(); }));
+  drawBig();
+
+  /* ================= 3. 动物园导游图 ================= */
+  const DIRS = { "东": [1, 0], "西": [-1, 0], "北": [0, -1], "南": [0, 1], "东北": [1, -1], "西北": [-1, -1], "东南": [1, 1], "西南": [-1, 1] };
+  const dirName = (dx, dy) => (dx > 0 ? "东" : dx < 0 ? "西" : "") + (dy > 0 ? "南" : dy < 0 ? "北" : "");
+  const fw = (d) => d.length === 1 ? d + "面" : d + "方向";
+  const Z = { "长颈鹿馆": [0, 0], "猩猩馆": [1, 0], "飞禽馆": [2, 0], "象馆": [0, 1], "狮虎山": [1, 1], "海洋馆": [2, 1], "猴山": [0, 2], "大门": [1, 2], "大熊猫馆": [2, 2] };
+  const ZN = Object.keys(Z);
+  const ROADS = [["长颈鹿馆", "猩猩馆"], ["猩猩馆", "飞禽馆"], ["象馆", "狮虎山"], ["狮虎山", "海洋馆"], ["猴山", "大门"], ["大门", "大熊猫馆"],
+    ["长颈鹿馆", "象馆"], ["象馆", "猴山"], ["猩猩馆", "狮虎山"], ["狮虎山", "大门"], ["飞禽馆", "海洋馆"], ["海洋馆", "大熊猫馆"],
+    ["狮虎山", "长颈鹿馆"], ["狮虎山", "飞禽馆"], ["狮虎山", "猴山"], ["狮虎山", "大熊猫馆"]];
+  const zx = (c) => 95 + 205 * c, zy = (r) => 55 + 125 * r;
+  const hasRoad = (a, b) => ROADS.some(([p, q]) => (p === a && q === b) || (p === b && q === a));
+  let zTask = "center", zAt = "大门", zRoute = [], zPick = null;
+  const GOALS = { li: ["大熊猫馆", "猩猩馆"], hong: ["长颈鹿馆"], free: [] };
+  function drawZoo() {
+    let h = "";
+    const pairs = []; let prev = "大门"; zRoute.forEach((st) => { pairs.push([prev, st.to]); prev = st.to; });
+    ROADS.forEach(([a, b]) => {
+      const w = pairs.some(([p, q]) => (p === a && q === b) || (p === b && q === a));
+      h += '<line class="road' + (w ? " walked" : "") + '" x1="' + zx(Z[a][0]) + '" y1="' + zy(Z[a][1]) + '" x2="' + zx(Z[b][0]) + '" y2="' + zy(Z[b][1]) + '"/>';
+    });
+    const goals = GOALS[zTask] || [];
+    ZN.forEach((n) => {
+      const [c, r] = Z[n], w = n === "大门" ? 110 : 96;
+      const cls = "nd" + (n === "狮虎山" ? " center" : "") + (n === "大门" ? " gate" : "") + (zTask === "center" && zPick === n ? " on" : "") + (goals.includes(n) ? " goal" : "");
+      h += '<rect class="' + cls + '" data-n="' + n + '" x="' + (zx(c) - w / 2) + '" y="' + (zy(r) - 20) + '" width="' + w + '" height="40" rx="8"/><text class="nl" x="' + zx(c) + '" y="' + (zy(r) + 5) + '" text-anchor="middle">' + n + "</text>";
+    });
+    h += '<polygon points="575,14 569,30 581,30" style="fill:var(--down)"/><text class="nl" x="575" y="46" text-anchor="middle">北</text>';
+    if (zTask !== "center") { const [c, r] = Z[zAt]; h += '<circle class="me" cx="' + (zx(c) + 40) + '" cy="' + (zy(r) - 20) + '" r="11"/><text class="me-t" x="' + (zx(c) + 40) + '" y="' + (zy(r) - 16) + '" text-anchor="middle">我</text>'; }
+    CL.$("#zoo-svg").innerHTML = h;
+    CL.$("#zoo-pad").style.opacity = zTask === "center" ? 0.4 : 1;
+  }
+  function routeText() { return zRoute.length ? "从大门出发，" + zRoute.map((st) => "向" + st.d + "走到" + st.to).join("，再") + "。" : "还在大门。"; }
+  function zooText(extra) {
+    if (zTask === "center") {
+      CL.$("#zoo-out").textContent = zPick ? (zPick === "狮虎山" ? "狮虎山在导游图的中间。点别的场馆试试。" : zPick + "在狮虎山的" + fw(dirName(Z[zPick][0] - 1, Z[zPick][1] - 1)) + "。") : "说一说：点任意场馆，看它在狮虎山的什么方向。";
+      return;
+    }
+    const goals = GOALS[zTask];
+    let msg = (extra ? extra + "\n" : "") + "路线：" + routeText();
+    if (goals.length) {
+      let gi = 0; zRoute.forEach((st) => { if (gi < goals.length && st.to === goals[gi]) gi++; });
+      msg += gi >= goals.length ? "\n完成任务：按顺序到了" + goals.join("、") + "。共走了 " + zRoute.length + " 段。换一条路线再试试。" : "\n下一站：" + goals[gi] + "（虚线框）。它在你的" + fw(dirName(Z[goals[gi]][0] - Z[zAt][0], Z[goals[gi]][1] - Z[zAt][1])) + "。";
+    }
+    CL.$("#zoo-out").textContent = msg;
+  }
+  function resetZoo() { zAt = "大门"; zRoute = []; zPick = null; drawZoo(); zooText(); }
+  CL.$("#zoo-task").addEventListener("change", (e) => { zTask = e.target.value; resetZoo(); });
+  CL.$("#zoo-reset").addEventListener("click", resetZoo);
+  CL.$("#zoo-svg").addEventListener("click", (e) => { const r = e.target.closest(".nd"); if (!r || zTask !== "center") return; zPick = r.dataset.n; drawZoo(); zooText(); });
+  CL.$("#zoo-pad").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-dir]"); if (!b || zTask === "center") return;
+    const d = b.dataset.dir, [dx, dy] = DIRS[d], [c, r] = Z[zAt];
+    const to = ZN.find((n) => Z[n][0] === c + dx && Z[n][1] === r + dy);
+    if (!to || !hasRoad(zAt, to)) { drawZoo(); zooText("从" + zAt + "向" + d + "没有路，换个方向。"); return; }
+    zRoute.push({ d, to }); zAt = to; drawZoo(); zooText("向" + d + "走到" + to + "。");
+  });
+  resetZoo();
+
+  /* ================= 4. 鸡兔同笼：画图 + 列表 ================= */
+  const PROBS = [[8, 28], [35, 94]];
+  let cgP = 0, cgR = 0;
+  function drawAnimals(svgSel, heads, rabbits, opt) {
+    opt = opt || {};
+    const sp = 620 / (heads + 1), y = 38;
+    let h = '<rect class="cage" x="6" y="8" width="608" height="104" rx="10"/>';
+    for (let i = 0; i < heads; i++) {
+      const x = sp * (i + 1), isR = i >= heads - rabbits;
+      h += '<circle class="head" cx="' + x + '" cy="' + y + '" r="13"/>';
+      const legs = isR ? [-9, -3, 3, 9] : [-4, 4];
+      legs.forEach((dx, k) => {
+        let cls = "leg";
+        if (isR && (k === 0 || k === 3) && opt.newest === i) cls += " add";
+        if (opt.lift && ((isR && (k === 0 || k === 3)) || (!isR && k === 0))) cls += " up";
+        const x2 = x + dx * 1.6;
+        h += '<line class="' + cls + '" x1="' + (x + dx * 0.6) + '" y1="' + (y + 13) + '" x2="' + x2 + '" y2="' + (y + 50) + '"/>';
+      });
+    }
+    h += '<text class="tg" x="14" y="106">' + (opt.label || "") + "</text>";
+    CL.$(svgSel).innerHTML = h;
+  }
+  function drawCage() {
+    const [H, F] = PROBS[cgP]; const rIn = CL.$("#cg-r");
+    rIn.max = H; if (cgR > H) cgR = H; rIn.value = cgR; CL.$("#cg-rv").textContent = cgR;
+    const ch = H - cgR, feet = ch * 2 + cgR * 4;
+    if (H <= 8) drawAnimals("#cg-svg", H, cgR, { newest: H - cgR, label: "鸡 " + ch + " 只，兔 " + cgR + " 只" });
+    else CL.$("#cg-svg").innerHTML = '<rect class="cage" x="6" y="8" width="608" height="104" rx="10"/><text class="tg" x="310" y="52" text-anchor="middle" style="font-size:18px">鸡 ' + ch + " 只（" + ch * 2 + " 只脚），兔 " + cgR + " 只（" + cgR * 4 + ' 只脚）</text><text class="tg" x="310" y="84" text-anchor="middle" style="font-size:16px">头 ' + H + " 个，脚 " + feet + " 只，题目要 " + F + " 只</text>";
+    // 列表：8 个头列全部；35 个头只列当前附近的 9 列
+    const lo = H <= 8 ? 0 : Math.max(0, Math.min(H - 8, cgR - 4)), hi = H <= 8 ? H : lo + 8;
+    let r1 = "<tr><th>鸡</th>", r2 = "<tr><th>兔</th>", r3 = "<tr><th>脚</th>";
+    for (let r = lo; r <= hi; r++) {
+      const c = H - r, f = c * 2 + r * 4, cls = f === F ? "hit" : r === cgR ? "cur" : "";
+      const cc = r === cgR && f !== F ? "cur" : cls;
+      r1 += '<td class="' + cc + '">' + c + "</td>"; r2 += '<td class="' + cc + '">' + r + "</td>"; r3 += '<td class="' + cc + '">' + f + "</td>";
+    }
+    CL.$("#cg-tbl").innerHTML = r1 + "</tr>" + r2 + "</tr>" + r3 + "</tr>";
+    let msg = "现在：鸡 " + ch + " 只，兔 " + cgR + " 只。脚有 " + ch + " × 2 + " + cgR + " × 4 = " + feet + " 只。";
+    if (feet === F) msg += "\n脚数正好是 " + F + " 只。答案：鸡 " + ch + " 只，兔 " + cgR + " 只。";
+    else if (feet < F) msg += "\n比 " + F + " 只少 " + (F - feet) + " 只。每把 1 只鸡换成兔，脚多 2 只，还要换 " + (F - feet) / 2 + " 只。";
+    else msg += "\n比 " + F + " 只多 " + (feet - F) + " 只。兔太多了，要把 " + (feet - F) / 2 + " 只兔换回鸡。";
+    if (H > 8 && lo > 0) msg += "\n（35 个头的表太长，表里只列出你附近的 9 种情况。）";
+    CL.$("#cg-out").textContent = msg;
+  }
+  CL.$("#cg-prob").addEventListener("change", (e) => { cgP = +e.target.value; cgR = 0; drawCage(); });
+  CL.$("#cg-r").addEventListener("input", (e) => { cgR = +e.target.value; drawCage(); });
+  CL.$("#cg-plus").addEventListener("click", () => { if (cgR < PROBS[cgP][0]) cgR++; drawCage(); });
+  CL.$("#cg-mid").addEventListener("click", () => { cgR = Math.floor(PROBS[cgP][0] / 2); drawCage(); });
+  drawCage();
+
+  /* ================= 5. 古人的方法：抬脚 ================= */
+  let lfP = 1, lfS = 0;
+  function liftSteps(H, F) {
+    const half = F / 2, rab = half - H, ch = H - rab;
+    return [
+      "题目：" + H + " 个头，" + F + " 只脚。",
+      "第 1 步：让鸡抬起 1 只脚，兔抬起 2 只脚。每只动物的脚都少了一半，还有 " + F + " ÷ 2 = " + half + " 只脚。",
+      "第 2 步：这时每只鸡 1 只脚，每只兔 2 只脚。笼子里只要有 1 只兔，脚的总数就比头的总数多 1。",
+      "第 3 步：脚的总数与头的总数之差 " + half + " − " + H + " = " + rab + "，就是兔的只数。兔有 " + rab + " 只。",
+      "第 4 步：鸡有 " + H + " − " + rab + " = " + ch + " 只。验算：" + ch + " × 2 + " + rab + " × 4 = " + (ch * 2 + rab * 4) + "，和题目一样。",
+    ];
+  }
+  function drawLift() {
+    const [H, F] = PROBS[lfP], st = liftSteps(H, F);
+    drawAnimals("#lf-svg", 8, 6, { lift: lfS >= 1, label: lfS >= 1 ? "示意：8 个头、28 只脚。虚线是抬起的脚：每只鸡剩 1 只，每只兔剩 2 只" : "示意：8 个头、28 只脚（2 只鸡、6 只兔）" });
+    CL.$("#lf-steps").innerHTML = st.map((t, i) => '<div class="' + (i <= lfS ? "" : "dim") + '">' + (i <= lfS ? CL.esc(t) : CL.esc(t.split("：")[0]) + "：……") + "</div>").join("");
+    CL.$("#lf-out").textContent = lfS >= st.length - 1 ? "做完了：" + H + " 个头、" + F + " 只脚，兔 " + (F / 2 - H) + " 只，鸡 " + (H - (F / 2 - H)) + " 只。" : "已看到第 " + lfS + " 步，共 4 步。点“下一步”继续。";
+  }
+  CL.$("#lf-prob").addEventListener("change", (e) => { lfP = +e.target.value; lfS = 0; drawLift(); });
+  CL.$("#lf-next").addEventListener("click", () => { if (lfS < 4) lfS++; drawLift(); });
+  CL.$("#lf-reset").addEventListener("click", () => { lfS = 0; drawLift(); });
+  drawLift();
+
+  /* ================= 6. 百僧百馍 ================= */
+  function drawMonk() {
+    const b = +CL.$("#mk-b").value, s = 100 - b; CL.$("#mk-bv").textContent = b;
+    const ok3 = s % 3 === 0, bun = 3 * b + s / 3;
+    // 表：小和尚是 3 的倍数的情况，取当前附近 7 列
+    const cand = []; for (let x = 1; x <= 34; x++) if ((100 - x) % 3 === 0) cand.push(x);
+    let idx = cand.findIndex((x) => x >= b); if (idx < 0) idx = cand.length - 1;
+    const lo = Math.max(0, Math.min(cand.length - 7, idx - 3)), cols = cand.slice(lo, lo + 7);
+    let r1 = "<tr><th>大和尚</th>", r2 = "<tr><th>小和尚</th>", r3 = "<tr><th>馒头</th>";
+    cols.forEach((x) => {
+      const y = 100 - x, m = 3 * x + y / 3, cls = m === 100 ? "hit" : x === b ? "cur" : "";
+      r1 += '<td class="' + cls + '">' + x + "</td>"; r2 += '<td class="' + cls + '">' + y + "</td>"; r3 += '<td class="' + cls + '">' + m + "</td>";
+    });
+    CL.$("#mk-tbl").innerHTML = r1 + "</tr>" + r2 + "</tr>" + r3 + "</tr>";
+    let msg = "大和尚 " + b + " 人，小和尚 " + s + " 人。";
+    if (!ok3) msg += "\n小和尚 " + s + " 人不是 3 的倍数，3 人分 1 个分不完整。换一个人数试试。";
+    else {
+      msg += "\n大和尚吃 " + b + " × 3 = " + 3 * b + " 个，小和尚吃 " + s + " ÷ 3 = " + s / 3 + " 个，一共 " + bun + " 个馒头。";
+      msg += bun === 100 ? "\n正好 100 个。答案：大和尚 " + b + " 人，小和尚 " + s + " 人。" : bun < 100 ? "\n比 100 个少 " + (100 - bun) + " 个，大和尚应该再多一些。" : "\n比 100 个多 " + (bun - 100) + " 个，大和尚应该再少一些。";
+    }
+    CL.$("#mk-out").textContent = msg;
+  }
+  CL.$("#mk-b").addEventListener("input", drawMonk);
+  drawMonk();
+});
+</script>
+</body>
+</html>
