@@ -8,7 +8,7 @@
   const LESSON = pg ? pg.dataset.current : location.pathname.split("/").pop();
   const lesson = CL.LESSONS.find((l) => l.file === LESSON);
   if (!lesson) return;
-  const STORE = "{{PREFIX}}-tutor:" + LESSON;
+  const STORE = "g4m-tutor:" + LESSON;
   const isHttp = location.protocol === "http:" || location.protocol === "https:";
 
   /* ---------- 状态 ---------- */
@@ -18,10 +18,10 @@
   let picking = false, picked = new Set(), noteBusy = false;   // “记笔记”勾选模式
 
   // 面板默认常开；用户手动收起后记住（所有课程共用这个偏好）
-  function panelPref() { try { return localStorage.getItem("{{PREFIX}}-tutor-panel"); } catch (e) { return null; } }
-  function savePanelPref(v) { try { localStorage.setItem("{{PREFIX}}-tutor-panel", v); } catch (e) { /* ignore */ } }
-  function widthPref() { try { return +localStorage.getItem("{{PREFIX}}-tutor-w") || 0; } catch (e) { return 0; } }
-  function saveWidthPref(v) { try { if (v) localStorage.setItem("{{PREFIX}}-tutor-w", String(v)); else localStorage.removeItem("{{PREFIX}}-tutor-w"); } catch (e) { /* ignore */ } }
+  function panelPref() { try { return localStorage.getItem("g4m-tutor-panel"); } catch (e) { return null; } }
+  function savePanelPref(v) { try { localStorage.setItem("g4m-tutor-panel", v); } catch (e) { /* ignore */ } }
+  function widthPref() { try { return +localStorage.getItem("g4m-tutor-w") || 0; } catch (e) { return 0; } }
+  function saveWidthPref(v) { try { if (v) localStorage.setItem("g4m-tutor-w", String(v)); else localStorage.removeItem("g4m-tutor-w"); } catch (e) { /* ignore */ } }
   function load() { try { return JSON.parse(localStorage.getItem(STORE) || "[]"); } catch (e) { return []; } }
   function save() { try { localStorage.setItem(STORE, JSON.stringify(history.slice(-40))); } catch (e) { /* ignore */ } }
 
@@ -299,7 +299,7 @@
   function render() {
     if (!isHttp || serverOk === false) {
       msgsEl.innerHTML = '<div class="tp-offline"><b>AI 助教需要本地服务。</b><p>' + (panel.dataset.err ? esc(panel.dataset.err) + "。" : "现在页面是直接从文件打开的，没法安全地调用 DeepSeek。") +
-        "</p><p>在终端运行：</p><pre>cd {{LESSONS_DIR}}\nuv run --no-project python tools/serve.py</pre><p>然后打开 <a href=\"http://127.0.0.1:{{PORT}}/{{LESSONS_DIR}}/" + LESSON + "\">http://127.0.0.1:{{PORT}}/{{LESSONS_DIR}}/" + LESSON + "</a>。API key 只留在本机服务里，不进页面。</p></div>";
+        "</p><p>在终端运行：</p><pre>cd lessons\nuv run --no-project python tools/serve.py</pre><p>然后打开 <a href=\"http://127.0.0.1:8771/lessons/" + LESSON + "\">http://127.0.0.1:8771/lessons/" + LESSON + "</a>。API key 只留在本机服务里，不进页面。</p></div>";
       return;
     }
     if (!history.length) {
