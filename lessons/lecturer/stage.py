@@ -97,8 +97,9 @@ class Stage:
     async def highlight(self, target: str, nth: int = 0) -> bool:
         return await self.page.evaluate("([s, n]) => __lecturer.highlight(s, n)", [target, nth])
 
-    async def status(self, html: str, paused: bool, can_reexplain: bool) -> None:
-        await self.page.evaluate("([h, p, r]) => __lecturer.status(h, p, r)", [html, paused, can_reexplain])
+    async def status(self, html: str, paused: bool, can_reexplain: bool, reading: bool = False) -> None:
+        """reading=True：正在插播助教朗读，控制条换成 ↺ 从头读 / ⏯ / ⏭ 跳过。"""
+        await self.page.evaluate("([h, p, r, t]) => __lecturer.status(h, p, r, t)", [html, paused, can_reexplain, reading])
 
     # ---------- 音频 ----------
     async def play(self, audio: Path) -> None:
@@ -117,6 +118,12 @@ class Stage:
     async def play_aside(self, audio: Path) -> None:
         """另一路音频：朗读学生自己提问的回答，不影响讲师暂停中的那段。"""
         await self.page.evaluate("u => __lecturer.playAside(u)", f"{self.base}lecturer/audio/{audio.name}")
+
+    async def pause_aside(self) -> None:
+        await self.page.evaluate("__lecturer.pauseAside()")
+
+    async def resume_aside(self) -> None:
+        await self.page.evaluate("__lecturer.resumeAside()")
 
     async def stop_aside(self) -> None:
         await self.page.evaluate("__lecturer.stopAside()")
@@ -155,8 +162,14 @@ class Stage:
         await box.evaluate("el => el.blur()")  # 交还焦点，让快捷键继续生效
         return before
 
-    async def tutor_answer_count(self) -> int:
-        return await self.page.locator(".tutor-panel .tp-msg.ai").count()
+    async def tutor_last(self) -> tuple[int, str]:
+        """（助教回答条数，最后一条回答的 data-id）。「重新发送」时条数不变、id 会变。"""
+        return tuple(await self.page.evaluate(
+            """() => {
+              const msgs = document.querySelectorAll('.tutor-panel .tp-msg.ai');
+              const m = msgs[msgs.length - 1];
+              return [msgs.length, m ? (m.dataset.id || '') : ''];
+            }"""))
 
     async def tutor_answer(self, before: int) -> tuple[str, bool, str]:
         """读新回答：（目前的正文，是否已答完，错误信息）。"""
@@ -169,7 +182,7 @@ class Stage:
               if (!m) return ['', false, ''];
               const c = m.cloneNode(true);
               const err = c.querySelector('.tp-err');
-              c.querySelectorAll('.tp-dots, .tp-caret, .tp-err, .tp-errata, pre, table, svg, .md-mermaid, .md-tbl, .tp-tbl').forEach(x => x.remove());  // 图、表、代码不朗读
+              c.querySelectorAll('.tp-dots, .tp-caret, .tp-err, .lecturer-replay, .tp-errata, .tp-tools, pre, table, svg, .md-mermaid, .md-tbl, .tp-tbl').forEach(x => x.remove());  // 图、表、代码不朗读
               return [c.innerText, !busy, err ? err.innerText : ''];
             }""", before))
 

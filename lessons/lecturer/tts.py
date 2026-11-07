@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -18,6 +19,32 @@ _END = "。！？；!?;\n"
 _MIN_LEN = 4  # 短于这个长度的句子并到下一句，避免碎读
 
 
+PRONOUNCE_FILE = Path(__file__).parent / "pronounce.json"
+
+
+def load_pronunciation(path: Path = PRONOUNCE_FILE) -> dict[str, str]:
+    """课程的读音表：{"原词": "读法"}。以 _ 开头的键是注释。没有文件就是空表。"""
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"读音表 {path} 不是合法 JSON：{e}") from e
+    return {k: str(v) for k, v in raw.items() if not k.startswith("_")}
+
+
+PRONOUNCE = load_pronunciation()
+
+
+def apply_pronunciation(text: str, table: dict[str, str]) -> str:
+    """把读音表里的词换成读法。只换完整的词：前后不能紧挨英文字母（可以紧挨数字，如 EMA8）。长词优先。"""
+    if not table:
+        return text
+    terms = sorted(table, key=len, reverse=True)
+    pat = re.compile(r"(?<![A-Za-z])(" + "|".join(map(re.escape, terms)) + r")(?![A-Za-z])")
+    return pat.sub(lambda m: table[m.group(1)], text)
+
+
 def audio_name(voice: str, text: str) -> str:
     return hashlib.sha1(f"{voice}\n{text}".encode()).hexdigest()[:16]
 
@@ -30,35 +57,37 @@ def clean_text(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
-def _raw_sentences(text: str) -> tuple[list[str], str]:
-    """切出完整句子，返回（句子列表，剩下的不完整尾巴）。"""
+def _raw_sentences(text: str) -> tuple[list[tuple[str, int]], str]:
+    """切出完整句子，返回（[(句子, 它在 text 里的结束偏移)]，剩下的不完整尾巴）。"""
     out, buf = [], ""
-    for ch in text:
+    for i, ch in enumerate(text):
         buf += ch
         if ch in _END:
             if buf.strip():
-                out.append(buf.strip())
+                out.append((buf.strip(), i + 1))
             buf = ""
     return out, buf
 
 
-def _merge(sents: list[str]) -> tuple[list[str], str]:
-    """把太短的句子并到下一句。返回（合并后的句子，不够长的尾巴）。"""
+def _merge(sents: list[str]) -> tuple[list[str], str, int]:
+    """把太短的句子并到下一句。返回（合并后的句子，不够长的尾巴，并进结果的原句数）。"""
     out: list[str] = []
-    carry = ""
-    for s in sents:
+    carry, used = "", 0
+    for k, s in enumerate(sents):
         carry += s
         if len(carry) >= _MIN_LEN:
             out.append(carry)
             carry = ""
-    return out, carry
+            used = k + 1
+    return out, carry, used
 
 
 def split_sentences(text: str) -> list[str]:
-    sents, tail = _raw_sentences(text)
+    raw, tail = _raw_sentences(text)
+    sents = [s for s, _ in raw]
     if tail.strip():
         sents.append(tail.strip())
-    out, carry = _merge(sents)
+    out, carry, _ = _merge(sents)
     return out + [carry] if carry else out
 
 
@@ -71,15 +100,11 @@ class SentenceStream:
 
     def feed(self, text_so_far: str) -> list[str]:
         self._last = text_so_far
-        sents, _ = _raw_sentences(text_so_far[self._done:])
-        ready, _ = _merge(sents)
-        if ready:
-            # 按原文定位，跳过句间空白
-            rest = text_so_far[self._done:]
-            consumed = 0
-            for s in ready:
-                consumed = rest.index(s, consumed) + len(s)
-            self._done += consumed
+        raw, _ = _raw_sentences(text_so_far[self._done:])
+        ready, _, used = _merge([s for s, _ in raw])
+        if used:
+            # 按原始句子的结束偏移推进：合并后的句子去掉了句间的换行和空白，不能拿它回原文找
+            self._done += raw[used - 1][1]
         return ready
 
     def flush(self) -> list[str]:
@@ -105,7 +130,7 @@ async def _say(text: str, voice: str, path: Path) -> None:
 
 async def synthesize(text: str, voice: str, out_dir: Path = AUDIO_DIR) -> Path:
     """返回音频文件路径。已缓存就直接用；edge-tts 失败时退回 macOS say。"""
-    text = clean_text(text)
+    text = apply_pronunciation(clean_text(text), PRONOUNCE)   # 缓存按读法命名：改了读音表会自动重新合成
     if not text:
         raise ValueError("要合成的文本是空的")
     out_dir.mkdir(parents=True, exist_ok=True)
